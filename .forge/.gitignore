@@ -1,0 +1,6 @@
+*
+!.gitignore
+
+# don't ignore CMakeFiles folder itself & files inside it
+!CMakeFiles/
+!CMakeFiles/*
