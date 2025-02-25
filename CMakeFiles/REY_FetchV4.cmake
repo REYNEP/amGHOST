@@ -17,39 +17,36 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #                   *************** The Original Code is Copyright (C) 2025, REYNEP ***************                   ]]
 #      *************** This File will be maintained @ https://github.com/REYNEP/REY_LoggerNUtils ***************      ]]
 
-
-# Lots of Variables need to be SET before calling on this File
-# So it's best to have files like "REY_FetchV4_fmt.cmake"
-# IDEA IS:-
-#       "REY_FetchV4.fmt.cmake" calls ----> "REY_FetchV4_X.fmt.cmake" [SET Variables]
+# --------------------
+#       "REY_FetchV4.fmt.cmake" calls ----> "REY_FetchV4_X.<lib-name>.cmake" [SET Variables]
+#       "REY_FetchV4.fmt.camke" calls ----> "REY.FetchV4_MOD.<lib-name>.cmake"
 #       "REY_FetchV4.fmt.cmake" calls ----> "REY_FetchV4.cmake" [This File]
-
-
-
-
-
-
+#       "REY_FetchV4.fmt.cmake" calls ----> "REY_FetchV4_X_RESET.cmake"    [RESET Variables]
+# --------------------
 
 # Pseudocode for this file
 # ----------------------------------------
     # if (REY_SCOUT_${TN}_PATHS != "")
-        # find_library(${Binary_Names})
+        # find_library(${Binary_Hints})
         # find_path(${TN}/${Header_Name})
         # USE:- REY_SCOUT_${TN}_PATHS
         # Check FOUND / LOG FATAL ERROR
 
-    # elseif(  (DEFINED Git_SubModule)   AND   (NOT "${Git_SubModule}" STREQUAL "")  )
+    # else if(  (DEFINED Git_SubModule)   AND   (NOT "${Git_SubModule}" STREQUAL "")  )
         # git submodule init / update
+
+    # else if(   (DEFINED Zip_Links)     AND     (NOT "${Zip_Links}" STREQUAL "")  )
+        # download ${Zip_Links} --> unzip
         
     # else()
-        # if(NOT EXISTS ${REY_FETCH_${TN}_BASE_DIR}/${Git_Name} )
+        # if( NOT EXISTS ${REY_FETCH_${TN}_BASE_DIR}/${Git_CloneDir_Name} )
             # git clone ${Git_Link}
-            # add_subdirectory(${Git_Name})
+            # add_subdirectory(${Git_CloneDir_Name})
         # else()
             # if(NOT EXISTS ${Git_CheckFiles})
                 # LOG FATAL ERROR
             # else()
-                # add_subdirectory(${Git_Name})
+                # add_subdirectory(${Git_CloneDir_Name})
             # endif()
         # endif()
     # endif()
@@ -67,10 +64,10 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
     endif()
 # --------------------
 if (  (DEFINED REY_SCOUT_${TN}_PATHS)   AND   (NOT "${REY_SCOUT_${TN}_PATHS}" STREQUAL "")  )
-    # ================================ FINDING ${Binary_Names} =================================
+    # ================================ FINDING ${Binary_Hints} =================================
         find_library(tmp_scout_${TN}_lib
             NAMES
-                ${Binary_Names}
+                ${Binary_Hints}
             DOC
                 ""
             PATHS
@@ -96,7 +93,7 @@ if (  (DEFINED REY_SCOUT_${TN}_PATHS)   AND   (NOT "${REY_SCOUT_${TN}_PATHS}" ST
             message(STATUS "[REY_FetchV3_${TN}]")
             message(STATUS "    Found 1 File:- ${tmp_scout_${TN}_lib}")
         endif()
-    # ================================ FINDING ${Binary_Names} =================================
+    # ================================ FINDING ${Binary_Hints} =================================
 
 
     # ================================ FINDING ${Header_Name} =================================
@@ -162,14 +159,16 @@ if (  (DEFINED REY_SCOUT_${TN}_PATHS)   AND   (NOT "${REY_SCOUT_${TN}_PATHS}" ST
 elseif(  (DEFINED Git_SubModule)   AND   (NOT "${Git_SubModule}" STREQUAL "")  )
 
 
-        message(STATUS "UPDATING SUBMODULE ${REY_FETCH_${TN}_BASE_DIR}/${Git_Name}")
-        message(STATUS "Download Progress logged inside ${REY_FETCH_${TN}_BASE_DIR}/${TN}_Download_stdout.log ")
+        message(STATUS "[UPDATING SUBMODULE]:- ${Git_SubModule}")
+        message(STATUS "[Command Outputs in]:- ${CMAKE_CURRENT_SOURCE_DIR}/.forge/REY_FetchV4_git_submodule_stdout.log")
     execute_process(
         COMMAND             git submodule init
         COMMAND             git submodule update
         WORKING_DIRECTORY ${Git_SubModule}
 
-        TIMEOUT 10              # seconds
+        OUTPUT_FILE     ${CMAKE_CURRENT_SOURCE_DIR}/.forge/REY_FetchV4_git_submodule_stdout.log
+        ERROR_FILE      ${CMAKE_CURRENT_SOURCE_DIR}/.forge/REY_FetchV4_git_submodule_stdout.log  
+        TIMEOUT 60              # seconds
         COMMAND_ECHO STDOUT     # output's the part after "COMMAND" few lines above
     )
         message(STATUS "Updating Done")
@@ -177,11 +176,64 @@ elseif(  (DEFINED Git_SubModule)   AND   (NOT "${Git_SubModule}" STREQUAL "")  )
         add_subdirectory(${Git_SubModule})    #Output:- ${Target_Name}
 
 
+elseif(  (DEFINED Zip_Links)   AND   (NOT "${Zip_Links}" STREQUAL "")  )
+
+    list(LENGTH Zip_Links N)
+    math(EXPR N "${N} - 1")
+
+    set(loopStep 3)
+    foreach(i RANGE 0 ${N} ${loopStep})
+        math(EXPR j "${i} + 1")
+        math(EXPR k "${i} + 2")
+        list(GET Zip_Links ${i} LINK)
+        list(GET Zip_Links ${j} SAVE_DIR)
+        list(GET Zip_Links ${k} FILE_NAME)
+        
+        message(STATUS "                        ")
+        message(STATUS "Link: ${LINK}")
+        message(STATUS "Save_Dir: ${SAVE_DIR}")
+        message(STATUS "File_Name:- ${FILE_NAME}")
+        message(STATUS "                        ")
+        
+        if(NOT EXISTS ${SAVE_DIR}/${FILE_NAME})
+            # Download the zip file
+            message(STATUS "Downloading File")
+            file(DOWNLOAD ${LINK} ${SAVE_DIR}/${FILE_NAME})
+
+            # Extract the zip file
+            message(STATUS "UnZipping File")
+            if(WIN32)
+                message(STATUS "Windows PowerShell")
+                execute_process(
+                    COMMAND powershell -Command "Expand-Archive -Path ${SAVE_DIR}/${FILE_NAME} -DestinationPath ${SAVE_DIR} -Force"
+                    RESULT_VARIABLE   result
+                    OUTPUT_FILE       ${FILE_NAME}.unzip.log  ERROR_FILE      ${FILE_NAME}.unzip.log
+                    WORKING_DIRECTORY ${SAVE_DIR}
+                )
+            else()
+                message(STATUS "unix 'unzip' command")
+                execute_process(
+                    COMMAND unzip -o -d ${SAVE_DIR} ${SAVE_DIR}/${FILE_NAME}
+                    # -o means overwrite
+                    # -o option should be placed immediately after the unzip command
+                    # -d means directory to unzip into
+                    RESULT_VARIABLE result
+                    OUTPUT_FILE       ${FILE_NAME}.unzip.log  ERROR_FILE      ${FILE_NAME}.unzip.log
+                    WORKING_DIRECTORY ${SAVE_DIR}
+                )
+            endif()
+        endif()
+
+        if(result)
+            message(FATAL_ERROR "Failed to extract ${SAVE_DIR}/${FILE_NAME}")
+        endif()
+    endforeach()
+
 else()
 
 
 
-    if( (NOT EXISTS ${REY_FETCH_${TN}_BASE_DIR}/${Git_Name}) )
+    if( (NOT EXISTS ${REY_FETCH_${TN}_BASE_DIR}/${Git_CloneDir_Name}) )
         message(STATUS "Fetching ${Git_Link}"   "inside ${REY_FETCH_${TN}_BASE_DIR}")
         message(STATUS "Download Progress logged inside ${REY_FETCH_${TN}_BASE_DIR}/${TN}_Download_stdout.log ")
 
@@ -189,8 +241,8 @@ else()
                 #COMMAND powershell -Command "Start-Process git -ArgumentList 'clone https://github.com/fmtlib/fmt' 
                 #                   -NoNewWindow -RedirectStandardOutput hoga.txt -RedirectStandardError hoga.txt -Wait"
                 # https://www.baeldung.com/linux/git-clone-redirect-output-file
-                #COMMAND cmd /c "git clone --progress ${Git_Link} > ${TN}_Download.log 2>&1"
-                 COMMAND         git clone --progress ${Git_Link}
+                #COMMAND cmd /c "git clone --progress ${Git_Link} ${Git_CloneDir_Name} > ${TN}_Download.log 2>&1"
+                 COMMAND         git clone --progress ${Git_Link} ${Git_CloneDir_Name}
 
                 #COMMAND        "git clone https://github.com/fmtlib/fmt"
                 # With Quotation marks, it doesn't redirect stdout to OUTPUT_FILE/VARIABLE
@@ -215,7 +267,7 @@ else()
          message(STATUS "Fetching Done")
 
 
-        add_subdirectory(${REY_FETCH_${TN}_BASE_DIR}/${Git_Name})    #Output:- ${Target_Name}
+        add_subdirectory(${REY_FETCH_${TN}_BASE_DIR}/${Git_CloneDir_Name})    #Output:- ${Target_Name}
     else()
         set(GitHub_FILES_isOK TRUE)
         foreach(file_x ${Git_CheckFiles})
@@ -224,17 +276,17 @@ else()
 
                 message(STATUS "[REY_FetchV3_${TN}]")
                 message(STATUS "     REY_FETCH_${TN}_BASE_DIR:- ${REY_FETCH_${TN}_BASE_DIR}")
-                message(STATUS "dA = REY_FETCH_${TN}_BASE_DIR/${Git_Name} ----> EXISTS")
+                message(STATUS "dA = REY_FETCH_${TN}_BASE_DIR/${Git_CloneDir_Name} ----> EXISTS")
                 message(STATUS "             Git_CheckFiles --> ${file_x} ----> DOESN't EXIST")
                 message(STATUS "                                     ")
                 message(STATUS "As Long as 'dA' exists ---> `git clone ${Git_Link}` won't work")
 
                 message(FATAL_ERROR "ERROR INFO Has been Logged above\n
-                                     ERROR:- REY_FETCH_${TN}_BASE_DIR/${Git_Name} exists, but it's not a proper GIT CLONE\n
+                                     ERROR:- REY_FETCH_${TN}_BASE_DIR/${Git_CloneDir_Name} exists, but it's not a proper GIT CLONE\n
                                      see .REY_FetchV3.cmake TOP Documentation part for INPUT-Settings/Variables")
             endif()
         endforeach()
-        add_subdirectory(${REY_FETCH_${TN}_BASE_DIR}/${Git_Name})    #Output:- ${Target_Name}
+        add_subdirectory(${REY_FETCH_${TN}_BASE_DIR}/${Git_CloneDir_Name})    #Output:- ${Target_Name}
     endif()
 
 

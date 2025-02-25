@@ -15,7 +15,7 @@ class amGHOST_SystemWIN32 : public amGHOST_System {
    ~amGHOST_SystemWIN32() {REY_LOG("amGHOST_SystemWIN32::DESTRUCTOR");   _unreg_wc(); }
     
     /** PureVirtual Funcs from amGHOST_System */
-    amGHOST_Window* new_window(void);
+    amGHOST_Window* new_window_interface(void);
 
 
   public:                                                   /** Windows Specific Stuffs here */

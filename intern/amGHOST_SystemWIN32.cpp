@@ -11,7 +11,7 @@
     
 */
 /** PureVirtual Funcs from amGHOST_System  */
-amGHOST_Window* amGHOST_SystemWIN32::new_window(void) {
+amGHOST_Window* amGHOST_SystemWIN32::new_window_interface(void) {
     amGHOST_WindowWIN32 *REY = new amGHOST_WindowWIN32();
     return REY;
 }
@@ -27,6 +27,7 @@ amGHOST_Window* amGHOST_SystemWIN32::new_window(void) {
  */
 void amGHOST_SystemWIN32::_reg_wc() 
 {
+    // Documentation:- https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-wndclassexw
     this->_wc = {
         .cbSize = sizeof(WNDCLASSEXW),
             // [NEW][Ex] Required for Ex version

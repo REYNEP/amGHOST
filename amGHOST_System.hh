@@ -15,7 +15,7 @@ class amGHOST_System {
   public:
     #define  amG_HEART amGHOST_System::heart
     static inline      amGHOST_System* heart = nullptr;         /** C++17 */
-    static         void create_system(void);
+    static         void create_system(void);                    /** Created System ==> Stored inside    .heart   */
     static amGHOST_System* get_system(void);
     /* */         void dispose_system(void);                    /** I want people to    heart->dispose_system() */
     
@@ -28,5 +28,5 @@ class amGHOST_System {
                                                                 /** making it virtual means, even if you  `delete amGHOST_System *system`  it will call e.g. `~amGHOST_SystemWIN32()` */
 
   public:
-    virtual amGHOST_Window* new_window(void) = 0;               /** However, To Initialize/Create \see amGHOST_Window.hh */
+    virtual amGHOST_Window* new_window_interface(void) = 0;               /** However, To Initialize/Create \see amGHOST_Window.hh */
 };
