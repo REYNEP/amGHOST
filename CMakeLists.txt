@@ -33,6 +33,7 @@ project("amGHOST_PROJECT" VERSION 0.1)
     set(INC
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/intern/
+        ${CMAKE_CURRENT_SOURCE_DIR}/amVK/
     )
 # --------------------
 
@@ -44,6 +45,10 @@ set_target_properties      (amGHOST  PROPERTIES  OUTPUT_NAME "lib-amGHOST"  PREF
 # --REY_LoggerNUtils--
     include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeFiles/REY_FetchV4.REY_LoggerNUtils.cmake)   # SubModule
     target_link_libraries  (amGHOST PUBLIC REY_LoggerNUtils)
+
+# ------vulkan--------
+    include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeFiles/REY_FetchV4.vulkan.cmake)   # SubModule
+    target_link_libraries  (amGHOST PUBLIC REY_FetchV4::vulkan)
 
 # ------install-------
     install(TARGETS amGHOST

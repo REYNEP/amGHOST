@@ -90,7 +90,7 @@ if (  (DEFINED REY_SCOUT_${TN}_PATHS)   AND   (NOT "${REY_SCOUT_${TN}_PATHS}" ST
                 ${tmp_scout_${TN}_lib}
                 CACHE STRING "" FORCE
             )
-            message(STATUS "[REY_FetchV3_${TN}]")
+            message(STATUS "[REY_FetchV4_SCOUT]")
             message(STATUS "    Found 1 File:- ${tmp_scout_${TN}_lib}")
         endif()
     # ================================ FINDING ${Binary_Hints} =================================
@@ -103,6 +103,10 @@ if (  (DEFINED REY_SCOUT_${TN}_PATHS)   AND   (NOT "${REY_SCOUT_${TN}_PATHS}" ST
             PATHS
                 ${REY_SCOUT_${TN}_PATHS}
             PATH_SUFFIXES
+                include/
+                includes/
+                include/include/
+                extern-includes/
                 ${TN}
                 ${TN}/include
                 ${TN}/include/${TN}
@@ -122,14 +126,14 @@ if (  (DEFINED REY_SCOUT_${TN}_PATHS)   AND   (NOT "${REY_SCOUT_${TN}_PATHS}" ST
                 ${tmp_scout_${TN}_inc}
                 CACHE STRING "" FORCE
             )
-            message(STATUS "[REY_FetchV3_${TN}]")
+            message(STATUS "[REY_FetchV4_SCOUT]")
             message(STATUS "    Found include dir: ${tmp_scout_${TN}_inc}")
         endif()
     # ================================ FINDING ${Header_Name} =================================
 
 
     # =============================== if BOTH ARE FOUND =================================
-        if (REY_SCOUT_${TN}_LIB AND REY_SCOUT_${TN}_INCLUDE)
+        if (DEFINED REY_FOUND_${TN}_LIBRARY AND DEFINED REY_FOUND_${TN}_INCLUDE)
             #         see Target_Name
             add_library(
                 ${Target_Name} STATIC 
@@ -138,13 +142,13 @@ if (  (DEFINED REY_SCOUT_${TN}_PATHS)   AND   (NOT "${REY_SCOUT_${TN}_PATHS}" ST
             set_target_properties(
                 ${Target_Name} 
                 PROPERTIES
-                    IMPORTED_LOCATION ${REY_SCOUT_${TN}_LIB}
-                    INTERFACE_INCLUDE_DIRECTORIES ${REY_SCOUT_${TN}_INCLUDE}
+                    IMPORTED_LOCATION ${REY_FOUND_${TN}_LIBRARY}
+                    INTERFACE_INCLUDE_DIRECTORIES ${REY_FOUND_${TN}_INCLUDE}
             )
-            message(STATUS "[REY_FetchV3_${TN}]")
-            message(STATUS "    Created imported target ${Target_Name}")
-            message(STATUS "    [cached] REY_FOUND_${TN}_LIB:-    ${REY_FOUND_${TN}_LIB}")
-            message(STATUS "    [cached] REY_FOUND_${TN}_INCLUDE: ${REY_FOUND_${TN}_INCLUDE}")
+            message(STATUS "[REY_FetchV4_SCOUT]")
+            message(STATUS " REY_FetchV4_X.${TN}.cmake::Target_Name:- ${Target_Name}")
+            message(STATUS "       [cached] REY_FOUND_${TN}_LIBRARY:- ${REY_FOUND_${TN}_LIBRARY}")
+            message(STATUS "       [cached] REY_FOUND_${TN}_INCLUDE:- ${REY_FOUND_${TN}_INCLUDE}")
         else ()
             message(STATUS "REY_SCOUT_${TN}_PATHS:- ${REY_SCOUT_${TN}_PATHS}")
             message(STATUS "tmp_scout_${TN}_lib:---   ${tmp_scout_${TN}_lib}")

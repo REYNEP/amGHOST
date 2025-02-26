@@ -1,0 +1,120 @@
+
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+.markdown-preview.markdown-preview {
+    // modify your style here
+    // eg: background-color: blue;
+    font-size: 12px;
+      /**
+      h1 {
+          page-break-before: always;
+      }
+      */
+      pre {
+          page-break-inside: auto;
+          /* REYNEP MOD */
+      }
+  
+      pre > code {
+          font-size: 12px;
+      }
+  
+      img {
+          -prince-image-resolution: 150dpi;        /* set an explicit DPI */
+      }
+      img.makeSmall_NoFlex {
+          -prince-image-resolution: 160dpi;        /* set an explicit DPI */
+      }
+      img.makeSmall {
+          -prince-image-resolution: 160dpi;        /* set an explicit DPI */
+          float: left; 
+          margin-right: 15px;
+      }
+      img.makeSmaller {
+          -prince-image-resolution: 180dpi;        /* set an explicit DPI */
+          float: left; 
+          margin-right: 20px;
+      }
+  
+      /** However, background-clip is not supported by princexml */
+      .REY_DocTitle {
+          text-align: center;
+          font-size: 30px;
+          background: linear-gradient(145deg, #ff7f00, #8e44ad); /* Orange to Purple Gradient */
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          letter-spacing: 2px;
+          margin: 0;
+          font-weight: bold;
+      }
+  
+          // custom prince pdf export style
+          &.prince {
+              html body {
+                  color: black !important;
+              }
+              
+              pre {
+                  max-width: 100%; /* Prevent overflow */
+              }
+          
+              pre > code {
+                  font-size: 12px;
+                  white-space: pre-wrap; /* Enable word wrap */
+                  word-wrap: break-word; /* Break words that exceed the width */
+                  word-break: normal;
+                  overflow-wrap: break-word; /* Prevent overflow */
+              }
+          }
+  }
+  
+  /**
+  MarkDown File Top part:-
+  ---
+  id: "amVK_Docs"
+  class: "DocumentClass1"
+  ---
+  */
+  #amVK_Docs {
+      &.prince {
+          ul {
+              /** DO SHITS.... **/
+          }
+      }
+  }
+  .DocumentClass1 {
+      &.prince {
+          ul {
+              /** DO SHITS.... **/
+          }
+      }
+  }
+  /**
+  https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css?id=local-style
+  */
+  
+  /* Use A4 paper */
+  @page { 
+      size: A4;
+      @bottom-center {
+          content: counter(page);
+      }
+      prince-image-resolution: 300dpi;
+  }
+  
+  /** I think this part means like.... Specific to only when CREATING THE PDF */
+  @media print {
+      html body {
+          color: black !important;
+      }
+  }
+  
+  // custom prince pdf export style
+  &.prince {
+      html body {
+          color: black !important;
+      }
+  }
+  

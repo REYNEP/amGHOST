@@ -1,7 +1,15 @@
+---
+export_on_save:
+  prince: true
+---
+
 ## Structure
 ```ruby
     |- .forge = for now it is quite empty. But you can check REY_LoggerNUtils/.forge to understand what this really is for
     |- .install = `cmake install`
+    |-
+    |- amVK = smol lil library for vulkan 😄
+    |-
     |- CMakeFiles
         |- REY_FetchV4 from REY_LoggerNUtils
     |- intern
@@ -40,7 +48,6 @@ int main(int argumentCount, char* argumentVector[]) {
     W->create(L"Whatever", 0, 0, 500, 600);
 
     std::cin.get();     // wait for terminal input
-
     W->destroy();
 
     std::cout << "\n";
@@ -54,11 +61,20 @@ int main(int argumentCount, char* argumentVector[]) {
 
 
 
-
+## Usage / Building
+- ensure you got the libraries / modules listed below
 
 ## Libraries / Modules / External Stuffs [.forge]
 1. `REY_LoggerNUtils`:- [GIT-SUBMODULE]
     - even tho it's a git-submodule. we fetch/grab/do-shits using CMAKE Scripts like `.forge/CMakeFiles/REY_FetchV4_REY_LoggerNUtils.cmake` instead of `git submodule --update --init`
+
+2. `vulkan`:- [REY_FetchV4_SCOUT]
+   1. download `vulkan-sdk` & have the `VULKAN_SDK` or `VK_SDK_PATH` environment variables
+
+3. `cmake`:- download & install cmake
+
+## Todo
+1. auto grab it if vulkan-sdk is not found.... using `REY_FetchV4::Zip`
 
 ## Common Principles I Followed
 1. Logs are better than RETURN VALUES. 
