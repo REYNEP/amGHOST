@@ -1,5 +1,7 @@
 #pragma once
-#include <stdint.h>  // uint32_t [TODO:- Make our CUSTOM Version of this, cz this thing is kinda heavy]
+#include "REY_Types.hh"
+// Must   not include    "amGHOST_System.hh" -> otherwise ♾️-loop of includes😶‍🌫️
+// But we can include in `amGHOST_Window.cpp`
 
 class amGHOST_Window {
   public:

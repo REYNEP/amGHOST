@@ -1,10 +1,16 @@
+#pragma once
 #include <vulkan/vulkan.h>
+#include "REY_Utils.hh"
 #include "amVK_log.hh"
+#include "amVK_Props.hh"
 
+/**
+ * SINGLETON Class Wrapper around VkInstance
+ */
 class amVK_Instance {
   public:
         // [1 Per VkInstance]:- All of these options should basically be set by the one who is gonna use amVK and create an APP/Software 🤷‍♀️
-    VkApplicationInfo amVK_AppInfo = {
+    static inline VkApplicationInfo amVK_AppInfo = {
         .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
         .pNext = nullptr,
         .pApplicationName = "amVK_ApplicationInfo.pApplicationName not given",
@@ -17,7 +23,7 @@ class amVK_Instance {
             // version of the Vulkan API against which the application expects to run on
     };
 
-    VkInstanceCreateInfo amVK_InstanceCI = {
+    static inline VkInstanceCreateInfo amVK_InstanceCI = {
         .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
             // [implicit valid usage]:- must     be <above_value>
         .pNext = nullptr,
@@ -31,11 +37,23 @@ class amVK_Instance {
         .ppEnabledExtensionNames = nullptr
     };
 
-
   public:
-    VkInstance m_instance = nullptr;
-    void create(void) {
-        VkResult return_code = vkCreateInstance(&amVK_InstanceCI, nullptr, &this->m_instance);
-        REY_return_code_log("vkCreateInstance");     // above variable "return_code" can't be named smth else
+    static inline         VkInstance  s_vk   = nullptr;
+    static inline      amVK_Instance *s_amVK = nullptr;
+    #define amVK_HEART amVK_Instance::s_amVK
+    #define amVK_PROPS amVK_Props
+    static void       CreateInstance(void)
+    {
+        if (s_vk) {
+            REY_LOG_EX("[amVK_Instance::CreateInstance]:- A amVK System Already Exists, Please Destroy it before you can create another System.");
+            return;
+        }
+
+        VkResult return_code = vkCreateInstance(&amVK_InstanceCI, nullptr, &s_vk);
+        amVK_return_code_log("vkCreateInstance()");  // above variable "return_code" can't be named smth else
+
+        amVK_HEART = (amVK_Instance *) new amVK_Instance();
+            // If Everything is STATIC, won't need this
+        amVK_Props::s_vk = amVK_Instance::s_vk;
     }
 };

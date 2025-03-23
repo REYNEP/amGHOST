@@ -15,4 +15,4 @@
 
 #define amG_PASSED(x) REY_LOG("PASSED:- " << x);
 
-#define REY_LOG_trace(x) REY_LOG(x)
+#define REY_LOG_status(x) REY_LOG(x)

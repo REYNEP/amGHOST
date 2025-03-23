@@ -11,7 +11,7 @@
 
 void amGHOST_System::create_system(void) {
     if (heart) {
-        REY_LOG_EX("[amGHOST_System::create_system]:- A GHOST System Already Exists, Please Destroy it before you can create Another System.");
+        REY_LOG_EX("[amGHOST_System::create_system]:- A amGHOST_System Already Exists, Please destroy it before you can create another System.");
         return;
     }
 
@@ -26,7 +26,7 @@ void amGHOST_System::create_system(void) {
 
 amGHOST_System* amGHOST_System::get_system(void) {
     if (!heart) {
-        REY_LOG_EX("[amGHOST_System::create_system]:- NO GHOST System Exists, Please Create One Before you can Get one, Returning NULL back");
+        REY_LOG_EX("[amGHOST_System::create_system]:- NO amGHOST_System Exists, Please create one before you can get one, Returning NULL back");
         return nullptr;
     }
     return heart;

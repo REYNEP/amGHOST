@@ -55,10 +55,10 @@ class amGHOST_WindowWIN32 : public amGHOST_Window {
               b) Called from wrong thread
               c) Window already destroyed */
             amG_FAILED("::DestroyWindow()");
-            REY_LOG_trace("Could Not Destroy: amGHOST_WindowWIN32 --> " << "[" << (uint64_t)this << "]")
+            REY_LOG_status("Could Not Destroy: amGHOST_WindowWIN32 --> " << "[" << (uint64_t)this << "]")
         }
             amG_PASSED("::DestroyWindow()");
-            REY_LOG_trace("Destroyed:- amGHOST_WindowWIN32 --> " << "[" << (uint64_t)this << "]");
+            REY_LOG_status("Destroyed:- amGHOST_WindowWIN32 --> " << "[" << (uint64_t)this << "]");
 
         this->m_hwnd = nullptr;
     }

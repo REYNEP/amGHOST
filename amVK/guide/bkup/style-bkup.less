@@ -1,0 +1,166 @@
+
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+@font-face {
+    font-family: "Bahnschrift Light Condensed REY";
+    src: local('Bahnschrift Light Condensed'), url("https://github.com/flying-whales/flying-whales/raw/20e98b4dd0388a3fafd09acb8b07e5bd3dc701b9/Assets/Fonts/bahnschrift.ttf") format(ttf);
+}
+
+@font-face {
+    font-family: "AudioLink Mono Bold REY";
+    src: url("https://audiolink.dev/gallery/AudioLinkMono-Bold.ttf");
+}
+
+@font-face {
+    font-family: "Emoji REY";
+    src: url("https://github.com/KingDragoness/Shopkeepers/raw/952118221585de23b747560b89ee17061e34c0f4/Project%20Shopkeepers%20root/Assets/Resources/Fonts/seguiemj.ttf");
+}
+
+
+
+.markdown-preview.markdown-preview {
+  // modify your style here
+  // eg: background-color: blue;
+    
+    /**
+    h1 {
+        page-break-before: always;
+    }
+    */
+    font-size: 14px;
+    font-family: 'Bahnschrift Light Condensed REY', 'Emoji REY', 'Bahnschrift Light', sans-serif;
+
+    code {
+        font-family: 'AudioLink Mono Bold REY', 'Lotion', monospace;
+        font-size: 90%;
+    }
+
+    pre {
+        page-break-inside: auto;
+        /* REYNEP MOD */
+    }
+
+    h4 {
+        margin-bottom: 0.5em;
+    } 
+    h5 {
+        margin-top: 0.5em;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    img {
+        -prince-image-resolution: 150dpi;        /* set an explicit DPI */
+    }
+    img.makeSmall_NoFlex {
+        -prince-image-resolution: 160dpi;        /* set an explicit DPI */
+    }
+    img.makeSmall {
+        -prince-image-resolution: 160dpi;        /* set an explicit DPI */
+        float: left; 
+        margin-right: 15px;
+    }
+    img.makeSmaller {
+        -prince-image-resolution: 180dpi;        /* set an explicit DPI */
+        float: left; 
+        margin-right: 20px;
+    }
+
+    /** However, background-clip is not supported by princexml */
+    .REY_DocTitle {
+        text-align: center;
+        font-size: 30px;
+        background: linear-gradient(145deg, #ff7f00, #8e44ad); /* Orange to Purple Gradient */
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 2px;
+        margin: 0;
+        font-weight: bold;
+    }
+
+        // custom prince pdf export style
+        &.prince {
+            html body {
+                color: black !important;
+            }
+
+            font-size: 12px;
+            pre > code {
+                font-size: 12px;
+            }
+            
+            pre {
+                max-width: 100%; /* Prevent overflow */
+            }
+
+            img {
+                max-width: 116%;
+                width:- 116%;
+                margin-left: -8%;
+                display: flex;
+            }
+        
+            pre > code {
+                font-size: 12px;
+                white-space: pre-wrap; /* Enable word wrap */
+                word-wrap: break-word; /* Break words that exceed the width */
+                word-break: normal;
+                overflow-wrap: break-word; /* Prevent overflow */
+            }
+        }
+}
+
+/**
+MarkDown File Top part:-
+---
+id: "amVK_Docs"
+class: "DocumentClass1"
+---
+*/
+#amVK_Docs {
+    &.prince {
+        ul, ol {
+            // margin-left: 0.1em;
+        }
+    }
+}
+.DocumentClass1 {
+    &.prince {
+        ul, ol {
+            // margin-left: 0.1em;
+        }
+    }
+}
+/**
+https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css?id=local-style
+*/
+
+/* Use A4 paper */
+@page { 
+    size: A4;
+    @bottom-center {
+        content: counter(page);
+    }
+    prince-image-resolution: 300dpi;
+
+    // margin-top: 1cm;
+    // margin-bottom: 1cm;
+    // margin-inside: 1cm;
+    // margin-outside: 1cm;
+}
+
+/** I think this part means like.... Specific to only when CREATING THE PDF */
+@media print {
+    html body {
+        color: black !important;
+    }
+}
+
+// custom prince pdf export style
+&.prince {
+    html body {
+        color: black !important;
+    }
+}

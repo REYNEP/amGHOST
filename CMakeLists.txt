@@ -28,6 +28,8 @@ project("amGHOST_PROJECT" VERSION 0.1)
     set(SRC
         "amGHOST_System.cpp"
         "intern/amGHOST_SystemWIN32.cpp"
+        "amVK/amVK.cpp"
+        "amVK/amVK_Device.cpp"
     )
 
     set(INC
@@ -43,11 +45,11 @@ target_include_directories (amGHOST PUBLIC ${INC})
 set_target_properties      (amGHOST  PROPERTIES  OUTPUT_NAME "lib-amGHOST"  PREFIX "")
 
 # --REY_LoggerNUtils--
-    include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeFiles/REY_FetchV4.REY_LoggerNUtils.cmake)   # SubModule
+    include(${CMAKE_CURRENT_SOURCE_DIR}/.CMakeFiles/REY_FetchV4.REY_LoggerNUtils.cmake)     # SubModule
     target_link_libraries  (amGHOST PUBLIC REY_LoggerNUtils)
 
 # ------vulkan--------
-    include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeFiles/REY_FetchV4.vulkan.cmake)   # SubModule
+    include(${CMAKE_CURRENT_SOURCE_DIR}/.CMakeFiles/REY_FetchV4.vulkan.cmake)               # SubModule
     target_link_libraries  (amGHOST PUBLIC REY_FetchV4::vulkan)
 
 # ------install-------
