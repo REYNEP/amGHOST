@@ -1,0 +1,37 @@
+// custom prince pdf export style
+.markdown-preview.markdown-preview {
+    strong {
+        font-family: "AudioLink Mono Bold", 'Lotion', 'Emoji REY', monospace;
+        font-size: 90%;
+
+        background-color: #303337;
+
+        border-radius: 5px;
+        padding-top: 0.4em;
+        padding-bottom: 0.2em;
+        padding-left: 0.4em;
+        padding-right: 0.4em;
+        line-height: 1.2;
+    }
+
+    &.prince {
+        strong {
+            font-family: "AudioLink Mono";
+            background-color: #f0f0f0;
+        }
+        
+        ul {
+            margin-left: 0.75em;
+            padding-left: 2em;
+        }
+        ol {
+            margin-left: 0.75em;
+            padding-left: 2em;
+        }
+    }
+
+    @page {
+        margin-top: 1em;
+        vertical-align: middle;
+    }
+}

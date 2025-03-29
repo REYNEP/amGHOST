@@ -6,6 +6,8 @@
 class amGHOST_WindowWIN32 : public amGHOST_Window {
   public:
     HWND m_hwnd = NULL;
+    using amGHOST_Window::m_amGHOST_VkSurface;
+        // We, still inside this header, as of this line, using a FORWARD-DECLARATION of `class amGHOST_VkSurfaceKHR`
 
   public:
     void create(const wchar_t* title, int posX, int posY, int sizeX, int sizeY, bool instantShow = true) {
@@ -45,23 +47,11 @@ class amGHOST_WindowWIN32 : public amGHOST_Window {
     ~amGHOST_WindowWIN32() {};
      amGHOST_WindowWIN32() {};
 
-  public:
-        // Sends WM_DESTROY Message and Destroyes the Window
-    void destroy(void)   
-    {
-        if (!::DestroyWindow(this->m_hwnd)) {
-            /** Fails if:
-              a) Window not valid
-              b) Called from wrong thread
-              c) Window already destroyed */
-            amG_FAILED("::DestroyWindow()");
-            REY_LOG_status("Could Not Destroy: amGHOST_WindowWIN32 --> " << "[" << (uint64_t)this << "]")
-        }
-            amG_PASSED("::DestroyWindow()");
-            REY_LOG_status("Destroyed:- amGHOST_WindowWIN32 --> " << "[" << (uint64_t)this << "]");
+    /** PureVirtual Funcs from amGHOST_System */
+    amGHOST_VkSurfaceKHR* init_VkSurface_interface(void);
 
-        this->m_hwnd = nullptr;
-    }
+  public:
+    void destroy(void);
     void show_window(void) {
         ::ShowWindow(this->m_hwnd, SW_SHOW);
         ::SetFocus(this->m_hwnd);

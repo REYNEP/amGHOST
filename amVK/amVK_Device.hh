@@ -51,7 +51,53 @@ class amVK_Device {
         .ppEnabledExtensionNames = nullptr,
         .pEnabledFeatures = nullptr
     };
-    /* `amVK_Device::QCI.Array` shouldn't be edited after calling this */
+
+
+
+
+
+
+  public:
+    REY_ArrayDYN<char*>   amVK_1D_GPU_EXTs_Enabled;
+    void Add_GPU_EXT_ToEnable(const char* extName);
+    void Log_GPU_EXTs_Enabled(VkResult ret);
+
+  public:
+    /** Wait, I wanted to write some shits here.... [read the amVK_Guide] */
+    amVK_Device(VkPhysicalDevice PD);
+    amVK_Device(amVK_Props::PD_Index index) {
+        m_PD_index = index;
+        m_physicalDevice = amVK_Props::amVK_1D_GPUs[index];
+            // Other Constructor above, does the same shit, but with ERROR_CHECKING
+    }
+   ~amVK_Device() {}
+
+  public:
+    VkPhysicalDevice     m_physicalDevice = nullptr;
+    amVK_Props::PD_Index m_PD_index = amVK_PhysicalDevice_NOT_FOUND;
+    VkDevice m_device = nullptr;
+
+  public:
+    /**
+     * @param p1: [VkPhysicalDevice]:- see `amVK_Props::GetARandom_PhysicalDevice()`
+     */
+    void CreateDevice(void) {
+        VkResult return_code = vkCreateDevice(m_physicalDevice, &CI, nullptr, &this->m_device);
+        amVK_return_code_log( "vkCreateDevice()" );     // above variable "return_code" can't be named smth else
+
+        Log_GPU_EXTs_Enabled(return_code);
+    }
+    void DestroyDevice(void) {
+        vkDestroyDevice(this->m_device, nullptr);
+    }
+
+
+
+
+
+
+  public:
+    /* Must Call This:- after editing `amVK_Device::QCI.Array` */
     void Set_QCI_Array_into_DeviceCI(void) {
         this->CI.queueCreateInfoCount = QCI.Array.neXt;
         this->CI.pQueueCreateInfos    = QCI.Array.data;
@@ -68,32 +114,9 @@ class amVK_Device {
              amVK_Props::GetPhysicalDeviceQueueFamilyProperties();
         }
 
-        amVK_Props::PD_Index index = amVK_Props::GetARandomPhysicalDevice_amVK_Index();
-        this->QCI.Default.queueFamilyIndex = amVK_Props::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, index);
-    }
+        amVK_Props::PD_Index GPU_k = this->m_PD_index;
+        uint32_t        qFAM_Index = amVK_Props::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, GPU_k);
 
-  public:
-    /** Wait, I wanted to write some shits here.... [read the amVK_Guide] */
-    amVK_Device(VkPhysicalDevice PD);
-    amVK_Device(amVK_Props::PD_Index index) {
-        m_PD_index = index;
-        m_physicalDevice = amVK_Props::s_HardwareGPU_List[index];
-            // Other Constructor above, does the same shit, but with ERROR_CHECKING
-    }
-   ~amVK_Device() {}
-
-  public:
-    VkPhysicalDevice m_physicalDevice = nullptr;
-    amVK_Props::PD_Index m_PD_index = amVK_PhysicalDevice_NOT_FOUND;
-    VkDevice m_device = nullptr;
-    /**
-     * @param p1: [VkPhysicalDevice]:- see `amVK_Props::GetARandomPhysicalDevice()`
-     */
-    void CreateDevice(void) {
-        VkResult return_code = vkCreateDevice(m_physicalDevice, &CI, nullptr, &this->m_device);
-        amVK_return_code_log( "vkCreateDevice()" );     // above variable "return_code" can't be named smth else
-    }
-    void DestroyDevice(void) {
-        vkDestroyDevice(this->m_device, nullptr);
+        this->Set_QFAM_Index(qFAM_Index);
     }
 };

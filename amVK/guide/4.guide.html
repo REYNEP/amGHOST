@@ -26,6 +26,7 @@
   src: url("https://github.com/KingDragoness/Shopkeepers/raw/952118221585de23b747560b89ee17061e34c0f4/Project%20Shopkeepers%20root/Assets/Resources/Fonts/seguiemj.ttf");
 }
 .markdown-preview.markdown-preview {
+  padding: 2em calc(40% - 457px + 2em) !important;
   /**
     h1 {
         page-break-before: always;
@@ -41,8 +42,13 @@
   font-family: 'AudioLink Mono Bold REY', 'Lotion', 'Emoji REY', monospace;
   font-size: 90%;
 }
+.markdown-preview.markdown-preview pre > code {
+  font-size: 17px;
+}
 .markdown-preview.markdown-preview ul > li ol > li,
-.markdown-preview.markdown-preview ul > li ul > li {
+.markdown-preview.markdown-preview ol > li ol > li,
+.markdown-preview.markdown-preview ul > li ul > li,
+.markdown-preview.markdown-preview ol > li ul > li {
   font-family: 'Fira Sans Condensed', 'Emoji REY', monospace;
   font-weight: 300;
   font-size: 90%;
@@ -92,19 +98,19 @@
   font-weight: bold;
 }
 .markdown-preview.markdown-preview.prince {
-  letter-spacing: -0.75px;
-  font-family: "Iosevka Curly Light", 'Emoji REY', monospace;
   font-size: 12.5px;
+  font-weight: 100;
 }
 .markdown-preview.markdown-preview.prince html body {
   color: black !important;
 }
-.markdown-preview.markdown-preview.prince pre > code {
-  font-size: 12px;
-}
 .markdown-preview.markdown-preview.prince ul > li ol > li,
-.markdown-preview.markdown-preview.prince ul > li ul > li {
-  font-weight: 100 !important;
+.markdown-preview.markdown-preview.prince ol > li ol > li,
+.markdown-preview.markdown-preview.prince ul > li ul > li,
+.markdown-preview.markdown-preview.prince ol > li ul > li {
+  font-family: 'Fira Sans Condensed', 'Emoji REY', monospace;
+  font-weight: 100;
+  font-size: 90%;
 }
 .markdown-preview.markdown-preview.prince pre {
   max-width: 100%;
@@ -117,7 +123,7 @@
   display: flex;
 }
 .markdown-preview.markdown-preview.prince pre > code {
-  font-size: 12px;
+  font-size: 10.75px;
   white-space: pre-wrap;
   /* Enable word wrap */
   word-wrap: break-word;
@@ -177,7 +183,7 @@ https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css?id=local-s
   vertical-align: middle;
 }
 </style></p>
-<div align="center">
+<p></p><div align="center">
 <p><img src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCiAgPGRlZnM+DQogICAgPGxpbmVhckdyYWRpZW50IGlkPSJvcmFuZ2VQdXJwbGUiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPg0KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I2ZmN2YwMDtzdG9wLW9wYWNpdHk6MSIgLz4NCiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzhlNDRhZDtzdG9wLW9wYWNpdHk6MSIgLz4NCiAgICA8L2xpbmVhckdyYWRpZW50Pg0KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JleVdoaXRlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4NCiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNhYWFhYWE7c3RvcC1vcGFjaXR5OjEiIC8+DQogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM0NDQ0NDQ7c3RvcC1vcGFjaXR5OjEiIC8+DQogICAgPC9saW5lYXJHcmFkaWVudD4NCiAgPC9kZWZzPg0KDQogIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMzYiIGZpbGw9InVybCgjb3JhbmdlUHVycGxlKSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPg0KICAgIFJFWU5FUCdzIFZ1bGthbiAiQWR2ZW50dXJlIEd1aWRlIg0KICA8L3RleHQ+DQogIDx0ZXh0IHg9IjUwJSIgeT0iODAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9InVybCgjZ3JleVdoaXRlKSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPg0KICAgIFdoZXJlLCB5b3UgYWR2ZW50dXJlIG9uIHlvdXIgb3duIPCfmIksIEkgb25seSAnZ3VpZGUnLCBzaG93aW5nIHlvdSB0aGUgcm9hZG1hcA0KICA8L3RleHQ+DQo8L3N2Zz4=" alt="svg1"></p>
 </div>
 <h2 id="chapter-0-prerequisites">Chapter 0: Prerequisites </h2>
@@ -229,7 +235,7 @@ https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css?id=local-s
 <li>restart vscode after installing</li>
 </ul>
 </li>
-<li>if you don't have <code>vscode</code> &amp; <code>C++ Compiler</code> --&gt; see <a href="./4.guide.vscode.md">4.guide.vscode.md</a></li>
+<li>if you don't have <code>vscode</code> &amp; <code>C++ Compiler</code> --&gt; see <a href="./4.guide.CH0.vscode.md">4.guide.CH0.vscode.md</a></li>
 <li><code>git clone -b win32-intro https://github.com/REYNEP/amGHOST</code>
 <ul>
 <li>Open it with VSCode</li>
@@ -248,6 +254,7 @@ https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css?id=local-s
 </li>
 </ol>
 <div style="page-break-before: always;"></div>
+<br>
 <br>
 <br>
 <br>
@@ -272,7 +279,7 @@ https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css?id=local-s
 </ol>
 </li>
 <li>
-<h5>REY Docs</h5>
+<h5>REY_DOCs</h5>
 <ul>
 <li><code>VkApplicationInfo</code> -&gt; holds <code>name</code> and <code>version</code>, also the <code>lowest Vulkan API version</code> Your APP <strong><em>"can run"</em></strong> on. [*clarification needed:- lowest or highest]</li>
 <li>Also, we can set the <code>name</code> and <code>version</code> of the <code>engine</code> (if any) used to create Your APP. This can help <code>vulkan driver implementations</code> to perform ad-hoc optimizations.
@@ -298,7 +305,7 @@ https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css?id=local-s
 </ul>
 </li>
 <li>
-<h5>REY Docs</h5>
+<h5>REY_DOCs</h5>
 <ul>
 <li>Nothing that I need to add</li>
 <li>Tho if this section gets big, I will create a separate <code>.md</code> file for that thingy</li>
@@ -340,6 +347,7 @@ https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css?id=local-s
 <br>
 <br>
 <div style="page-break-after: always;"></div>
+<br>
 <div align="center">
 <p><img src="./images/Vulkanised-2023-Tutorial-PART1_Page12_REY.png" alt="img1"><br>
 Take a look into this awesome <a href="./Vulkanised-2023-Tutorial/Vulkanised-2023-Tutorial-PART1.pdf">slide</a> from slide-26 onwards, to understand what each of steps <em>"feel like"/mean/"how to imagine them"</em>.<br>
@@ -350,7 +358,7 @@ Take a look into this awesome <a href="./Vulkanised-2023-Tutorial/Vulkanised-202
 <ul>
 <li><a href="https://vkdoc.net/man/vkEnumeratePhysicalDevices">https://vkdoc.net/man/vkEnumeratePhysicalDevices</a></li>
 <li>
-<h5>REY Docs</h5>
+<h5>REY_DOCs</h5>
 <pre data-role="codeBlock" data-info="cpp" class="language-cpp cpp"><code><span class="token keyword keyword-uint32_t">uint32_t</span> deviceCount <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>     
     <span class="token comment">// [implicit valid usage]:- must be 0 [if 3rd-param = nullptr]</span>
     <span class="token function">vkEnumeratePhysicalDevices</span><span class="token punctuation">(</span>m_instance<span class="token punctuation">,</span> <span class="token operator">&amp;</span>deviceCount<span class="token punctuation">,</span> <span class="token keyword keyword-nullptr">nullptr</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -361,12 +369,30 @@ std<span class="token double-colon punctuation">::</span>vector<span class="toke
     <span class="token function">vkEnumeratePhysicalDevices</span><span class="token punctuation">(</span>m_instance<span class="token punctuation">,</span> <span class="token operator">&amp;</span>deviceCount<span class="token punctuation">,</span> HardwareGPU_List<span class="token punctuation">.</span><span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token comment">// note: it does return     VkResult return_code</span>
 </code></pre></li>
+<li>Visualization / [See it] / JSON Printing:- <a href="./examples/4.guide.chapter2.1.json.hh">4.guide.chapter2.1.json.hh</a></li>
+<li>So far, The result:- <a href="./examples/4.guide.chapter2.1.midway.hh">4.guide.chapter2.1.midway.hh</a></li>
 </ul>
 <h4 id="2-vkcreatedevice">2. <code>vkCreateDevice()</code> </h4>
 <ul>
 <li><a href="https://vkdoc.net/man/vkCreateDevice">https://vkdoc.net/man/vkCreateDevice</a>
 <ul>
-<li><code>param pAllocator</code> -&gt; <strong>"Chapter ZZZ"</strong></li>
+<li><code>param pAllocator</code> -&gt; <strong>"ChapterZZZ"</strong></li>
+</ul>
+</li>
+<li>
+<h5>REY_DOCs</h5>
+<ul>
+<li>we are not gonna call the <code>vkCreateDevice()</code> yeeeet....
+<ul>
+<li>but, yes, we've already made the class container around it 😅</li>
+<li>we'll call this functiion in <code>Chapter2.9.</code></li>
+</ul>
+</li>
+<li>but we did need to know first about <code>vkCreateDevice()</code>
+<ul>
+<li>because, the idea is, our sole task is to <em><strong>fill it up step by step</strong></em></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -375,7 +401,7 @@ std<span class="token double-colon punctuation">::</span>vector<span class="toke
 <li><a href="https://vkdoc.net/man/VkDeviceCreateInfo">https://vkdoc.net/man/VkDeviceCreateInfo</a>
 <ul>
 <li><code>.LayerInfo</code> -&gt; Deprecated</li>
-<li><code>.ExtensionInfo</code> -&gt; <strong>"Chapter ZZZ"</strong></li>
+<li><code>.ExtensionInfo</code> -&gt; <strong>"ChapterZZZ"</strong></li>
 <li><code>.pQueueCreateInfos</code> -&gt; next part
 <ul>
 <li>So far, The result:- <a href="./examples/4.guide.chapter2.3.midway.hh">4.guide.chapter2.3.midway.hh</a></li>
@@ -384,7 +410,7 @@ std<span class="token double-colon punctuation">::</span>vector<span class="toke
 </ul>
 </li>
 <li>
-<h5>REY Docs</h5>
+<h5>REY_DOCs</h5>
 <ul>
 <li><code>.pQueueCreateInfos</code> -&gt; yes, you 'can' mass multiple 😉</li>
 <li>Sometimes there will be <code>.zzzCreateInfoCount</code> &amp; <code>.pZZZCreateInfos</code>
@@ -400,16 +426,18 @@ std<span class="token double-colon punctuation">::</span>vector<span class="toke
 <ul>
 <li><a href="https://vkdoc.net/man/VkDeviceQueueCreateInfo">https://vkdoc.net/man/VkDeviceQueueCreateInfo</a>
 <ul>
-<li><code>.queueFamilyIndex</code> -&gt; next part
+<li><code>.queueFamilyIndex</code> -&gt; next 3 subchapters
 <ul>
 <li>So far, The result:- <a href="./examples/4.guide.chapter2.4.midway.hh">4.guide.chapter2.4.midway.hh</a></li>
 </ul>
 </li>
-<li><code>.pQueuePriorities</code> -&gt; yes, this can be multiple "Priorities" 🥴 [idk yet why tho]</li>
 </ul>
 </li>
 <li>
-<h5>REY Docs:- Support for multiple QCI</h5>
+<h5>REY_DOCs:- Support for multiple QCI</h5>
+<ul>
+<li><code>.pQueuePriorities</code> -&gt; yes, this can be multiple "Priorities" 🥴 [idk yet why tho]</li>
+</ul>
 <pre data-role="codeBlock" data-info="cpp" class="language-cpp cpp"><code><span class="token comment">/* ============ REY_LoggerNUtils::REY_Utils.hh ============ */</span>
 REY_ArrayDYN<span class="token operator">&lt;</span>VkDeviceQueueCreateInfo<span class="token operator">&gt;</span> Array <span class="token operator">=</span> <span class="token generic-function"><span class="token function">REY_ArrayDYN</span><span class="token generic class-name"><span class="token operator">&lt;</span>VkDeviceQueueCreateInfo<span class="token operator">&gt;</span></span></span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment">// allocate enough space for 2 elements</span>
@@ -420,44 +448,146 @@ REY_ArrayDYN<span class="token operator">&lt;</span>VkDeviceQueueCreateInfo<span
 std<span class="token double-colon punctuation">::</span>vector<span class="token operator">&lt;</span>VkDeviceQueueCreateInfo<span class="token operator">&gt;</span> Array <span class="token operator">=</span> std<span class="token double-colon punctuation">::</span><span class="token generic-function"><span class="token function">vector</span><span class="token generic class-name"><span class="token operator">&lt;</span>VkDeviceQueueCreateInfo<span class="token operator">&gt;</span></span></span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 Array<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>Default_QCI<span class="token punctuation">)</span><span class="token punctuation">;</span>
 Array<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>         Your_QCI<span class="token punctuation">)</span>
-</code></pre><ul>
+</code></pre></li>
 <li>So far, The result:- <a href="./examples/4.guide.chapter2.4.TheEnd.hh">4.guide.chapter2.4.TheEnd.hh</a></li>
-</ul>
-</li>
 </ul>
 <h4 id="5-vkgetphysicaldevicequeuefamilyproperties">5. <code>vkGetPhysicalDeviceQueueFamilyProperties()</code> </h4>
 <ul>
 <li><a href="https://vkdoc.net/man/vkGetPhysicalDeviceQueueFamilyProperties">https://vkdoc.net/man/vkGetPhysicalDeviceQueueFamilyProperties</a></li>
 <li>
-<h5>REY DOCS</h5>
+<h5>REY_DOCs</h5>
+<ul>
+<li>a GPU can have <em>"multiple QueueFamilies"</em>
+<ul>
+<li>a <code>QueueFamily</code> might support <code>VK_QUEUE_GRAPHICS_BIT</code></li>
+<li>another <code>QueueFamily</code> might support <code>VK_QUEUE_COMPUTE_BIT</code></li>
+<li>another <code>QueueFamily</code> might support <code>VK_QUEUE_TRANSFER_BIT</code></li>
+<li>another <code>QueueFamily</code> might support <code>VK_QUEUE_VIDEO_ENCODE_BIT_KHR</code></li>
+<li>another <code>QueueFamily</code> might support a-mixture of multiple</li>
+<li>talking about this in -&gt; the next part [chapter2.6.]</li>
+</ul>
+</li>
+</ul>
 <pre data-role="codeBlock" data-info="cpp" class="language-cpp cpp"><code><span class="token keyword keyword-static">static</span> <span class="token keyword keyword-inline">inline</span> REY_Array<span class="token operator">&lt;</span>REY_Array<span class="token operator">&lt;</span>VkQueueFamilyProperties<span class="token operator">&gt;&gt;</span>   s_HardwareGPU_QFamProps_List2D<span class="token punctuation">;</span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">amVK_2D_QFAM_PROPs</span>                     <span class="token expression">amVK_Instance<span class="token double-colon punctuation">::</span>s_HardwareGPU_QFamProps_List2D</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">amVK_2D_GPUs_QFAMs</span>                     <span class="token expression">amVK_Instance<span class="token double-colon punctuation">::</span>s_HardwareGPU_QFamProps_List2D</span></span>
+    <span class="token comment">// "REY_LoggerNUtils/REY_Utils.hh" 😄</span>
 
 <span class="token keyword keyword-static">static</span> <span class="token keyword keyword-inline">inline</span> <span class="token keyword keyword-void">void</span> <span class="token function">GetPhysicalDeviceQueueFamilyProperties</span><span class="token punctuation">(</span><span class="token keyword keyword-void">void</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    amVK_2D_QFAM_PROPs<span class="token punctuation">.</span><span class="token function">reserve</span><span class="token punctuation">(</span>amVK_GPU_List<span class="token punctuation">.</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        
-    <span class="token keyword keyword-for">for</span> <span class="token punctuation">(</span><span class="token keyword keyword-uint32_t">uint32_t</span> k <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> k <span class="token operator">&lt;</span> amVK_GPU_List<span class="token punctuation">.</span>n<span class="token punctuation">;</span> k<span class="token operator">++</span><span class="token punctuation">)</span>          <span class="token comment">// for each GPU</span>
+    amVK_2D_GPUs_QFAMs<span class="token punctuation">.</span><span class="token function">reserve</span><span class="token punctuation">(</span>amVK_GPU_List<span class="token punctuation">.</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>            <span class="token comment">// malloc using "new" keyword</span>
+    <span class="token keyword keyword-for">for</span> <span class="token punctuation">(</span> <span class="token keyword keyword-uint32_t">uint32_t</span> k <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>  k <span class="token operator">&lt;</span> amVK_GPU_List<span class="token punctuation">.</span>n<span class="token punctuation">;</span> k<span class="token operator">++</span> <span class="token punctuation">)</span>       <span class="token comment">// for each GPU</span>
     <span class="token punctuation">{</span>
-        REY_Array<span class="token operator">&lt;</span>VkQueueFamilyProperties<span class="token operator">&gt;</span> <span class="token operator">*</span>k_QFamProps <span class="token operator">=</span> <span class="token operator">&amp;</span>amVK_2D_QFAM_PROPs<span class="token punctuation">.</span>data<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token keyword keyword-uint32_t">uint32_t</span> queueFamilyCount <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-                <span class="token comment">// [implicit valid usage]:- must be 0     [if 3rd-param = nullptr]</span>
+        REY_Array<span class="token operator">&lt;</span>VkQueueFamilyProperties<span class="token operator">&gt;</span> <span class="token operator">*</span>k_QFamProps <span class="token operator">=</span> <span class="token operator">&amp;</span>amVK_2D_GPUs_QFAMs<span class="token punctuation">.</span>data<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">;</span>
 
+        <span class="token keyword keyword-uint32_t">uint32_t</span> queueFamilyCount <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
             <span class="token function">vkGetPhysicalDeviceQueueFamilyProperties</span><span class="token punctuation">(</span>amVK_GPU_List<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>queueFamilyCount<span class="token punctuation">,</span> <span class="token keyword keyword-nullptr">nullptr</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token comment">// This function is 'output-ing into' queueFamilyCount</span>
 
         k_QFamProps<span class="token operator">-&gt;</span>n <span class="token operator">=</span> queueFamilyCount<span class="token punctuation">;</span>
         k_QFamProps<span class="token operator">-&gt;</span>data <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> VkQueueFamilyProperties<span class="token punctuation">[</span>queueFamilyCount<span class="token punctuation">]</span><span class="token punctuation">;</span>
-
             <span class="token function">vkGetPhysicalDeviceQueueFamilyProperties</span><span class="token punctuation">(</span>amVK_GPU_List<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>k_QFamProps<span class="token operator">-&gt;</span>n<span class="token punctuation">,</span> k_QFamProps<span class="token operator">-&gt;</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></li>
+<li>
+<h5>Visualization / [See it] / JSON Printing:- <a href="./examples/4.guide.chapter2.5.json.hh">4.guide.chapter2.5.json.hh</a></h5>
+<ul>
+<li>Check the <a href="./examples/4.guide.chapter2.5.data.json">3070 JSON by REY</a></li>
+</ul>
+</li>
+<li>
+<h5>So far, The result:- <a href="./examples/4.guide.chapter2.5.TheEnd.hh">4.guide.chapter2.5.TheEnd.hh</a></h5>
+<ul>
+<li>Compare to -&gt; <a href="./examples/4.guide.chapter2.1.midway.hh">4.guide.chapter2.1.midway.hh</a>
+<ul>
+<li><code>2DArray_QFAM_Props</code> part &amp; below were added only compared to <code>Chapter2.1.</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="6-vkqueuefamilyproperties">6. <code>VkQueueFamilyProperties</code> </h4>
+<ul>
+<li><a href="https://vkdoc.net/man/VkQueueFamilyProperties">https://vkdoc.net/man/VkQueueFamilyProperties</a></li>
+<li>
+<h5>REY_DOCs</h5>
+<ul>
+<li><code>.queueFlags</code> -&gt; we are gonna choose a <code>QCI.queueFamilyIndex</code> based on these flags
+<ul>
+<li>primarily, for the least, we wanna choose a <code>QueueFamily</code> that supports <code>VK_QUEUE_GRAPHICS_BIT</code></li>
+<li>all kinds of amazing things can be done using
+<ul>
+<li><code>VK_QUEUE_COMPUTE_BIT</code></li>
+<li><code>VK_QUEUE_TRANSFER_BIT</code></li>
+<li><code>VK_QUEUE_VIDEO_ENCODE_BIT_KHR</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>.queueCount</code> -&gt; yes there is a limit to 'how many <code>Queues</code> we are allowed to work with' 🥴</li>
+</ul>
+</li>
+</ul>
+<h4 id="7-vkdeviceqciqueuefamilyindex">7. <code>VkDeviceQCI.queueFamilyIndex</code> </h4>
+<ul>
+<li><code>QCI =&gt; QueueCreateInfo</code>
+<ul>
+<li>[VkDeviceQueueCreateInfo]</li>
+</ul>
+</li>
+<li>
+<h5>REY_DOCs</h5>
+<ul>
+<li><code>Task:-</code> is to choose a <code>QueueFamily</code> that supports <code>VK_QUEUE_GRAPHICS_BIT</code> 😉
+<ul>
+<li>(if you've followed on so far -&gt; this should be easy 😉)</li>
+</ul>
+</li>
+<li>Resolving all of this into <code>amVK_Device.hh</code><pre data-role="codeBlock" data-info="cpp" class="language-cpp cpp"><code><span class="token keyword keyword-void">void</span> amVK_Device<span class="token double-colon punctuation">::</span><span class="token function">Select_QFAM_GRAPHICS</span><span class="token punctuation">(</span><span class="token keyword keyword-void">void</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>amVK_Instance<span class="token double-colon punctuation">::</span>called_GetPhysicalDeviceQueueFamilyProperties<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        amVK_Instance<span class="token double-colon punctuation">::</span><span class="token function">EnumeratePhysicalDevices</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-    <span class="token function">amVK_DONE</span><span class="token punctuation">(</span><span class="token string">"vkGetPhysicalDeviceQueueFamilyProperties()"</span> <span class="token operator">&lt;&lt;</span> <span class="token string">" 😄"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>amVK_Instance<span class="token double-colon punctuation">::</span>called_GetPhysicalDeviceQueueFamilyProperties<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        amVK_Instance<span class="token double-colon punctuation">::</span><span class="token function">GetPhysicalDeviceQueueFamilyProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    amVK_Instance<span class="token double-colon punctuation">::</span>amVK_PhysicalDevice_Index index <span class="token operator">=</span> amVK_HEART<span class="token operator">-&gt;</span><span class="token function">GetARandom_PhysicalDevice_amVK_Index</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword keyword-this">this</span><span class="token operator">-&gt;</span>QCI<span class="token punctuation">.</span>Default<span class="token punctuation">.</span>queueFamilyIndex <span class="token operator">=</span> amVK_Instance<span class="token double-colon punctuation">::</span><span class="token function">ChooseAQueueFamily</span><span class="token punctuation">(</span>VK_QUEUE_GRAPHICS_BIT<span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 </code></pre></li>
 </ul>
-<h4 id="6-vkgetphysicaldeviceproperties">6. <code>vkGetPhysicalDeviceProperties()</code> </h4>
+</li>
+</ul>
+<h4 id="8-back-to-vkcreatedevice-finally-calling-it-">8. back to <code>vkCreateDevice()</code> [finally calling it 😊] </h4>
 <ul>
-<li>for now we won't need, we will need in <code>ChapterXXX</code></li>
+<li>
+<h5>REY DOCs</h5>
+<pre data-role="codeBlock" data-info="cpp" class="language-cpp cpp"><code>amVK_Device<span class="token operator">*</span> D <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token function">amVK_Device</span><span class="token punctuation">(</span>amVK_HEART<span class="token operator">-&gt;</span><span class="token function">GetARandom_PhysicalDevice</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// VkDeviceCreateInfo CI =&gt; Class Member</span>
+    <span class="token comment">// VkDeviceQueueCreateInfo QCI =&gt; Class Member</span>
+D<span class="token operator">-&gt;</span><span class="token function">Select_QFAM_GRAPHICS</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+D<span class="token operator">-&gt;</span><span class="token function">CreateDevice</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre><ul>
+<li>Think of this as a PSeudoCode / or / check out my code if you wanna</li>
+<li><code>CreateInfo</code> =&gt; By default has initial values inside <code>amVK_Device</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="9-organizing-stuff-into-classes">9. Organizing stuff into classes.... </h4>
+<ol>
+<li><code>amVK_Props.hh</code>
+<ol>
+<li><code>class amVK_Props</code>
+<ul>
+<li><code>amVK_Instance::GetPhysicalDeviceQueueFamilyProperties()</code></li>
+<li><code>amVK_Instance::EnumeratePhysicalDevices()</code></li>
+<li>&amp; Everything related to those two + The Data + The Properties</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h4 id="10-vkgetphysicaldeviceproperties">10. <code>vkGetPhysicalDeviceProperties()</code> </h4>
+<ul>
 <li><a href="https://vkdoc.net/man/vkGetPhysicalDeviceProperties">https://vkdoc.net/man/vkGetPhysicalDeviceProperties</a></li>
 <li><code>VkPhysicalDeviceProperties</code>:- <a href="https://vkdoc.net/man/VkPhysicalDeviceProperties">https://vkdoc.net/man/VkPhysicalDeviceProperties</a>
 <ul>
@@ -466,8 +596,15 @@ Array<span class="token punctuation">.</span><span class="token function">push_b
 <li>you don't need to read the whole documentation of this page</li>
 </ul>
 </li>
+<li>for now we won't need, we will need in <code>ChapterZZZ</code></li>
 </ul>
+<br>
+<br>
+<br>
+<br>
+<br>
 <div style="page-break-after: always;"></div>
+<br>
 <h2 id="chapter-3-common-patterns-if-someone-missed-to-catch-it-yet-">Chapter 3: Common Patterns: <em>if someone missed to catch it yet</em> 😉 </h2>
 <pre data-role="codeBlock" data-info="ruby" class="language-ruby ruby"><code><span class="token builtin">Object</span>  Vk      VkInstance
 Types   Vk      VkInstanceCreateInfo
@@ -522,6 +659,19 @@ Getting List<span class="token operator">/</span>Properties
 <pre class="language-text">- a) Would this make sense to someone else?
 - b) Would this make sense to a 5 year old?
 </pre>
+<h5 id="keywords-in-this-file">Keywords in this file </h5>
+<ul>
+<li>ChapterZZZ =&gt; Unknown WIP/TBD Chapter</li>
+<li>REY_DOCs</li>
+</ul>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div style="page-break-after: always;"></div>
+<br>
+<p></p>
 
       </div>
       

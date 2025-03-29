@@ -84,7 +84,7 @@ class amVK_Instance {
             amVK_return_code_log("vkEnumeratePhysicalDevices()");
     }
 
-    static inline VkPhysicalDevice GetARandomPhysicalDevice(void) {
+    static inline VkPhysicalDevice GetARandom_PhysicalDevice(void) {
         return s_HardwareGPU_List[0];
     }
 

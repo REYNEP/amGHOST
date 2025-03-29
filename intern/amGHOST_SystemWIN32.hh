@@ -23,6 +23,7 @@ class amGHOST_SystemWIN32 : public amGHOST_System {
     void    _reg_wc();
     void  _unreg_wc();
     HMODULE _hInstance = ::GetModuleHandleW(nullptr);       /** \param nullptr returns initial main EXE file's Handle */
+        // must not be static, otherwise GetModuleHandleW() doesn't work
     const wchar_t* _wndClassName = L"amGHOST_WndClass1";    /** which we link by passing in s_wndClassName to \fn CreateWindowA */
 
   public:

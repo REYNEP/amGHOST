@@ -84,8 +84,11 @@ class amVK_Instance {
             amVK_return_code_log("vkEnumeratePhysicalDevices()");
     }
 
-    static inline VkPhysicalDevice GetARandomPhysicalDevice(void) {
+    static inline VkPhysicalDevice GetARandom_PhysicalDevice(void) {
         return s_HardwareGPU_List[0];
+    }
+    static inline         PD_Index GetARandom_PhysicalDevice_amVK_Index(void) { 
+        return 0; 
     }
 
 
@@ -102,7 +105,7 @@ class amVK_Instance {
 */
   public:
     static inline REY_Array<REY_Array<VkQueueFamilyProperties>>   s_HardwareGPU_QFamProps_List2D;
-    #define amVK_2D_QFAM_PROPs                     amVK_Instance::s_HardwareGPU_QFamProps_List2D
+    #define amVK_2D_GPUs_QFAMs                     amVK_Instance::s_HardwareGPU_QFamProps_List2D
 
         /** 
          * Don't Call before you have called `amVK_Instance::EnumeratePhysicalDevices()`
@@ -110,12 +113,12 @@ class amVK_Instance {
          *   --> Make all the Memory Allocation within this function -> in one block of RAM
          */
     static inline void GetPhysicalDeviceQueueFamilyProperties(void) {
-        amVK_2D_QFAM_PROPs.reserve(amVK_GPU_List.n);
+        amVK_2D_GPUs_QFAMs.reserve(amVK_GPU_List.n);
             
             // for each GPU
         for (uint32_t k = 0; k < amVK_GPU_List.n; k++) 
         {
-            REY_Array<VkQueueFamilyProperties> *k_QFamProps = &amVK_2D_QFAM_PROPs.data[k];
+            REY_Array<VkQueueFamilyProperties> *k_QFamProps = &amVK_2D_GPUs_QFAMs.data[k];
 
             uint32_t queueFamilyCount = 0;
                     // [implicit valid usage]:- must be 0     [if 3rd-param = nullptr]

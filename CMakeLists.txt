@@ -28,8 +28,14 @@ project("amGHOST_PROJECT" VERSION 0.1)
     set(SRC
         "amGHOST_System.cpp"
         "intern/amGHOST_SystemWIN32.cpp"
-        "amVK/amVK.cpp"
+        "intern/amGHOST_WindowWIN32.cpp"
+        
         "amVK/amVK_Device.cpp"
+        "amVK/intern/amVK_Props.cpp"
+        "amVK/intern/amVK_PropsExport.cpp"
+        "amVK/intern/amVK_PropsExport_nlohmann.cpp"
+        "amVK/intern/amVK_Enum2String.cpp"
+        "amVK/intern/amVK_log.cpp"
     )
 
     set(INC

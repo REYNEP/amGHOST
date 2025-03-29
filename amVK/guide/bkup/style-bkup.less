@@ -3,13 +3,13 @@
 /*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
 
 @font-face {
-    font-family: "Bahnschrift Light Condensed REY";
-    src: local('Bahnschrift Light Condensed'), url("https://github.com/flying-whales/flying-whales/raw/20e98b4dd0388a3fafd09acb8b07e5bd3dc701b9/Assets/Fonts/bahnschrift.ttf") format(ttf);
+    font-family: "Bahnschrift REY";
+    src: local("Bahnschrift"), url("https://github.com/flying-whales/flying-whales/raw/20e98b4dd0388a3fafd09acb8b07e5bd3dc701b9/Assets/Fonts/bahnschrift.ttf") format(ttf);
 }
 
 @font-face {
     font-family: "AudioLink Mono Bold REY";
-    src: url("https://audiolink.dev/gallery/AudioLinkMono-Bold.ttf");
+    src: local('AudioLink Mono Bold'), url("https://audiolink.dev/gallery/AudioLinkMono-Regular.ttf") format(ttf);
 }
 
 @font-face {
@@ -17,23 +17,43 @@
     src: url("https://github.com/KingDragoness/Shopkeepers/raw/952118221585de23b747560b89ee17061e34c0f4/Project%20Shopkeepers%20root/Assets/Resources/Fonts/seguiemj.ttf");
 }
 
-
-
 .markdown-preview.markdown-preview {
   // modify your style here
   // eg: background-color: blue;
-    
+    padding: 2em calc(40% - 457px + 2em) !important;
+
+
     /**
     h1 {
         page-break-before: always;
     }
     */
-    font-size: 14px;
-    font-family: 'Bahnschrift Light Condensed REY', 'Emoji REY', 'Bahnschrift Light', sans-serif;
+    font-size: 22px;
+    font-family: 'Bahnschrift', 'Emoji REY', monospace;
+        // prince needs 'Bahnschrift Light Condensed'
+    font-stretch: condensed;
+    font-weight: 100;
 
-    code {
-        font-family: 'AudioLink Mono Bold REY', 'Lotion', monospace;
+    blockquote {
+        padding-top: 1em;
+        padding-bottom: 1em;
         font-size: 90%;
+    }
+    code {
+        font-family: 'AudioLink Mono Bold REY', 'Lotion', 'Emoji REY', monospace;
+        font-size: 90%;
+    }
+    pre > code {
+        font-size: 17px;
+        // &.prince has different
+    }
+
+    ul > li, ol > li {
+        ol > li, ul > li {
+            font-family: 'Fira Sans Condensed', 'Emoji REY', monospace;
+            font-weight: 300;
+            font-size: 90%;
+        }
     }
 
     pre {
@@ -86,9 +106,19 @@
                 color: black !important;
             }
 
-            font-size: 12px;
-            pre > code {
-                font-size: 12px;
+            font-family: 'Bahnschrift Light Condensed';
+            font-size: 12.5px;
+            font-weight: 100;
+
+            h1, h2, h3, h4, h5, h6 {
+                font-family: 'Bahnschrift';
+            }
+
+            ul > li, ol > li {
+                ol > li, ul > li {
+                    font-family: 'Fira Sans Condensed Light Italic', 'Emoji REY', monospace;
+                    font-size: 90%;
+                }
             }
             
             pre {
@@ -103,7 +133,7 @@
             }
         
             pre > code {
-                font-size: 12px;
+                font-size: 10.75px;
                 white-space: pre-wrap; /* Enable word wrap */
                 word-wrap: break-word; /* Break words that exceed the width */
                 word-break: normal;

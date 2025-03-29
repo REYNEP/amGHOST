@@ -10,7 +10,7 @@
 class amVK_Instance {
   public:
         // [1 Per VkInstance]:- All of these options should basically be set by the one who is gonna use amVK and create an APP/Software 🤷‍♀️
-    static inline VkApplicationInfo amVK_AppInfo = {
+    static inline VkApplicationInfo AppInfo = {
         .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
         .pNext = nullptr,
         .pApplicationName = "amVK_ApplicationInfo.pApplicationName not given",
@@ -23,14 +23,14 @@ class amVK_Instance {
             // version of the Vulkan API against which the application expects to run on
     };
 
-    static inline VkInstanceCreateInfo amVK_InstanceCI = {
+    static inline VkInstanceCreateInfo CI = {
         .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
             // [implicit valid usage]:- must     be <above_value>
         .pNext = nullptr,
             // [implicit valid usage]:- must     be NULL
         .flags = 0,
             // [implicit valid usage]:- must     be 0
-        .pApplicationInfo = &amVK_AppInfo,
+        .pApplicationInfo = &AppInfo,
         .enabledLayerCount = 0,
         .ppEnabledLayerNames = nullptr,
         .enabledExtensionCount = 0,
@@ -49,11 +49,19 @@ class amVK_Instance {
             return;
         }
 
-        VkResult return_code = vkCreateInstance(&amVK_InstanceCI, nullptr, &s_vk);
-        amVK_return_code_log("vkCreateInstance()");  // above variable "return_code" can't be named smth else
+        VkResult return_code = vkCreateInstance(&CI, nullptr, &s_vk);
+        amVK_return_code_log( "vkCreateInstance()" );  // above variable "return_code" can't be named smth else
 
-        amVK_HEART = (amVK_Instance *) new amVK_Instance();
             // If Everything is STATIC, won't need this
-        amVK_Props::s_vk = amVK_Instance::s_vk;
+        amVK_HEART = (amVK_Instance *) new amVK_Instance();
+        amVK_Props::Log_InstanceEXTs_Enabled(return_code);
+    }
+
+  public:
+    /**
+     * USES:- `REY_ArrayDYN<char *> amVK_Props::amVK_1D_InstanceEXTs_Enabled`
+     */
+    static void Add_InstanceEXT_ToEnable(const char* extName) {
+        amVK_Props::Add_InstanceEXT_ToEnable(extName);
     }
 };

@@ -1,0 +1,150 @@
+{
+    "vkEnumerateInstanceExtensionProperties": {
+        "VK_KHR_device_group_creation": "specVersion1",
+        "VK_KHR_display": "specVersion23",
+        "VK_KHR_external_fence_capabilities": "specVersion1",
+        "VK_KHR_external_memory_capabilities": "specVersion1",
+        "VK_KHR_external_semaphore_capabilities": "specVersion1",
+        "VK_KHR_get_display_properties2": "specVersion1",
+        "VK_KHR_get_physical_device_properties2": "specVersion2",
+        "VK_KHR_get_surface_capabilities2": "specVersion1",
+        "VK_KHR_surface": "specVersion25",
+        "VK_KHR_surface_protected_capabilities": "specVersion1",
+        "VK_KHR_win32_surface": "specVersion6",
+        "VK_EXT_debug_report": "specVersion10",
+        "VK_EXT_debug_utils": "specVersion2",
+        "VK_EXT_direct_mode_display": "specVersion1",
+        "VK_EXT_surface_maintenance1": "specVersion1",
+        "VK_EXT_swapchain_colorspace": "specVersion5",
+        "VK_NV_external_memory_capabilities": "specVersion1",
+        "VK_KHR_portability_enumeration": "specVersion1",
+        "VK_LUNARG_direct_driver_loading": "specVersion1"
+    },
+    "vkCreate_xxx_SurfaceKHR": {
+        "[Surface 0]": {
+            "Memory Address": "0000018755282F60",
+            "[GPU 0]": {
+                "Memory Address": "000001875524E850",
+                "vkGetPhysicalDeviceSurfaceFormatsKHR()": {
+                    "[SurfaceFormat 0]": {
+                        "format / imageFormat": "B8G8R8A8_UNORM",
+                        "colorspace": "SRGB_NONLINEAR_KHR"
+                    },
+                    "[SurfaceFormat 1]": {
+                        "format / imageFormat": "B8G8R8A8_SRGB",
+                        "colorspace": "SRGB_NONLINEAR_KHR"
+                    },
+                    "[SurfaceFormat 2]": {
+                        "format / imageFormat": "R8G8B8A8_UNORM",
+                        "colorspace": "SRGB_NONLINEAR_KHR"
+                    },
+                    "[SurfaceFormat 3]": {
+                        "format / imageFormat": "R8G8B8A8_SRGB",
+                        "colorspace": "SRGB_NONLINEAR_KHR"
+                    },
+                    "[SurfaceFormat 4]": {
+                        "format / imageFormat": "A2B10G10R10_UNORM_PACK32",
+                        "colorspace": "SRGB_NONLINEAR_KHR"
+                    }
+                }
+            }
+        }
+    },
+    "vkEnumeratePhysicalDevices": {
+        "[GPU 0]": {
+            "Memory Address": "000001875524E850",
+            "vkGetPhysicalDeviceQueueFamilyProperties()": {
+                "[QueueFamily 0]": {
+                    "queueFlags": [
+                        "VK_QUEUE_GRAPHICS_BIT",
+                        "VK_QUEUE_COMPUTE_BIT",
+                        "VK_QUEUE_TRANSFER_BIT",
+                        "VK_QUEUE_SPARSE_BINDING_BIT",
+                        "VkQueueFlagBits:- 15"
+                    ],
+                    "queueCount": 16,
+                    "timestampValidBits": 64,
+                    "minImageTransferGranularity": {
+                        "width": 1,
+                        "height": 1,
+                        "depth": 1
+                    }
+                },
+                "[QueueFamily 1]": {
+                    "queueFlags": [
+                        "VK_QUEUE_TRANSFER_BIT",
+                        "VK_QUEUE_SPARSE_BINDING_BIT",
+                        "VkQueueFlagBits:- 12"
+                    ],
+                    "queueCount": 2,
+                    "timestampValidBits": 64,
+                    "minImageTransferGranularity": {
+                        "width": 1,
+                        "height": 1,
+                        "depth": 1
+                    }
+                },
+                "[QueueFamily 2]": {
+                    "queueFlags": [
+                        "VK_QUEUE_COMPUTE_BIT",
+                        "VK_QUEUE_TRANSFER_BIT",
+                        "VK_QUEUE_SPARSE_BINDING_BIT",
+                        "VkQueueFlagBits:- 14"
+                    ],
+                    "queueCount": 8,
+                    "timestampValidBits": 64,
+                    "minImageTransferGranularity": {
+                        "width": 1,
+                        "height": 1,
+                        "depth": 1
+                    }
+                },
+                "[QueueFamily 3]": {
+                    "queueFlags": [
+                        "VK_QUEUE_TRANSFER_BIT",
+                        "VK_QUEUE_SPARSE_BINDING_BIT",
+                        "VK_QUEUE_VIDEO_DECODE_BIT_KHR",
+                        "VkQueueFlagBits:- 44"
+                    ],
+                    "queueCount": 1,
+                    "timestampValidBits": 32,
+                    "minImageTransferGranularity": {
+                        "width": 1,
+                        "height": 1,
+                        "depth": 1
+                    }
+                },
+                "[QueueFamily 4]": {
+                    "queueFlags": [
+                        "VK_QUEUE_TRANSFER_BIT",
+                        "VK_QUEUE_SPARSE_BINDING_BIT",
+                        "VK_QUEUE_VIDEO_ENCODE_BIT_KHR",
+                        "VkQueueFlagBits:- 76"
+                    ],
+                    "queueCount": 1,
+                    "timestampValidBits": 32,
+                    "minImageTransferGranularity": {
+                        "width": 1,
+                        "height": 1,
+                        "depth": 1
+                    }
+                },
+                "[QueueFamily 5]": {
+                    "queueFlags": [
+                        "VK_QUEUE_TRANSFER_BIT",
+                        "VK_QUEUE_SPARSE_BINDING_BIT",
+                        "VK_QUEUE_OPTICAL_FLOW_BIT_NV",
+                        "VkQueueFlagBits:- 268"
+                    ],
+                    "queueCount": 1,
+                    "timestampValidBits": 64,
+                    "minImageTransferGranularity": {
+                        "width": 1,
+                        "height": 1,
+                        "depth": 1
+                    }
+                }
+            }
+        }
+    }
+}

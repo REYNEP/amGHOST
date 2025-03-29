@@ -1,5 +1,6 @@
 #pragma once
 #include "REY_Logger.hh"
+#include <vulkan/vulkan.h>
 
 #define amVK_FAILED(x) \
     REY_LOG_EX("FAILED:- " << x << "\n"     \
@@ -27,6 +28,12 @@
         amVK_PASSED(x << " 😄");          \
     }
 
+#define amVK_RC_silent_check(x)  \
+    if (return_code != VK_SUCCESS) {      \
+        amVK_FAILED(x << " 😶‍🌫️");          \
+    }
+
 #define REY_LOG_status(x) REY_LOG(x)
+#define REY_LOG_notfound(x) REY_LOG_EX("NotFound:- " << x);
 
 const char *vulkan_result_msg(VkResult return_code);

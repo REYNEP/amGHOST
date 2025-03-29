@@ -16,3 +16,4 @@
 #define amG_PASSED(x) REY_LOG("PASSED:- " << x);
 
 #define REY_LOG_status(x) REY_LOG(x)
+#define REY_LOG_notfound(x) REY_LOG_EX("NotFound:- " << x);

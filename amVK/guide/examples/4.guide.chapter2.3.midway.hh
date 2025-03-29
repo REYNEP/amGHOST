@@ -30,7 +30,7 @@ class amVK_Device {
     VkPhysicalDevice m_physicalDevice = nullptr;
     VkDevice m_device = nullptr;
     /**
-     * @param p1: [VkPhysicalDevice]:- see `amVK_Instance::GetARandomPhysicalDevice()`
+     * @param p1: [VkPhysicalDevice]:- see `amVK_Instance::GetARandom_PhysicalDevice()`
      */
     void CreateDevice(VkPhysicalDevice p1) {
         m_physicalDevice = p1;

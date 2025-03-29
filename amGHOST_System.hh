@@ -28,5 +28,12 @@ class amGHOST_System {
                                                                 /** making it virtual means, even if you  `delete amGHOST_System *system`  it will call e.g. `~amGHOST_SystemWIN32()` */
 
   public:
-    virtual amGHOST_Window* new_window_interface(void) = 0;               /** However, To Initialize/Create \see amGHOST_Window.hh */
+    virtual amGHOST_Window* new_window_interface(void) = 0;     /** However, To Initialize/Create \see amGHOST_Window.hh */
+
+  public:
+    /**
+     * Also See:- `amGHOST_VkSurfaceKHR::create_surface()`
+     * Can be called: `anytime, [NoDependency]`
+     */
+    static const char* get_vulkan_os_surface_ext_name(void);
 };

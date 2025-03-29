@@ -1,7 +1,6 @@
 #include "amGHOST_SystemWIN32.hh"
-#include "amGHOST_WindowWIN32.hh"
 
-// Convert To ASCII Art:- "3D Diagonal", "Alligator2", "Big"
+// Convert To ASCII Art:- `bitbelt.converttoasciiart` -> REYNEP's_Journal\21.mar22_ASCII_ART.md
 /**                                                                              
         //   ) )                           ||   / /                                         
        //___/ /           __      ___      ||  / / ( )  __    __  ___           ___     //  
@@ -11,6 +10,7 @@
     
 */
 /** PureVirtual Funcs from amGHOST_System  */
+#include "amGHOST_WindowWIN32.hh"
 amGHOST_Window* amGHOST_SystemWIN32::new_window_interface(void) {
     amGHOST_WindowWIN32 *REY = new amGHOST_WindowWIN32();
     return REY;

@@ -45,6 +45,17 @@ int main(int argumentCount, char* argumentVector[]) {
 }
 ```
 
+## ex. 2 - vulkan
+```cpp
+amGHOST_Window* W = amG_HEART->new_window_interface();
+W->create(L"Whatever", 0, 0, 500, 600);
+
+const char* extName = amGHOST_System::get_vulkan_os_surface_ext_name());
+
+#include "amGHOST_VkSurfaceKHR.hh"
+VkSurfaceKHR VK_S = amGHOST_VkSurfaceKHR::create_surface(W, amVK_Instance::s_vk);
+```
+
 #### `amGHOST_<smth>.hh`:- e.g. `amGHOST_System.hh`
 - These are "INTERFACE" objects. 
   - i.e. `class amGHOST_System` has `pure virtual` functions.

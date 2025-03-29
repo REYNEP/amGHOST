@@ -1,0 +1,7 @@
+- I cloned https://github.com/PAMinerva/paminerva.github.io
+    - custom added page breaks
+    - custom added REY_Minerva_DocsClass1.less
+    - will create a fork on github and keep my changes there
+- see 
+    - REYNEP's_Journal\13.feb25_markdownToPDF.md
+    - REYNEP's_Journal\12.feb24_bestWayTo_installWindows.md

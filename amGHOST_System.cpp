@@ -31,3 +31,22 @@ amGHOST_System* amGHOST_System::get_system(void) {
     }
     return heart;
 }
+
+const char* amGHOST_System::get_vulkan_os_surface_ext_name(void) {
+    #if defined(amGHOST_BUILD_WIN32) || defined(_WIN32)
+        return "VK_KHR_win32_surface";
+    #elif defined(amGHOST_BUILD_X11)
+        return "VK_KHR_xlib_surface";
+    #elif defined(amGHOST_BUILD_XCB) || defined(__unix__)
+        return "VK_KHR_xcb_surface";
+    #endif
+
+    // VK_KHR_wayland_surface
+    // VK_MVK_ios_surface
+    // VK_NN_vi_surface
+    // VK_QNX_screen_surface
+    // VK_FUCHSIA_imagepipe_surface
+    // VK_EXT_metal_surface
+    // VK_EXT_headless_surface
+    // VK_EXT_directfb_surface
+}
