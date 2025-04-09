@@ -74,9 +74,36 @@ void amVK_Props::Export_yyJSON(void) {
                         << ", Message: " << err.msg << std::endl;
                 
                 // Check if file can be opened for writing
-                FILE* test = fopen("data.json", "w");
+                FILE* test = nullptr;
+
+                #ifdef _MSC_VER
+                    errno_t err = fopen_s(&test, "data.json", "w");
+                    if (err != 0) {
+                        std::cerr << "Error: Failed to open file 'data.json' for writing. "
+                                << "Error code: " << err << std::endl;
+                        return;
+                    }
+                #else
+                    test = std::fopen("data.json", "w"); // POSIX-compliant
+                    if (!test) {
+                        std::cerr << "Error: Failed to open file 'data.json' for writing." << std::endl;
+                        return;
+                    }
+                #endif
+
                 if (!test) {
-                    std::cerr << "Cannot open file for writing. Error: " << strerror(errno) << std::endl;
+                    size_t bufferSize = 1024; // Start with a reasonable size
+                    char* errorMessage = new char[bufferSize];
+
+                    #ifdef _MSC_VER
+                        strerror_s(errorMessage, bufferSize, err);
+                    #else
+                        strerror_r(err, errorMessage, bufferSize); // POSIX-compliant
+                    #endif
+
+                    std::cerr << "Cannot open file for writing. Error: " << errorMessage << std::endl;
+
+                    delete[] errorMessage;
                 } else {
                     fclose(test);
                     std::cerr << "File can be opened but yyjson write failed" << std::endl;
@@ -131,14 +158,12 @@ void write(NodeRef* n, VkExtent3D const& v) {
 } // namespace yml
 } // namespace c4
 
-#define REY_MALLOC_COPY_STD_STRING(new_var, str)  \
-    new char[str.length() + 1]; \
-    strcpy(new_var, str.c_str()); \
+#define REY_MALLOC_COPY_STD_STRING(new_var, str)    \
+    REY_strcpy(str.c_str());                        \
     new_var[str.length()] = '\0';
 
 char* REY_malloc_copy_std_string(std::string str) {
-    char* new_var = new char[str.length() + 1];
-    strcpy(new_var, str.c_str());
+    char* new_var = REY_strcpy(str.c_str());
     new_var[str.length()] = '\0';
 
     return new_var;
@@ -187,13 +212,29 @@ void amVK_Props::_ExportYAML(void) {
 
 
     // Emit YAML to a string
-    std::string yaml = ryml::emitrs<std::string>(tree);
+    std::string yaml = ryml::emitrs_yaml<std::string>(tree);
 
     // Write to file
     std::ofstream("data.yaml") << yaml;
 
     // Open the file for writing
-    FILE* json_file = std::fopen("data_ryml.json", "w");
+    
+    FILE* json_file = nullptr;
+    #ifdef _MSC_VER
+        errno_t err = fopen_s(&json_file, "data_ryml.json", "w");
+        if (err != 0) {
+            std::cerr << "Error: Failed to open file 'data_ryml.json' for writing. "
+                    << "Error code: " << err << std::endl;
+            return;
+        }
+    #else
+        json_file = std::fopen("data_ryml.json", "w"); // POSIX-compliant
+        if (!json_file) {
+            std::cerr << "Error: Failed to open file 'data_ryml.json' for writing." << std::endl;
+            return;
+        }
+    #endif
+    
     if (json_file) {
         // Emit JSON to the file
         ryml::emit_json(tree, json_file);

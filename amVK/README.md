@@ -43,3 +43,28 @@ int main(int argumentCount, char* argumentVector[]) {
     return 0;
 }
 ```
+
+## Vulkan Structure
+```cpp
+VkInstance 
+    VkPhysicalDevices
+        VkDevice
+            VkComandPool
+                VkCommandBuffer
+            VkSemaPhore
+            VkFench
+
+    VkSurfaceKHR
+        VkPhysicalDevice
+            Capabilities
+        VkSwapchainKHR(VkDevice)
+            VkImage
+                VkImageView
+        VkRenderPass(VkDevice)
+            VkAttachments
+            VkSubPasses
+            VkFrameBuffers
+    
+    RenderLoop
+        Record(VkCommandBuffer)
+```

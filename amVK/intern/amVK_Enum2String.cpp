@@ -319,7 +319,7 @@ std::vector<std::string> vulkan_queueFlags_Names(VkQueueFlags queueFlags) {
 std::vector<std::string> vulkan_imageUsageFlags_Names(VkImageUsageFlags imageUsageFlags) {
     std::vector<std::string> imageUsageFlags_STR_ARRAY;
 
-    #define STR(r) if (imageUsageFlags & ##r) { imageUsageFlags_STR_ARRAY.push_back(#r); }
+    #define STR(r) if (imageUsageFlags & r) { imageUsageFlags_STR_ARRAY.push_back(#r); }
     STR(VK_IMAGE_USAGE_TRANSFER_SRC_BIT);
     STR(VK_IMAGE_USAGE_TRANSFER_DST_BIT);
     STR(VK_IMAGE_USAGE_SAMPLED_BIT);
@@ -364,7 +364,7 @@ std::vector<std::string> vulkan_compositeAlphaFlags_Names(VkCompositeAlphaFlagsK
 std::vector<std::string> vulkan_surfaceTransformFlags_Names(VkSurfaceTransformFlagsKHR surfaceTransformFlags) {
     std::vector<std::string> surfaceTransformFlags_STR_ARRAY;
 
-    #define STR(r) if (surfaceTransformFlags & ##r) { surfaceTransformFlags_STR_ARRAY.push_back(#r); }
+    #define STR(r) if (surfaceTransformFlags & r) { surfaceTransformFlags_STR_ARRAY.push_back(#r); }
     STR(VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR);
     STR(VK_SURFACE_TRANSFORM_ROTATE_90_BIT_KHR);
     STR(VK_SURFACE_TRANSFORM_ROTATE_180_BIT_KHR);

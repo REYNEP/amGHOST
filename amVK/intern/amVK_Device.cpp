@@ -12,7 +12,7 @@ amVK_Device::amVK_Device(VkPhysicalDevice PD)
     }
 }
 
-#include <cstring>
+#include "REY_STDWrap.hh"
 void amVK_Device::Add_GPU_EXT_ToEnable(const char* extName) {
         // VK_KHR_swapchain
     if (!amVK_Props::called_EnumerateDeviceExtensionProperties) {
@@ -20,8 +20,7 @@ void amVK_Device::Add_GPU_EXT_ToEnable(const char* extName) {
     }
     
     if (amVK_Props::IS_GPU_EXT_Available(this->m_PD_index, extName)) {
-        char  *dont_lose = new char[strlen(extName)];
-        strcpy(dont_lose, extName);
+        char  *dont_lose = REY_strcpy(extName);
 
         REY_ArrayDYN_PUSH_BACK(this->amVK_1D_GPU_EXTs_Enabled) = dont_lose;
 

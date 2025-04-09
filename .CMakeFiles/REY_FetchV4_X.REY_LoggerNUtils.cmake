@@ -15,13 +15,14 @@
     set(Zip_Links)
 
     # Way-4. REY_FETCH_${TN}_BASE_DIR ----> Git Clone         [else] [these won't be used 😉]
-    set(REY_FETCH_${TN}_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/.forge)
-    set(Git_Link "https://github.com/REYNEP/REY_LoggerNUtils")
-    set(Git_CloneDir_Name REY_LoggerNUtils)
+    set(REY_FETCH_${TN}_BASE_DIR)
+    set(Git_Link)
+    set(Git_CloneDir_Name)
     set(Git_Clone_Recursive OFF)
     set(Git_CheckFiles
         ${Git_CloneDir_Name}/CMakeLists.txt
         ${Git_CloneDir_Name}/REY_Logger.hh
         ${Git_CloneDir_Name}/REY_Logger.cpp
     )
+    set(Git_AddSubdirectory ON)
 # --------------------

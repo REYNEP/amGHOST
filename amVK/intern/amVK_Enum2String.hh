@@ -9,7 +9,7 @@
     // etc
 
 // Previously All of these were inside a class, because I didn't want a separate Forward Declaration & wanted the definitions to be inside the header, having to .cpp
-//     -> https://github.com/REYNEP/amGHOST/commit/51b08c708ba73feb8e338f014da93efa0dd48d30
+//     -> https://github.com/REYNEP/amGHOST/blob/51b08c708ba73feb8e338f014da93efa0dd48d30/amVK/intern/amVK_Enum2String.hh
 
 std::string toSTR(void* ptr);
 std::string vulkan_colorSpace_name(VkColorSpaceKHR ColorSpace);

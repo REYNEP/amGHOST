@@ -93,34 +93,36 @@ void amVK_Props::GetPhysicalDeviceQueueFamilyProperties(void) {
     amVK_Props::called_GetPhysicalDeviceQueueFamilyProperties = true;
 }
 
+
+#include "amVK_Surface.hh"
 /**
  *        OUT:- `amVK_2D_GPUs_ImageFMTs`
  * DEPENDENCY:- [AutoCall]:- `amVK_Props::EnumeratePhysicalDevices()` if hasn't been called 
  */
-void amVK_Props::SurfaceInfo::GetPhysicalDeviceSurfaceInfo(void) {
+void amVK_Surface::GetPhysicalDeviceSurfaceInfo(void) {
     if (!amVK_Props::called_EnumeratePhysicalDevices) {
          amVK_Props::       EnumeratePhysicalDevices();
     }
 
-    amVK_2D_GPUs_ImageFMTs.reserve(amVK_1D_GPUs.n);
-    amVK_1D_GPUs_SurfCAP  .reserve(amVK_1D_GPUs.n);
+    amVK_2D_GPUs_ImageFMTs.reserve(amVK_Props::amVK_1D_GPUs.n);
+    amVK_1D_GPUs_SurfCAP  .reserve(amVK_Props::amVK_1D_GPUs.n);
     
-    amVK_LOOP_GPUs(k)
+    REY_Array_LOOP(amVK_Props::amVK_1D_GPUs, k)
     {
         // ----------------------- amVK_2D_GPUs_ImageFMTs --------------------------
         REY_Array<VkSurfaceFormatKHR> *k_IMG_FMTs = &amVK_2D_GPUs_ImageFMTs[k];
 
         uint32_t imageFormatCount = 0;
             // [implicit valid usage]:- must be 0     [if 3rd-param = nullptr]
-            VkResult return_code = vkGetPhysicalDeviceSurfaceFormatsKHR(amVK_1D_GPUs[k], this->S, &imageFormatCount, nullptr);
+            VkResult return_code = vkGetPhysicalDeviceSurfaceFormatsKHR(amVK_Props::amVK_1D_GPUs[k], this->S, &imageFormatCount, nullptr);
             amVK_RC_silent_check( "vkGetPhysicalDeviceSurfaceFormatsKHR()" );
 
         k_IMG_FMTs->n = imageFormatCount;
         k_IMG_FMTs->data = new VkSurfaceFormatKHR[imageFormatCount];
-                     return_code = vkGetPhysicalDeviceSurfaceFormatsKHR(amVK_1D_GPUs[k], this->S, &k_IMG_FMTs->n, k_IMG_FMTs->data);
+                     return_code = vkGetPhysicalDeviceSurfaceFormatsKHR(amVK_Props::amVK_1D_GPUs[k], this->S, &k_IMG_FMTs->n, k_IMG_FMTs->data);
             amVK_return_code_log( "vkGetPhysicalDeviceSurfaceFormatsKHR()" );
     
-        amVK_Props::SurfaceInfo::called_GetPhysicalDeviceSurfaceFormatsKHR = true;
+        amVK_Surface::called_GetPhysicalDeviceSurfaceFormatsKHR = true;
         // ----------------------- amVK_2D_GPUs_ImageFMTs --------------------------
 
 
@@ -129,10 +131,10 @@ void amVK_Props::SurfaceInfo::GetPhysicalDeviceSurfaceInfo(void) {
         // ------------------------ amVK_1D_GPUs_SurfCAP ---------------------------
         VkSurfaceCapabilitiesKHR *k_SURF_CAPs = &amVK_1D_GPUs_SurfCAP[k];
 
-                     return_code = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(amVK_1D_GPUs[k], this->S, k_SURF_CAPs);
+                     return_code = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(amVK_Props::amVK_1D_GPUs[k], this->S, k_SURF_CAPs);
             amVK_return_code_log( "vkGetPhysicalDeviceSurfaceCapabilitiesKHR()" );
 
-        amVK_Props::SurfaceInfo::called_GetPhysicalDeviceSurfaceFormatsKHR = true;
+        amVK_Surface::called_GetPhysicalDeviceSurfaceFormatsKHR = true;
         // ------------------------ amVK_1D_GPUs_SurfCAP ---------------------------
     }
 }
@@ -260,7 +262,7 @@ bool amVK_Props::IS_InstanceEXT_Available(const char *extName)
     return false;
 }
 
-#include <string.h>
+#include "REY_STDWrap.hh"
 /**
  * @param extName:- must be null-terminated string
 ```
@@ -275,8 +277,7 @@ void amVK_Props::Add_InstanceEXT_ToEnable(const char* extName) {
     }
     
     if (amVK_Props::IS_InstanceEXT_Available(extName)) {
-        char  *dont_lose = new char[strlen(extName)];
-        strcpy(dont_lose, extName);
+        char  *dont_lose = REY_strcpy(extName);
 
         REY_ArrayDYN_PUSH_BACK(amVK_1D_InstanceEXTs_Enabled) = dont_lose;
 
@@ -326,9 +327,7 @@ void amVK_Props::Log_InstanceEXTs_Enabled(VkResult ret) {
  * CALLS:- `GetPhysicalDeviceSurfaceInfo()`
  *  PREV:- `EnumeratePhysicalDevices()`
  */
-void amVK_Props::push_back_VkSurfaceKHR(VkSurfaceKHR S) {
-    amVK_Props::SurfaceInfo S_Props(S);
-    S_Props.GetPhysicalDeviceSurfaceInfo();
-
-    amVK_1D_SurfaceInfos.push_back(S_Props);
+void amVK_Props::push_back_amVK_Surface(amVK_Surface *S) {
+    S->GetPhysicalDeviceSurfaceInfo();
+    amVK_1D_Surfaces.push_back(S);
 }

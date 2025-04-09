@@ -1,7 +1,7 @@
 #pragma once
 #include <vulkan/vulkan.h>
 #include "REY_Utils.hh"
-#include "amVK_log.hh"
+#include "intern/amVK_log.hh"
 #include "amVK_Props.hh"
 
 /**

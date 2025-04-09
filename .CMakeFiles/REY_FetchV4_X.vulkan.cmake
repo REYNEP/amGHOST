@@ -7,10 +7,15 @@
         # VULKAN_SDK - Base SDK path
         # VK_SDK_PATH - Alternative SDK path
         # VULKAN_VERSION - SDK version
+
+    file(TO_CMAKE_PATH "$ENV{VULKAN_SDK}"  VULKAN_SDK_PATH)
+    file(TO_CMAKE_PATH "$ENV{VK_SDK_PATH}" VK_SDK_PATH)
+        # If we don't do this above two lines, CLANG won't work 💁‍♀️
+        
     set(REY_SCOUT_${TN}_PATHS
         # Windows paths
-        "$ENV{VULKAN_SDK}"
-        "$ENV{VK_SDK_PATH}"
+        "${VULKAN_SDK_PATH}"
+        "${VK_SDK_PATH}"
         "C:/VulkanSDK"
         # Linux paths
         "/usr/local/include"
@@ -42,4 +47,5 @@
     set(Git_CloneDir_Name)
     set(Git_Clone_Recursive OFF)
     set(Git_CheckFiles)
+    set(Git_AddSubdirectory OFF)
 # --------------------

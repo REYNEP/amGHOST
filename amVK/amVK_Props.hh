@@ -2,6 +2,8 @@
 #include <vulkan/vulkan.h>
 #include "REY_Utils.hh"
 
+class amVK_Surface;
+
 /**
  * i don't wanna scatter all the Properties All around my code. So, i'm gonna keep them here 😊
  *   --> Right inside `amVK_Props` class
@@ -33,32 +35,12 @@ class amVK_Props {
     static void EnumerateDeviceExtensionProperties(void);               // amVK_2D_GPUs_EXTs
 
   public:
-    /**
-     * VULKAN-EXT:- `VK_KHR_surface`
-     *       IMPL:- `amVK_1D_SurfaceInfos`
-     */
-    class SurfaceInfo {
-      public:
-        VkSurfaceKHR S = nullptr;
-        SurfaceInfo(void) {}
-        SurfaceInfo(VkSurfaceKHR pS) {this-> S = pS;}
-
-                  REY_Array<REY_Array<VkSurfaceFormatKHR>>              amVK_2D_GPUs_ImageFMTs;
-                  REY_Array<VkSurfaceCapabilitiesKHR>                   amVK_1D_GPUs_SurfCAP;
-
-        bool called_GetPhysicalDeviceSurfaceFormatsKHR = false;
-        bool called_GetPhysicalDeviceSurfaceCapabilitiesKHR = false;
-        void        GetPhysicalDeviceSurfaceInfo(void);
-    };
-
-
-  public:
         // Array of `HardWare amVK_1D_GPUs` connected to motherboard
     static inline REY_Array<VkPhysicalDevice>                           amVK_1D_GPUs;
     static inline REY_Array<REY_Array<VkQueueFamilyProperties>>         amVK_2D_GPUs_QFAMs;
     static inline REY_Array<VkExtensionProperties>                      amVK_1D_InstanceEXTs;
     static inline REY_ArrayDYN<char*>                                   amVK_1D_InstanceEXTs_Enabled;
-    static inline REY_ArrayDYN<SurfaceInfo>                             amVK_1D_SurfaceInfos;
+    static inline REY_ArrayDYN<amVK_Surface *>                          amVK_1D_Surfaces;
     static inline REY_Array<REY_Array<VkExtensionProperties>>           amVK_2D_GPUs_EXTs;
         // REY_Array  doesn't allocate any memory by default
 
@@ -66,9 +48,9 @@ class amVK_Props {
     #define amVK_LOOP_IEXTs(_var_)          for (uint32_t _var_ = 0,  lim = amVK_1D_InstanceEXTs.n;     _var_ < lim;  _var_++)
     #define amVK_LOOP_GPU_EXTs(_k_, _var_)  for (uint32_t _var_ = 0,  lim = amVK_2D_GPUs_EXTs[_k_].n;   _var_ < lim;  _var_++)
     #define amVK_LOOP_QFAMs(_k_, _var_)     for (uint32_t _var_ = 0,  lim = amVK_2D_GPUs_QFAMs[_k_].n;  _var_ < lim;  _var_++)
-    #define amVK_LOOP_SURFs(_var_)          for (uint32_t _var_ = 0,  lim = amVK_1D_SurfaceInfos.n;     _var_ < lim;  _var_++)
+    #define amVK_LOOP_SURFs(_var_)          for (uint32_t _var_ = 0,  lim = amVK_1D_Surfaces.n;         _var_ < lim;  _var_++)
     #define amVK_LOOP_SURF_FMTs(_SurfaceInfoPTR_, _GPU_k_, _var_) \
-        for (uint32_t _var_ = 0, lim = _SurfaceInfoPTR_->amVK_2D_GPUs_ImageFMTs[_GPU_k_].n;         _var_ < lim;  _var_++)
+        for (uint32_t _var_ = 0, lim = _SurfaceInfoPTR_->amVK_2D_GPUs_ImageFMTs[_GPU_k_].n;             _var_ < lim;  _var_++)
 
 
 /**
@@ -144,7 +126,7 @@ class amVK_Props {
             LIST IMG_FMTs
 */
   public:
-    static void push_back_VkSurfaceKHR(VkSurfaceKHR S);                 // amVK_1D_SurfaceInfos
+    static void push_back_amVK_Surface(amVK_Surface *S);                 // amVK_1D_Surfaces
 
 
    /*
