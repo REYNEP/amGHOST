@@ -18,22 +18,9 @@ amVK_RenderPass* amVK_Presenter::create_RenderPass(void) {
 }
 
 #include "amVK_FrameBuffer.hh"
-void amVK_Presenter::create_FrameBuffers(void) {
-    this->FBs.reserve(this->SC->amVK_1D_SC_IMGs.n);
-
-    REY_Array_LOOP(this->FBs, k) {
-        amVK_FrameBuffer* FB = new amVK_FrameBuffer(this);
-
-            FB->CI.attachmentCount = 1;
-            FB->CI.pAttachments = &(this->SC->amVK_1D_SC_IMGs_amVK_WRAP[k].vk_ImageView);
-
-            FB->CI.width = 0;
-            FB->CI.height = 0;
-
-            FB->CreateFrameBuffer();
-
-        this->FBs[k] = FB;
-    }
+amVK_FrameBuffer* amVK_Presenter::create_FrameBuffer(void) {
+    this->FB = new amVK_FrameBuffer(this);
+    return this->FB;
 }
 
 

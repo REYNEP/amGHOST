@@ -40,7 +40,7 @@ int main(int argumentCount, char* argumentVector[]) {
     {
             REY_LOG("");
         amVK_Props::EnumerateInstanceExtensions();
-        amVK_Instance::Add_InstanceEXT_ToEnable(VK_KHR_SURFACE_EXTENSION_NAME);
+        amVK_Instance::Add_InstanceEXT_ToEnable("VK_KHR_surface");
         amVK_Instance::Add_InstanceEXT_ToEnable(amGHOST_System::get_vulkan_os_surface_ext_name());
         amVK_Instance::CreateInstance();    // initializes amVK_HEART
 
@@ -70,11 +70,11 @@ int main(int argumentCount, char* argumentVector[]) {
                 amVK_IU::Color_Display      // VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT
             );
             SC->konf_Compositing(
-                amVK_PM::FIFO,
-                amVK_CC::YES,
-                amVK_TA::Opaque
+                amVK_PM::FIFO,              // VK_PRESENT_MODE_FIFO_KHR
+                amVK_CC::YES,               // Clipping:- VK_TRUE
+                amVK_TA::Opaque             // VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR
             );
-            SC->sync_SurfCaps();
+            SC->sync_SurfCaps();            // refresh/fetch & set/sync ---> latest SurfCaps
 
             SC->CI.oldSwapchain     = nullptr;
             SC->CreateSwapChain();
@@ -123,8 +123,8 @@ int main(int argumentCount, char* argumentVector[]) {
                 .dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_COLOR_ATTACHMENT_READ_BIT,
             });
 
-            RP->set_attachments_subpasses_dependencies();
-            RP->createRenderPass();
+            RP->set_Attachments_Subpasses_Dependencies();
+            RP->CreateRenderPass();
     }
 
     REY::cout << "\n" << "Press Enter to export data.json & exit 😊 ";
@@ -137,7 +137,6 @@ int main(int argumentCount, char* argumentVector[]) {
     REY::cout << "\n";
     return 0;
 }
-
 
 ```
 

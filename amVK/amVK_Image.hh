@@ -8,9 +8,11 @@ class amVK_Image {
         .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
         .pNext = nullptr,
         .flags = 0,
-        .image = this->IMG,
+        .image = this->vk_Image,
         .viewType = VK_IMAGE_VIEW_TYPE_2D,
-        .format = VK_FORMAT_UNDEFINED
+        .format = VK_FORMAT_UNDEFINED,
+        .components = {},
+        .subresourceRange = {}
     };
 
   public:
@@ -21,12 +23,12 @@ class amVK_Image {
 
   public:
     amVK_Device *D = nullptr;
-    VkImage IMG = nullptr;
-    VkImageView IMGV = nullptr;
+    VkImage vk_Image = nullptr;
+    VkImageView vk_ImageView = nullptr;
 
   public:
     void createImageView(void) {
-        VkResult return_code = vkCreateImageView(this->D->m_device, &ViewCI, nullptr, &this->IMGV);
+        VkResult return_code = vkCreateImageView(this->D->vk_Device, &ViewCI, nullptr, &this->vk_ImageView);
         amVK_return_code_log( "vkCreateImageView()" );     // above variable "return_code" can't be named smth else
     }
 };

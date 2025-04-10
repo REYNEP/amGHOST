@@ -109,8 +109,8 @@ nlohmann::ordered_json nlohmann_VkSurfaceFormatKHR(VkSurfaceFormatKHR SFMT) {
 nlohmann::ordered_json nlohmann_amVK_Image(amVK_Image *IMG) {
     nlohmann::ordered_json dict = nlohmann::ordered_json::object();
 
-    dict["Memory Address"] = toSTR(IMG->IMG);
-    dict["VkImageView   "] = toSTR(IMG->IMGV);
+    dict["Memory Address"] = toSTR(IMG->vk_Image);
+    dict["VkImageView   "] = toSTR(IMG->vk_ImageView);
 
     return dict;
 }

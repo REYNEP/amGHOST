@@ -11,8 +11,8 @@ amVK_Device::amVK_Device(VkPhysicalDevice PD)
         REY_LOG("Can't find VkPhysicalDevice:- " << PD)
     }
     else {
-        m_PD_index = id;
-        m_physicalDevice = amVK_Props::amVK_1D_GPUs[id];
+        PD_ID = id;
+        vk_PhysicalDevice = amVK_Props::amVK_1D_GPUs[id];
     }
 }
 
@@ -23,7 +23,7 @@ void amVK_Device::Add_GPU_EXT_ToEnable(const char* extName) {
          amVK_Props::EnumerateDeviceExtensionProperties();
     }
     
-    if (amVK_Props::IS_GPU_EXT_Available(this->m_PD_index, extName)) {
+    if (amVK_Props::IS_GPU_EXT_Available(this->PD_ID, extName)) {
         char  *dont_lose = REY_strcpy(extName);
 
         REY_ArrayDYN_PUSH_BACK(this->amVK_1D_GPU_EXTs_Enabled) = dont_lose;

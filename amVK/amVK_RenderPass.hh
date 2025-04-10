@@ -9,46 +9,52 @@ class amVK_RenderPass  {
         .sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
         .pNext = nullptr,
         .flags = 0,
+        .attachmentCount = 0,
         .pAttachments = nullptr,
+            // AttachMent Descriptors, not actual, ImageView Attachments [that'd be in FrameBufferCI]
+        .subpassCount = 0,
         .pSubpasses = nullptr,
+        .dependencyCount = 0,
         .pDependencies = nullptr
     };
 
-    REY_ArrayDYN<VkAttachmentDescription> attachments;
-    REY_ArrayDYN<VkSubpassDescription> subpasses;
-    REY_ArrayDYN<VkSubpassDependency> dependencies;
-    void set_attachments(void) {
-        CI.attachmentCount = attachments.neXt;
-        CI.pAttachments = attachments.data;
+    REY_ArrayDYN<VkAttachmentDescription> AttachmentInfos;
+    REY_ArrayDYN<VkSubpassDescription> SubpassInfos;
+    REY_ArrayDYN<VkSubpassDependency> Dependencies;
+    void sync_Attachments(void) {
+        CI.attachmentCount = AttachmentInfos.neXt;
+        CI.pAttachments = AttachmentInfos.data;
     }
-    void set_subpasses(void) {
-        CI.subpassCount = subpasses.neXt;
-        CI.pSubpasses = subpasses.data;
+    void sync_Subpasses(void) {
+        CI.subpassCount = SubpassInfos.neXt;
+        CI.pSubpasses = SubpassInfos.data;
     }
-    void set_dependencies(void) {
-        CI.dependencyCount = dependencies.neXt;
-        CI.pDependencies = dependencies.data;
+    void sync_Dependencies(void) {
+        CI.dependencyCount = Dependencies.neXt;
+        CI.pDependencies = Dependencies.data;
     }
-    void set_attachments_subpasses_dependencies(void) {
-         set_attachments();
-         set_subpasses();
-         set_dependencies();
+    void sync_Attachments_Subpasses_Dependencies(void) {
+         sync_Attachments();
+         sync_Subpasses();
+         sync_Dependencies();
+    }
+    void sync_Elements(void) {
+         sync_Attachments_Subpasses_Dependencies();
     }
 
   public:
-    amVK_RenderPass(amVK_Presenter *paramPR, amVK_Device *paramD) {
-        this->PR = paramPR;
-        this->D = paramD;
+    amVK_RenderPass(amVK_Presenter *PR) {
+        this->PR = PR;
     }
 
   public:
     amVK_Device *D = nullptr;
     amVK_Presenter *PR = nullptr;       // Basically, Parent Pointer
-    VkRenderPass RP = nullptr;
+    VkRenderPass vk_RenderPass = nullptr;
 
   public:
-    void createRenderPass(void) {
-        VkResult return_code = vkCreateRenderPass(this->D->m_device, &CI, nullptr, &this->RP);
+    void CreateRenderPass(void) {
+        VkResult return_code = vkCreateRenderPass(this->PR->D->vk_Device, &CI, nullptr, &this->vk_RenderPass);
         amVK_return_code_log( "vkCreateRenderPass()" );     // above variable "return_code" can't be named smth else
     }
 };

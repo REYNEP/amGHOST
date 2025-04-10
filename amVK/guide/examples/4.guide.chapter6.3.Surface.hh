@@ -1,10 +1,8 @@
 #pragma once
 #include "amVK.hh"
 
-class amVK_SwapChain;
 class amVK_RenderPass;
-class amVK_FrameBuffer;
-
+class amVK_SwapChain;
 class amVK_Device;
 class amVK_Presenter;
 
@@ -14,8 +12,8 @@ class amVK_Presenter;
  */
 class amVK_Surface {
   public:
-    VkSurfaceKHR S = nullptr;       //     Set in CONSTRUCTOR
-    amVK_Presenter *PR = nullptr;   // Created in CONSTRUCTOR
+    VkSurfaceKHR S = nullptr;       // Set in CONSTRUCTOR
+    amVK_Presenter *PR = nullptr;   // Set in CONSTRUCTOR
     
     amVK_Surface(void) {}
     amVK_Surface(VkSurfaceKHR pS);
@@ -39,18 +37,15 @@ class amVK_Presenter {
     amVK_Device        *D = nullptr;
     VkPhysicalDevice   GPU = nullptr;
         // amVK_Device.m_PD = this->GPU;
-    amVK_GPU_Index  GPU_Index = 0;
-
-    REY_Array<amVK_FrameBuffer *> FBs;
+    amVK_GPU_Index GPU_Index = 0;
     
   public:
     void bind_Device(amVK_Device *D);
     amVK_Presenter  (amVK_Surface* pS) {this->S = pS;}
 
   public:
-    amVK_SwapChain*   create_SwapChain(void);
-    amVK_RenderPass*  create_RenderPass(void);
-    void              create_FrameBuffers(void);
+    amVK_SwapChain*  create_SwapChain(void);
+    amVK_RenderPass* create_RenderPass(void);
     // Defined currently inside amVK_SwapChain.cpp
     
     void                      refresh_SurfCaps(void) { this->S->GetPhysicalDeviceSurfaceCapabilitiesKHR(); }
