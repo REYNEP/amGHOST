@@ -37,6 +37,7 @@ project("amGHOST_PROJECT" VERSION 0.1)
         "amVK/intern/amVK_Enum2String.cpp"
         "amVK/intern/amVK_log.cpp"
         "amVK/intern/amVK_SwapChain.cpp"
+        "amVK/intern/amVK_Surface.cpp"
     )
 
     set(INC

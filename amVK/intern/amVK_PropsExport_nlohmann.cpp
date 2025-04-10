@@ -179,7 +179,7 @@ nlohmann::ordered_json nlohmann_amVK_SurfaceInfo(amVK_Surface *Surf) {
     nlohmann::ordered_json dict = nlohmann::ordered_json::object();
 
         dict["Memory Address"] = toSTR(Surf->S);
-        dict["vkSwapchainKHR"] = nlohmann_amVK_SwapChain(Surf->SC);
+        dict["vkSwapchainKHR"] = nlohmann_amVK_SwapChain(Surf->PR->SC);
         
     REY_Array_LOOP(amVK_Props::amVK_1D_GPUs, k) {
         nlohmann::ordered_json GPU_k = nlohmann::ordered_json::object();

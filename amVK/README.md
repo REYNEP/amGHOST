@@ -52,32 +52,36 @@ int main(int argumentCount, char* argumentVector[]) {
         amVK_Props::GetPhysicalDeviceQueueFamilyProperties();
         amVK_Props::EnumerateDeviceExtensionProperties();
 
-        amVK_Device* D = new amVK_Device(amVK_Props::GetARandom_PhysicalDevice());
-        D->Select_QFAM_GRAPHICS();
-        D->Add_GPU_EXT_ToEnable("VK_KHR_swapchain");
-        D->CreateDevice();
+        amVK_Device* D = new amVK_Device(amVK_Props::GetARandom_GPU());
+            D->select_QFAM_Graphics();
+            D->Add_GPU_EXT_ToEnable("VK_KHR_swapchain");
+            D->CreateDevice();
         
             REY_LOG("")
         amVK_Surface   *S  = new amVK_Surface(VK_S);
-        amVK_SwapChain *SC = S->Create_amVK_SwapChain(D);       // This amVK_SwapChain is Bound to this amVK_Surface
-            SC->CI.imageFormat      = amVK_IF::RGBA_8bpc_UNORM;
-            SC->CI.imageColorSpace  = amVK_CS::sRGB;
-            SC->CI.minImageCount    = amVK_Props::amVK_1D_Surfaces[0]->amVK_1D_GPUs_SurfCAP[0].minImageCount;
-            SC->CI.imageExtent      = amVK_Props::amVK_1D_Surfaces[0]->amVK_1D_GPUs_SurfCAP[0].currentExtent;
-            SC->CI.imageArrayLayers = amVK_Props::amVK_1D_Surfaces[0]->amVK_1D_GPUs_SurfCAP[0].maxImageArrayLayers;
-            SC->CI.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
-            SC->CI.imageUsage       = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+        amVK_Presenter *PR = S->PR;
+                                PR->bind_Device(D);
+                                PR->create_SwapChain();       // This amVK_SwapChain is Bound to this amVK_Surface
+        amVK_SwapChain *SC =    PR->SC;
+            SC->konf_ImageSharingMode(VK_SHARING_MODE_EXCLUSIVE);
+            SC->konf_Images(
+                amVK_IF::RGBA_8bpc_UNORM,   // VK_FORMAT_R8G8B8A8_UNORM
+                amVK_CS::sRGB,              // VK_COLOR_SPACE_SRGB_NONLINEAR_KHR
+                amVK_IU::Color_Display      // VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT
+            );
+            SC->konf_Compositing(
+                amVK_PM::FIFO,
+                amVK_CC::YES,
+                amVK_TA::Opaque
+            );
+            SC->sync_SurfCaps();
 
-            SC->CI.compositeAlpha   = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-            SC->CI.preTransform     = amVK_Props::amVK_1D_Surfaces[0]->amVK_1D_GPUs_SurfCAP[0].currentTransform;
-            SC->CI.clipped          = VK_TRUE;
-            SC->CI.presentMode      = VK_PRESENT_MODE_FIFO_KHR;
             SC->CI.oldSwapchain     = nullptr;
-            SC->createSwapChain();
-            SC->GetSwapchainImagesKHR();
+            SC->CreateSwapChain();
+            SC->GetSwapChainImagesKHR();
             SC->CreateSwapChainImageViews();
 
-        amVK_RenderPass *RP = new amVK_RenderPass(D);
+        amVK_RenderPass *RP = PR->create_RenderPass(); 
             RP->attachments.push_back({
                 .format = SC->CI.imageFormat,                                   // Use the color format selected by the swapchain
                 .samples = VK_SAMPLE_COUNT_1_BIT,                               // We don't use multi sampling in this example
@@ -134,7 +138,31 @@ int main(int argumentCount, char* argumentVector[]) {
     return 0;
 }
 
+
 ```
+
+## Naming Conventions
+1. Simple Wrappers around `vulkan` functions
+    ```cpp
+    bool called_GetPhysicalDeviceSurfaceFormatsKHR = false;
+    bool called_GetPhysicalDeviceSurfaceCapabilitiesKHR = false;
+    void        GetPhysicalDeviceSurfaceInfo(void);
+    void        GetPhysicalDeviceSurfaceCapabilitiesKHR(void);
+
+    amVK_SwapChain {
+            // Notice the "Capital-C" @ 'Chain', i didn't do this at any other functions
+        void CreateSwapChain(void) {
+            VkResult return_code = vkCreateSwapchainKHR(this->D->m_device, &CI, nullptr, &this->SC);
+            amVK_return_code_log( "vkCreateSwapchainKHR()" );     // above variable "return_code" can't be named smth else
+        }
+    }
+    ```
+2. amVK Object/Instances Creation
+    ```cpp
+    amVK_SwapChain* amVK_Presenter::create_SwapChain(void);
+    ```
+3. 
+
 
 ## Vulkan Structure
 ```cpp
@@ -160,3 +188,37 @@ VkInstance
     RenderLoop
         Record(VkCommandBuffer)
 ```
+
+## Verbs to Remember
+1. query_SurfCap 🕵️♂️
+2. update_SurfCap 🔄
+3. load_SurfCap 📥
+4. acquire_SurfCap 🔗
+5. get_SurfCap 📤
+6. grab_SurfCap	👐
+7. snag_SurfCap	🎣 (Quick pull)
+8. pluck_SurfCap	✂️ (Precision)
+9. selected_gpu_surfCap	🎯 (Targeted)	Emphasizes the GPU_Index selection.
+10. current_surfCap	⏳ (Stateful)
+11. yoink_SurfCap	🦄 (Playful)	VkSurfaceCapabilitiesKHR* cap = yoink_SurfCap();
+12. procure_SurfCap	🕴️ (Formal)	procure_SurfCap() → Sounds like a business transaction!
+13. obtain_SurfCap	🏆 (Success)
+14. collect_SurfCap	📚 (Gathering)
+15. retrieve_SurfCap	🎯 (Accuracy)
+16. sync_SurfCap	🔄 (Sync State)
+17. pull_SurfCap	🪢 (Tug-of-war)
+18. refresh_SurfCap	💫 (Update)
+19. reload_SurfCap	♻️ (Reload)
+20. populate_SurfCap	🌱 (Fill Data)
+21. enumerate_SurfCap	📇 (Listing)
+22. summon_SurfCap	🧙♂️ (Magic)
+23. harvest_SurfCap	🌾 (Farm)
+24. fish_SurfCap	🎣 (Fishing)
+25. dial in	🎛️ (Precision)
+26. shape up	🌟 (Polishing)
+27. rig	🛠️ (Hacky)
+28. tailor	👗 (Custom-fit)
+29. access_SurfCap 🔍
+30. craft	🧙♂️ (Artisan)
+31. surfCap 📋 (property-style)
+32. surfCap_ptr 🎯 (or surfCapRef)

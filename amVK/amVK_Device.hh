@@ -63,8 +63,10 @@ class amVK_Device {
     void Log_GPU_EXTs_Enabled(VkResult ret);
 
   public:
-    /** Wait, I wanted to write some shits here.... [read the amVK_Guide] */
     amVK_Device(VkPhysicalDevice PD);
+    /**
+     * SEE: `amVK_Props::GetARandom_GPU()`
+     */
     amVK_Device(amVK_Props::PD_Index index) {
         m_PD_index = index;
         m_physicalDevice = amVK_Props::amVK_1D_GPUs[index];
@@ -79,7 +81,7 @@ class amVK_Device {
 
   public:
     /**
-     * @param p1: [VkPhysicalDevice]:- see `amVK_Props::GetARandom_PhysicalDevice()`
+     * @param p1: [VkPhysicalDevice]:- see `amVK_Props::GetARandom_GPU()`
      */
     void CreateDevice(void) {
         VkResult return_code = vkCreateDevice(m_physicalDevice, &CI, nullptr, &this->m_device);
@@ -98,14 +100,14 @@ class amVK_Device {
 
   public:
     /* Must Call This:- after editing `amVK_Device::QCI.Array` */
-    void Set_QCI_Array_into_DeviceCI(void) {
+    void set_QCI_Array_into_DeviceCI(void) {
         this->CI.queueCreateInfoCount = QCI.Array.neXt;
         this->CI.pQueueCreateInfos    = QCI.Array.data;
     }
-    void Set_QFAM_Index(uint32_t qFAM_Index) {
+    void set_QFAM_Index(uint32_t qFAM_Index) {
         this->QCI.Default.queueFamilyIndex = qFAM_Index;
     }
-    void Select_QFAM_GRAPHICS(void) {
+    void select_QFAM_Graphics(void) {
         if (!amVK_Props::called_GetPhysicalDeviceQueueFamilyProperties) {
              amVK_Props::EnumeratePhysicalDevices();
         }
@@ -117,6 +119,6 @@ class amVK_Device {
         amVK_Props::PD_Index GPU_k = this->m_PD_index;
         uint32_t        qFAM_Index = amVK_Props::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, GPU_k);
 
-        this->Set_QFAM_Index(qFAM_Index);
+        this->set_QFAM_Index(qFAM_Index);
     }
 };

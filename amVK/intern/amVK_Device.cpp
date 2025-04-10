@@ -1,5 +1,9 @@
 #include "amVK_Device.hh"
 
+    /** 
+     * Wait, I wanted to write some shits here.... [read the amVK_Guide] 
+     * SEE: `amVK_Props::GetARandom_GPU()`
+     */
 amVK_Device::amVK_Device(VkPhysicalDevice PD) 
 {
     amVK_Props::PD_Index id = amVK_Props::VkPhysicalDevice_2_PD_Index(PD);

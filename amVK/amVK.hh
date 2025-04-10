@@ -58,6 +58,9 @@ class amVK_Instance {
     }
 
   public:
+    static void EnumerateInstanceExtensions(void) {
+        amVK_Props::EnumerateInstanceExtensions();
+    }
     /**
      * USES:- `REY_ArrayDYN<char *> amVK_Props::amVK_1D_InstanceEXTs_Enabled`
      */

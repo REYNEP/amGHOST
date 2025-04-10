@@ -66,9 +66,9 @@ class amVK_Props {
   public:
         // Linear Search
     static                PD_Index VkPhysicalDevice_2_PD_Index(VkPhysicalDevice PDevice);
-    static inline         PD_Index GetARandom_PhysicalDevice_amVK_Index(void) { return 0; }
+    static inline         PD_Index GetARandom_GPU_amVK_Index(void) { return 0; }
         // Call: `EnumeratePhysicalDevices();` Before this function
-    static inline VkPhysicalDevice GetARandom_PhysicalDevice(void) { return amVK_1D_GPUs[0]; }
+    static inline VkPhysicalDevice GetARandom_GPU(void) { return amVK_1D_GPUs[0]; }
 
 
 /**

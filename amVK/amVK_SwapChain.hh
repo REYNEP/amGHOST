@@ -3,9 +3,10 @@
 #include "amVK_Device.hh"
 #include "amVK_Image.hh"
 #include "amVK_Surface.hh"
+#include "amVK_ColorSpace.hh"
 
 /**
- * 
+ * konf = konfigurieren = configure 💁‍♀️
  */
 class amVK_SwapChain  {
   public:
@@ -14,13 +15,35 @@ class amVK_SwapChain  {
         .pNext = nullptr,
         .flags = 0,
         .surface = nullptr,
+        .imageSharingMode = VK_SHARING_MODE_EXCLUSIVE,
         .queueFamilyIndexCount = 0,
         .pQueueFamilyIndices = nullptr,
+        .oldSwapchain     = nullptr,
     };
 
-    void            set_SC_imageFormat_colorSpace(VkFormat imageFormat, VkColorSpaceKHR colorSpace, bool autoFallback = true);
-    VkFormat        get_SC_imageFormat(void) {return CI.imageFormat;}
-    VkColorSpaceKHR get_SC_colorSpace (void) {return CI.imageColorSpace;}
+    void                sync_SurfCaps(void) {
+        this->S->PR->refresh_SurfCaps();
+        VkSurfaceCapabilitiesKHR *SurfCaps = this->S->PR->fetched_SurfCaps();
+
+        this->CI.minImageCount    = SurfCaps->minImageCount;
+        this->CI.imageExtent      = SurfCaps->currentExtent;
+        this->CI.imageArrayLayers = SurfCaps->maxImageArrayLayers;
+        this->CI.preTransform     = SurfCaps->currentTransform;
+    }
+    void              konf_Images(
+        VkFormat IF, 
+        VkColorSpaceKHR CS, 
+        VkImageUsageFlagBits IU, 
+        bool autoFallBack = true
+    );
+    void              konf_Compositing(
+        VkPresentModeKHR PM,
+        amVK_CompositeClipping CC,
+        VkCompositeAlphaFlagBitsKHR CA
+    );
+    void              konf_ImageSharingMode(VkSharingMode ISM)  {CI.imageSharingMode = ISM;}
+    VkFormat        active_PixelFormat(void)                    {return CI.imageFormat;}
+    VkColorSpaceKHR active_ColorSpace (void)                    {return CI.imageColorSpace;}
 
   public:
     amVK_SwapChain(amVK_Surface *pS, amVK_Device *pD) {
@@ -38,11 +61,11 @@ class amVK_SwapChain  {
     REY_Array<amVK_Image> amVK_1D_SC_IMGs_amVK_WRAP;
         // Will we be able to keep sync of these two different thingies correctly?
 
-    bool called_GetSwapchainImagesKHR = false;
+    bool called_GetSwapChainImagesKHR = false;
     bool called_CreateSwapChainImageViews = false;
 
   public:
-    void createSwapChain(void) {
+    void CreateSwapChain(void) {
         VkResult return_code = vkCreateSwapchainKHR(this->D->m_device, &CI, nullptr, &this->SC);
         amVK_return_code_log( "vkCreateSwapchainKHR()" );     // above variable "return_code" can't be named smth else
     }
@@ -60,7 +83,7 @@ class amVK_SwapChain  {
      *  OUT:- `amVK_1D_GPUs`
      * PREV:- `amVK_Instance::CreateInstance()`
      */
-    void GetSwapchainImagesKHR(void) 
+    void GetSwapChainImagesKHR(void) 
     {
         // ---------------------------- amVK_1D_SC_IMGs -------------------------------
         uint32_t imagesCount = 0;     
@@ -76,7 +99,7 @@ class amVK_SwapChain  {
             amVK_return_code_log( "vkGetSwapchainImagesKHR()" );
         // ---------------------------- amVK_1D_SC_IMGs -------------------------------
 
-        called_GetSwapchainImagesKHR = true;
+        called_GetSwapChainImagesKHR = true;
 
         amVK_1D_SC_IMGs_amVK_WRAP.n    = imagesCount;
         amVK_1D_SC_IMGs_amVK_WRAP.data = new amVK_Image[imagesCount];
@@ -89,8 +112,8 @@ class amVK_SwapChain  {
     }
 
     void CreateSwapChainImageViews(void) {
-        if (!called_GetSwapchainImagesKHR) {
-            GetSwapchainImagesKHR();
+        if (!called_GetSwapChainImagesKHR) {
+            GetSwapChainImagesKHR();
         }
 
         REY_Array_LOOP(amVK_1D_SC_IMGs_amVK_WRAP, i) {

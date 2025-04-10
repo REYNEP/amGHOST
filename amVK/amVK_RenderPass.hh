@@ -36,12 +36,14 @@ class amVK_RenderPass  {
     }
 
   public:
-    amVK_RenderPass(amVK_Device *paramD) {
-        D = paramD;
+    amVK_RenderPass(amVK_Presenter *paramPR, amVK_Device *paramD) {
+        this->PR = paramPR;
+        this->D = paramD;
     }
 
   public:
     amVK_Device *D = nullptr;
+    amVK_Presenter *PR = nullptr;       // Basically, Parent Pointer
     VkRenderPass RP = nullptr;
 
   public:

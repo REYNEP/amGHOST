@@ -91,6 +91,18 @@ VkSurfaceKHR VK_S = amGHOST_VkSurfaceKHR::create_surface(W, amVK_Instance::s_vk)
 ## Todo
 1. auto grab it if vulkan-sdk is not found.... using `REY_FetchV4::Zip`
 
+## C/C++ Extension [vscode]
+```json
+{
+    ...
+        // C/C++ intelliSense Extension
+    "C_Cpp.files.exclude": {
+       "C:\\Users\\REY\\Desktop\\idk\\amGHOST\\amVK\\guide": true,
+    },
+    ...
+}
+```
+
 ## Common Principles I Followed
 1. Logs are better than RETURN VALUES. 
     - The way that we need to check RETURN VALUES of every single VULKAN FUNCTION. Wrapping every vulkan function call around with a RESULT/VK_CHECK wrapper.... [all of it felt really frickin hectic >_<>] .... is exactly what led me to take this decision.
