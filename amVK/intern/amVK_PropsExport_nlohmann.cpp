@@ -119,7 +119,7 @@ nlohmann::ordered_json nlohmann_amVK_Image(amVK_Image *IMG) {
 nlohmann::ordered_json nlohmann_amVK_SwapChain(amVK_SwapChain *SC) {
     nlohmann::ordered_json dict = nlohmann::ordered_json::object();
 
-    dict["Memory Address"] = toSTR(SC->SC);
+    dict["Memory Address"] = toSTR(SC->vk_SwapChainKHR);
     REY_Array_LOOP(SC->amVK_1D_SC_IMGs_amVK_WRAP, i) {
         dict["[SwapChain Image " + std::to_string(i) + "]"] = nlohmann_amVK_Image(&(SC->amVK_1D_SC_IMGs_amVK_WRAP[i]));
     }
@@ -178,7 +178,7 @@ nlohmann::ordered_json nlohmann_Array_VkSurfaceFormatKHR(REY_Array<VkSurfaceForm
 nlohmann::ordered_json nlohmann_amVK_SurfaceInfo(amVK_Surface *Surf) {
     nlohmann::ordered_json dict = nlohmann::ordered_json::object();
 
-        dict["Memory Address"] = toSTR(Surf->S);
+        dict["Memory Address"] = toSTR(Surf->vk_SurfaceKHR);
         dict["vkSwapchainKHR"] = nlohmann_amVK_SwapChain(Surf->PR->SC);
         
     REY_Array_LOOP(amVK_Props::amVK_1D_GPUs, k) {

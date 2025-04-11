@@ -1,6 +1,20 @@
 #pragma once
 #include "vulkan/vulkan.h"
 
+/**
+ * 
+
+| Format Suffix | Data Type            | Range (Shader Interpretation) | Typical Use Case                                         |
+|---------------|----------------------|-------------------------------|----------------------------------------------------------|
+| UNORM         | Unsigned Normalized  | [0.0, 1.0]                    | Standard color attachments (e.g., swapchain images).     |
+| SNORM         | Signed Normalized    | [-1.0, 1.0]                   | Signed data (e.g., normals, displacements). Rarely used. |
+| USCALED       | Unsigned Scaled      | [0.0, 255.0]                  | Legacy/compatibility (integer values as floats).         | 
+| SSCALED       | Signed Scaled        | [-128.0, 127.0]               | Legacy/compatibility (integer values as floats).         |
+| UINT          | Unsigned Integer     | [0, 255] (as uint)            | Integer render targets (e.g., stencil IDs, voxel data).  |
+| SINT          | Signed Integer       | [-128, 127] (as int)          | Signed integer data (e.g., compute shader outputs).      |
+| SRGB          | sRGB Gamma-Corrected | [0.0, 1.0] (sRGB → Linear)    | Textures/swapchain images (proper color blending).       |
+
+ */
 namespace amVK_ImageFormat 
 {
         // 8bpc = 8-bits per channel

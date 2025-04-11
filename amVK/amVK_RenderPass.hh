@@ -48,7 +48,6 @@ class amVK_RenderPass  {
     }
 
   public:
-    amVK_Device *D = nullptr;
     amVK_Presenter *PR = nullptr;       // Basically, Parent Pointer
     VkRenderPass vk_RenderPass = nullptr;
 

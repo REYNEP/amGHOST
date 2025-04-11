@@ -25,6 +25,7 @@
 #include "amVK_Image.hh"
 #include "amVK_RenderPass.hh"
 #include "amVK_ColorSpace.hh"
+#include "amVK_CommandBuffer.hh"
 #include "REY_Logger.hh"
 
 int main(int argumentCount, char* argumentVector[]) {
@@ -82,7 +83,7 @@ int main(int argumentCount, char* argumentVector[]) {
             SC->CreateSwapChainImageViews();
 
         amVK_RenderPass *RP = PR->create_RenderPass(); 
-            RP->attachments.push_back({
+            RP->AttachmentInfos.push_back({
                 .format = SC->CI.imageFormat,                                   // Use the color format selected by the swapchain
                 .samples = VK_SAMPLE_COUNT_1_BIT,                               // We don't use multi sampling in this example
                 .loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR,                          // Clear this attachment at the start of the render pass
@@ -98,7 +99,7 @@ int main(int argumentCount, char* argumentVector[]) {
                 .attachment = 0,
                 .layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
             };
-            RP->subpasses.push_back({
+            RP->SubpassInfos.push_back({
                 .pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS,
 
                 .inputAttachmentCount = 0,                            // Input attachments can be used to sample from contents of a previous subpass
@@ -112,7 +113,7 @@ int main(int argumentCount, char* argumentVector[]) {
                 .pPreserveAttachments = nullptr                       // (Preserve attachments not used by this example)
             });
 
-            RP->dependencies.push_back({
+            RP->Dependencies.push_back({
                 // Setup dependency and add implicit layout transition from final to initial layout for the color attachment.
                 // (The actual usage layout is preserved through the layout specified in the attachment reference).
                 .srcSubpass = VK_SUBPASS_EXTERNAL,
@@ -123,8 +124,12 @@ int main(int argumentCount, char* argumentVector[]) {
                 .dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_COLOR_ATTACHMENT_READ_BIT,
             });
 
-            RP->set_Attachments_Subpasses_Dependencies();
+            RP->sync_Attachments_Subpasses_Dependencies();
             RP->CreateRenderPass();
+        
+        PR->create_FrameBuffers();
+        amVK_CommandPool *CP = PR->create_CommandPool();
+            CP->CreateCommandPool();
     }
 
     REY::cout << "\n" << "Press Enter to export data.json & exit 😊 ";

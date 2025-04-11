@@ -36,6 +36,7 @@ class amVK_SwapChain  {
         .oldSwapchain     = nullptr,
     };
 
+    /** Refreshes & Syncs `SurfaceCapabilites` */
     void                sync_SurfCaps(void) {
         this->S->PR->refresh_SurfCaps();
         VkSurfaceCapabilitiesKHR *SurfCaps = this->S->PR->fetched_SurfCaps();
@@ -67,13 +68,13 @@ class amVK_SwapChain  {
     amVK_SwapChain(amVK_Surface *pS, amVK_Device *pD) {
         this->S = pS;
         this->D = pD;
-        this->CI.surface = pS->S;
+        this->CI.surface = pS->vk_SurfaceKHR;
     }
 
   public:
     amVK_Device *D = nullptr;
     amVK_Surface *S = nullptr;
-    VkSwapchainKHR SC = nullptr;
+    VkSwapchainKHR vk_SwapChainKHR = nullptr;
 
     REY_Array<VkImage>    amVK_1D_SC_IMGs;
     REY_Array<amVK_Image> amVK_1D_SC_IMGs_amVK_WRAP;
@@ -86,7 +87,7 @@ class amVK_SwapChain  {
 
   public:
     void CreateSwapChain(void) {
-        VkResult return_code = vkCreateSwapchainKHR(this->D->vk_Device, &CI, nullptr, &this->SC);
+        VkResult return_code = vkCreateSwapchainKHR(this->D->vk_Device, &CI, nullptr, &this->vk_SwapChainKHR);
         amVK_return_code_log( "vkCreateSwapchainKHR()" );     // above variable "return_code" can't be named smth else
     }
 };

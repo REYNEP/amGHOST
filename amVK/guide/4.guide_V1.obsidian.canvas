@@ -1,0 +1,24 @@
+{
+	"nodes":[
+		{"id":"cbca912c4472c983","type":"file","file":"4.guide.CH1.pdf","x":2080,"y":-200,"width":1600,"height":2280},
+		{"id":"12e761d3712bf771","type":"file","file":"4.guide.CH1.md","x":2300,"y":2220,"width":1160,"height":2420},
+		{"id":"5582b973e30450a2","type":"file","file":"4.guide.CH0.pdf","x":-320,"y":-200,"width":1600,"height":2280},
+		{"id":"897cc07b67bf0d75","type":"file","file":"4.guide.CH0.md","x":-100,"y":2220,"width":1160,"height":1800},
+		{"id":"03995671c06f1096","type":"file","file":"4.guide.CH0.vscode.pdf","x":-320,"y":4140,"width":1600,"height":2280},
+		{"id":"86601bf4952c9262","type":"file","file":"4.guide.CH0.vscode.md","x":-100,"y":6500,"width":1160,"height":1440},
+		{"id":"904bb2f8953713e1","type":"file","file":"4.guide.CH2.pdf","x":4480,"y":-200,"width":1600,"height":2280},
+		{"id":"912f7318a42017cd","type":"file","file":"4.guide.CH2.md","x":4700,"y":2220,"width":1160,"height":5300},
+		{"id":"597e0623561baf3d","type":"file","file":"4.guide.CH3.pdf","x":7040,"y":-200,"width":1600,"height":2280},
+		{"id":"9e7271afd98be5b6","type":"file","file":"4.guide.CH3.md","x":7260,"y":2220,"width":1160,"height":2500},
+		{"id":"ce95bf34667bfece","type":"file","file":"4.guide.CH4.pdf","x":9600,"y":-200,"width":1600,"height":2280},
+		{"id":"188095818dd071e8","type":"file","file":"4.guide.CH4.md","x":9820,"y":2220,"width":1160,"height":9940},
+		{"id":"0b5c141fd94971bc","type":"file","file":"4.guide.CH5.pdf","x":12160,"y":-200,"width":1600,"height":2280},
+		{"id":"7e7c2ca9c86e9bd7","type":"file","file":"4.guide.CH5.md","x":12380,"y":2220,"width":1160,"height":13780},
+		{"id":"a3352f85bf4e6b76","type":"file","file":"4.guide.CH6.pdf","x":14720,"y":-200,"width":1600,"height":2280},
+		{"id":"dfb635eaeb0bef1a","type":"file","file":"4.guide.CH6.md","x":14940,"y":2220,"width":1160,"height":3860},
+		{"id":"45e7a40cca97fb6e","type":"file","file":"4.guide.CH7.pdf","x":17280,"y":-200,"width":1600,"height":2280},
+		{"id":"453e40840b3582d0","type":"file","file":"4.guide.CH7.md","x":17500,"y":2220,"width":1160,"height":1300},
+		{"id":"e5aa448101d02856","type":"file","file":"4.guide.CH8.md","x":19980,"y":2220,"width":1160,"height":860}
+	],
+	"edges":[]
+}

@@ -53,13 +53,13 @@ void amVK_SwapChain::GetSwapChainImagesKHR(void)
     uint32_t imagesCount = 0;     
         // [implicit valid usage]:- must be 0     [if 3rd-param = nullptr]
 
-        vkGetSwapchainImagesKHR(this->D->vk_Device, this->SC, &imagesCount, nullptr);
+        vkGetSwapchainImagesKHR(this->D->vk_Device, this->vk_SwapChainKHR, &imagesCount, nullptr);
             // This function is 'output-ing into' deviceCount
 
     amVK_1D_SC_IMGs.n    = imagesCount;
     amVK_1D_SC_IMGs.data = new VkImage[imagesCount];
 
-        VkResult return_code = vkGetSwapchainImagesKHR(this->D->vk_Device, this->SC, &imagesCount, amVK_1D_SC_IMGs.data);
+        VkResult return_code = vkGetSwapchainImagesKHR(this->D->vk_Device, this->vk_SwapChainKHR, &imagesCount, amVK_1D_SC_IMGs.data);
         amVK_return_code_log( "vkGetSwapchainImagesKHR()" );
     // ---------------------------- amVK_1D_SC_IMGs -------------------------------
 
