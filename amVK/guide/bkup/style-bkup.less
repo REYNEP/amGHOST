@@ -100,8 +100,19 @@
         font-weight: bold;
     }
 
+    .REY_PAGEBREAK {
+        margin-bottom: 300px;
+    }
+
         // custom prince pdf export style
         &.prince {
+            .REY_NOSHOW_PDF {
+                display: none !important;
+            }
+            .REY_PAGEBREAK {
+                margin-bottom: 0px;
+            }
+            
             html body {
                 color: black !important;
             }

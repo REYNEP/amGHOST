@@ -1,4 +1,4 @@
-#include "amVK.hh"
+#include "amVK_Instance.hh"
 
 /**
  * Not a "VkPhysicalDevice"

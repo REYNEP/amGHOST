@@ -1,31 +1,31 @@
-#include "amVK.hh"
+#include "amVK_Instance.hh"
 
-void amVK_Props::EnumeratePhysicalDevices(void) 
+void amVK_GlobalProps::EnumeratePhysicalDevices(void) 
 {
     uint32_t deviceCount = 0;     
         // [implicit valid usage]:- must be 0     [if 3rd-param = nullptr]
 
-        vkEnumeratePhysicalDevices(amVK_Props::s_vk, &deviceCount, nullptr);
+        vkEnumeratePhysicalDevices(amVK_GlobalProps::s_vk, &deviceCount, nullptr);
             // This function is 'output-ing into' deviceCount
 
     amVK_GPU_List.n    = deviceCount;
     amVK_GPU_List.data = new VkPhysicalDevice[deviceCount];
 
-        VkResult return_code = vkEnumeratePhysicalDevices(amVK_Props::s_vk, &amVK_GPU_List.n, amVK_GPU_List.data);
+        VkResult return_code = vkEnumeratePhysicalDevices(amVK_GlobalProps::s_vk, &amVK_GPU_List.n, amVK_GPU_List.data);
         amVK_return_code_log("vkEnumeratePhysicalDevices()");
 
-    amVK_Props::called_EnumeratePhysicalDevices = true;
+    amVK_GlobalProps::called_EnumeratePhysicalDevices = true;
 }
 
 /** 
  * i don't wanna scatter all the Properties All around my code. So, i'm gonna keep them here 😊
- *   --> Right inside `amVK_Props` class
+ *   --> Right inside `amVK_GlobalProps` class
  * 
- * Don't Call before you have called `amVK_Props::EnumeratePhysicalDevices()`
+ * Don't Call before you have called `amVK_GlobalProps::EnumeratePhysicalDevices()`
  * TODO: 
  *   --> Make all the Memory Allocation within this function -> in one block of RAM
  */
-void amVK_Props::GetPhysicalDeviceQueueFamilyProperties(void) {
+void amVK_GlobalProps::GetPhysicalDeviceQueueFamilyProperties(void) {
     amVK_2D_QFAM_PROPs.reserve(amVK_GPU_List.n);
         
         // for each GPU
@@ -43,7 +43,7 @@ void amVK_Props::GetPhysicalDeviceQueueFamilyProperties(void) {
     }
 
     amVK_DONE("vkGetPhysicalDeviceQueueFamilyProperties()" << " 😄");
-    amVK_Props::called_GetPhysicalDeviceQueueFamilyProperties = true;
+    amVK_GlobalProps::called_GetPhysicalDeviceQueueFamilyProperties = true;
 }
 
 
@@ -54,10 +54,10 @@ void amVK_Props::GetPhysicalDeviceQueueFamilyProperties(void) {
 
 /** 
  * @param p_flagBits:- can be a mixture of multiple bits. use `|` operator a.k.a 'or' operator, which can join flags together
- * @param ID:- Use:- `amVK_Props::VkPhysicalDevice_2_amVK_Index()` if you wanna pass in `VkPhysicalDevice` 
+ * @param ID:- Use:- `amVK_GlobalProps::VkPhysicalDevice_2_amVK_Index()` if you wanna pass in `VkPhysicalDevice` 
  * @returns `VkDeviceQCI.queueFamilyIndex` to be used
  */
-uint32_t amVK_Props::ChooseAQueueFamily(VkQueueFlags p_flagBits, amVK_Props::PD_Index p_ID) {
+uint32_t amVK_GlobalProps::ChooseAQueueFamily(VkQueueFlags p_flagBits, amVK_GlobalProps::PD_Index p_ID) {
     uint32_t k = p_ID;
     REY_Array<VkQueueFamilyProperties> GPU_k_QFAM_Array = amVK_2D_QFAM_PROPs[k];
 
@@ -70,7 +70,7 @@ uint32_t amVK_Props::ChooseAQueueFamily(VkQueueFlags p_flagBits, amVK_Props::PD_
     return amVK_QueueFamily_NOT_FOUND;
 }
 
-amVK_Props::PD_Index amVK_Props::VkPhysicalDevice_2_amVK_Index(VkPhysicalDevice PDevice) {
+amVK_GlobalProps::PD_Index amVK_GlobalProps::VkPhysicalDevice_2_amVK_Index(VkPhysicalDevice PDevice) {
         // for each GPU
     for (uint32_t k = 0; k < amVK_GPU_List.n; k++) {
         if (amVK_GPU_List[k] == PDevice) {

@@ -1,5 +1,5 @@
 #pragma once
-#include "amVK.hh"
+#include "amVK_Instance.hh"
 
 struct amVK_Device_QueueCreateInfo {
     const float Default_QP = 1.0f;
@@ -21,11 +21,11 @@ struct amVK_Device_QueueCreateInfo {
         //      1. REY_ArrayDYN.initialize(10)
         //      2. REY_ARRAY_PUSH_BACK(Array) = your_QueueCI;        [not a function. but rather a preprocessor macro]
 
-    /* Initializes with Space for 2 elements --> PushBacks `this->Default`*/
-    void init_with_default(void) {
-        Array.initialize(2);
-        REY_ARRAY_PUSH_BACK(Array) = this->Default;
-    }
+        /* Initializes with Space for 2 elements --> [syncs] PushBacks `this->Default` */
+        void init_Array_with_default(void) {
+            Array.initialize(2);
+            REY_ARRAY_PUSH_BACK(Array) = this->Default;
+        }
 };
 
 /**
@@ -59,23 +59,23 @@ class amVK_Device {
   public:
     amVK_Device(VkPhysicalDevice PD);
     /**
-     * SEE: `amVK_Props::GetARandom_GPU()`
+     * SEE: `amVK_GlobalProps::GetARandom_GPU()`
      */
-    amVK_Device(amVK_Props::PD_Index index) {
+    amVK_Device(amVK_GlobalProps::PD_Index index) {
         PD_ID = index;
-        vk_PhysicalDevice = amVK_Props::amVK_1D_GPUs[index];
+        vk_PhysicalDevice = amVK_GlobalProps::amVK_1D_GPUs[index];
             // Other Constructor above, does the same shit, but with ERROR_CHECKING
     }
    ~amVK_Device() {}
 
   public:
+    amVK_GlobalProps::PD_Index PD_ID = amVK_PhysicalDevice_NOT_FOUND;
     VkPhysicalDevice     vk_PhysicalDevice = nullptr;
-    amVK_Props::PD_Index PD_ID = amVK_PhysicalDevice_NOT_FOUND;
-    VkDevice vk_Device = nullptr;
+    VkDevice             vk_Device = nullptr;
 
   public:
     /**
-     * @param p1: [VkPhysicalDevice]:- see `amVK_Props::GetARandom_GPU()`
+     * @param p1: [VkPhysicalDevice]:- see `amVK_GlobalProps::GetARandom_GPU()`
      */
     void CreateDevice(void) {
         VkResult return_code = vkCreateDevice(vk_PhysicalDevice, &CI, nullptr, &this->vk_Device);
@@ -102,16 +102,16 @@ class amVK_Device {
         this->QCI.Default.queueFamilyIndex = qFAM_Index;
     }
     void select_QFAM_Graphics(void) {
-        if (!amVK_Props::called_GetPhysicalDeviceQueueFamilyProperties) {
-             amVK_Props::EnumeratePhysicalDevices();
+        if (!amVK_GlobalProps::called_GetPhysicalDeviceQueueFamilyProperties) {
+             amVK_GlobalProps::EnumeratePhysicalDevices();
         }
 
-        if (!amVK_Props::called_GetPhysicalDeviceQueueFamilyProperties) {
-             amVK_Props::GetPhysicalDeviceQueueFamilyProperties();
+        if (!amVK_GlobalProps::called_GetPhysicalDeviceQueueFamilyProperties) {
+             amVK_GlobalProps::GetPhysicalDeviceQueueFamilyProperties();
         }
 
-        amVK_Props::PD_Index GPU_k = this->PD_ID;
-        uint32_t        qFAM_Index = amVK_Props::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, GPU_k);
+        amVK_GlobalProps::PD_Index GPU_k = this->PD_ID;
+        uint32_t        qFAM_Index = amVK_GlobalProps::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, GPU_k);
 
         this->set_QFAM_Index(qFAM_Index);
     }

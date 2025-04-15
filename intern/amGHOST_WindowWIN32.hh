@@ -32,13 +32,13 @@ class amGHOST_WindowWIN32 : public amGHOST_Window {
         );
 
         if (hwnd == nullptr) {
-            amG_FAILED("::CreateWindowExW()");
+            amG_FAILED1("::CreateWindowExW()");
             this->destroy();
             return;
         }
         else {
             this->m_hwnd = hwnd;
-            amG_PASSED("::CreateWindowExW()");
+            amG_PASSED1("::CreateWindowExW()");
             if (instantShow) this->show_window();
         }
     }

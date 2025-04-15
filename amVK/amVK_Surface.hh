@@ -1,5 +1,5 @@
 #pragma once
-#include "amVK.hh"
+#include "amVK_Instance.hh"
 
 class amVK_SwapChain;
 class amVK_RenderPass;
@@ -52,10 +52,10 @@ class amVK_Presenter {
     amVK_Presenter  (amVK_Surface* pS) {this->S = pS;}
 
   public:
-    amVK_SwapChain*   create_SwapChain(void);
-    amVK_RenderPass*  create_RenderPass(void);
+    amVK_SwapChain*   create_SwapChain_interface(void);
+    amVK_RenderPass*  create_RenderPass_interface(void);
     void              create_FrameBuffers(void);
-    amVK_CommandPool* create_CommandPool(void);
+    amVK_CommandPool* create_CommandPool_interface(void);
     // Defined currently inside amVK_SwapChain.cpp
     
     void                      refresh_SurfCaps(void) { this->S->GetPhysicalDeviceSurfaceCapabilitiesKHR(); }

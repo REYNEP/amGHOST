@@ -2,28 +2,28 @@
 
     /** 
      * Wait, I wanted to write some shits here.... [read the amVK_Guide] 
-     * SEE: `amVK_Props::GetARandom_GPU()`
+     * SEE: `amVK_GlobalProps::GetARandom_GPU()`
      */
 amVK_Device::amVK_Device(VkPhysicalDevice PD) 
 {
-    amVK_Props::PD_Index id = amVK_Props::VkPhysicalDevice_2_PD_Index(PD);
+    amVK_GlobalProps::PD_Index id = amVK_GlobalProps::VkPhysicalDevice_2_PD_Index(PD);
     if (id == amVK_PhysicalDevice_NOT_FOUND) {
         REY_LOG("Can't find VkPhysicalDevice:- " << PD)
     }
     else {
         PD_ID = id;
-        vk_PhysicalDevice = amVK_Props::amVK_1D_GPUs[id];
+        vk_PhysicalDevice = amVK_GlobalProps::amVK_1D_GPUs[id];
     }
 }
 
 #include "REY_STDWrap.hh"
 void amVK_Device::Add_GPU_EXT_ToEnable(const char* extName) {
         // VK_KHR_swapchain
-    if (!amVK_Props::called_EnumerateDeviceExtensionProperties) {
-         amVK_Props::EnumerateDeviceExtensionProperties();
+    if (!amVK_GlobalProps::called_EnumerateDeviceExtensionProperties) {
+         amVK_GlobalProps::EnumerateDeviceExtensionProperties();
     }
     
-    if (amVK_Props::IS_GPU_EXT_Available(this->PD_ID, extName)) {
+    if (amVK_GlobalProps::IS_GPU_EXT_Available(this->PD_ID, extName)) {
         char  *dont_lose = REY_strcpy(extName);
 
         REY_ArrayDYN_PUSH_BACK(this->amVK_1D_GPU_EXTs_Enabled) = dont_lose;

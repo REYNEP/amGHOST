@@ -1,5 +1,5 @@
 #pragma once
-#include "amVK.hh"
+#include "amVK_Instance.hh"
 
 class amVK_RenderPass;
 class amVK_SwapChain;

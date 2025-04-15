@@ -1,17 +1,17 @@
 // --------------------------- main.cpp ---------------------------
             REY_LOG("")
-        amVK_Props::push_back_VkSurfaceKHR(VK_S);
+        amVK_GlobalProps::push_back_VkSurfaceKHR(VK_S);
         amVK_SwapChain *SC = new amVK_SwapChain(VK_S, D);
             SC->CI.imageFormat = VK_FORMAT_B8G8R8A8_UNORM;
             SC->CI.imageColorSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
-            SC->CI.minImageCount    = amVK_Props::amVK_1D_SurfaceInfos[0].amVK_1D_GPUs_SurfCAP[0].minImageCount;
-            SC->CI.imageExtent      = amVK_Props::amVK_1D_SurfaceInfos[0].amVK_1D_GPUs_SurfCAP[0].currentExtent;
-            SC->CI.imageArrayLayers = amVK_Props::amVK_1D_SurfaceInfos[0].amVK_1D_GPUs_SurfCAP[0].maxImageArrayLayers;
+            SC->CI.minImageCount    = amVK_GlobalProps::amVK_1D_SurfaceInfos[0].amVK_1D_GPUs_SurfCAP[0].minImageCount;
+            SC->CI.imageExtent      = amVK_GlobalProps::amVK_1D_SurfaceInfos[0].amVK_1D_GPUs_SurfCAP[0].currentExtent;
+            SC->CI.imageArrayLayers = amVK_GlobalProps::amVK_1D_SurfaceInfos[0].amVK_1D_GPUs_SurfCAP[0].maxImageArrayLayers;
             SC->CI.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
             SC->CI.imageUsage       = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 
             SC->CI.compositeAlpha   = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-            SC->CI.preTransform     = amVK_Props::amVK_1D_SurfaceInfos[0].amVK_1D_GPUs_SurfCAP[0].currentTransform;
+            SC->CI.preTransform     = amVK_GlobalProps::amVK_1D_SurfaceInfos[0].amVK_1D_GPUs_SurfCAP[0].currentTransform;
             SC->CI.clipped          = VK_TRUE;
             SC->CI.presentMode      = VK_PRESENT_MODE_FIFO_KHR;
             SC->CI.oldSwapchain     = nullptr;
@@ -20,7 +20,7 @@
 
 
 
-class amVK_Props {
+class amVK_GlobalProps {
     ...
     static inline bool called_EnumerateDeviceExtensionProperties = false;
     static void               EnumerateDeviceExtensionProperties(void); // amVK_2D_GPUs_EXTs
@@ -45,7 +45,7 @@ class amVK_Props {
                           |___/______|                    
 */
 #include <cstring>
-bool amVK_Props::IS_GPU_EXT_Available(amVK_Props::PD_Index GPU_k, const char *extName) 
+bool amVK_GlobalProps::IS_GPU_EXT_Available(amVK_GlobalProps::PD_Index GPU_k, const char *extName) 
 {
      amVK_LOOP_GPU_EXTs(GPU_k, i) {
         if (strcmp(amVK_2D_GPUs_EXTs[GPU_k][i].extensionName, extName) == 0) {
@@ -57,9 +57,9 @@ bool amVK_Props::IS_GPU_EXT_Available(amVK_Props::PD_Index GPU_k, const char *ex
 }
 
 
-void amVK_Props::EnumerateDeviceExtensionProperties(void) {
-    if (!amVK_Props::called_EnumeratePhysicalDevices) {
-         amVK_Props::       EnumeratePhysicalDevices();
+void amVK_GlobalProps::EnumerateDeviceExtensionProperties(void) {
+    if (!amVK_GlobalProps::called_EnumeratePhysicalDevices) {
+         amVK_GlobalProps::       EnumeratePhysicalDevices();
     }
 
     amVK_2D_GPUs_EXTs     .reserve(amVK_1D_GPUs.n);
@@ -79,7 +79,7 @@ void amVK_Props::EnumerateDeviceExtensionProperties(void) {
                      return_code = vkEnumerateDeviceExtensionProperties(amVK_1D_GPUs[k], nullptr, &k_GPU_EXTs->n, k_GPU_EXTs->data);
             amVK_return_code_log( "vkEnumerateDeviceExtensionProperties()" );
     
-        amVK_Props::called_EnumerateDeviceExtensionProperties = true;
+        amVK_GlobalProps::called_EnumerateDeviceExtensionProperties = true;
         // ------------------------- amVK_2D_GPUs_EXTs -----------------------------
     }
 }
@@ -104,17 +104,17 @@ class amVK_Device {
     REY_ArrayDYN<char*>   amVK_1D_DeviceEXTs_Enabled;
     void Log_GPU_EXTs_Enabled(VkResult ret);
     void Add_GPU_EXT_ToEnable(const char* extName);
-        // Copy of `amVK_Props::Add_InstanceEXT_ToEnable()` -> but not static anymore.... 🤷‍♀️
+        // Copy of `amVK_GlobalProps::Add_InstanceEXT_ToEnable()` -> but not static anymore.... 🤷‍♀️
 };
 
 #include <cstring>
 void amVK_Device::Add_GPU_EXT_ToEnable(const char* extName) {
         // VK_KHR_swapchain
-    if (!amVK_Props::called_EnumerateDeviceExtensionProperties) {
-         amVK_Props::EnumerateDeviceExtensionProperties();
+    if (!amVK_GlobalProps::called_EnumerateDeviceExtensionProperties) {
+         amVK_GlobalProps::EnumerateDeviceExtensionProperties();
     }
     
-    if (amVK_Props::IS_GPU_EXT_Available(this->m_PD_index, extName)) {
+    if (amVK_GlobalProps::IS_GPU_EXT_Available(this->m_PD_index, extName)) {
         char  *dont_lose = new char[strlen(extName)];
         strcpy(dont_lose, extName);
 

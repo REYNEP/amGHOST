@@ -1,4 +1,4 @@
-#include "amVK.hh"
+#include "amVK_Instance.hh"
 
 struct amVK_Device_QueueCreateInfo {
     const float Default_QP = 1.0f;
@@ -54,6 +54,23 @@ class amVK_Device {
     void Set_QCI_Array_into_DeviceCI(void) {
         this->CI.queueCreateInfoCount = QCI.Array.neXt;
         this->CI.pQueueCreateInfos    = QCI.Array.data;
+    }
+    void set_QFAM_Index(uint32_t qFAM_Index) {
+        this->QCI.Default.queueFamilyIndex = qFAM_Index;
+    }
+    void select_QFAM_Graphics(void) {
+        if (!amVK_GlobalProps::called_GetPhysicalDeviceQueueFamilyProperties) {
+             amVK_GlobalProps::EnumeratePhysicalDevices();
+        }
+
+        if (!amVK_GlobalProps::called_GetPhysicalDeviceQueueFamilyProperties) {
+             amVK_GlobalProps::GetPhysicalDeviceQueueFamilyProperties();
+        }
+
+        amVK_GlobalProps::PD_Index GPU_k = this->PD_ID;
+        uint32_t        qFAM_Index = amVK_GlobalProps::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, GPU_k);
+
+        this->set_QFAM_Index(qFAM_Index);
     }
 
   public:

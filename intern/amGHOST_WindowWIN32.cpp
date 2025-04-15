@@ -31,18 +31,20 @@ amGHOST_VkSurfaceKHR* amGHOST_WindowWIN32::init_VkSurface_interface(void) {
      */
 void amGHOST_WindowWIN32::destroy(void)   
 {
-    this->m_amGHOST_VkSurface->destroy();
+    if (this->m_amGHOST_VkSurface != nullptr) {
+        this->m_amGHOST_VkSurface->destroy();
+    }
 
     if (!::DestroyWindow(this->m_hwnd)) {
         /** Fails if:
              a) Window not valid
             b) Called from wrong thread
             c) Window already destroyed */
-        amG_FAILED("::DestroyWindow()");
-        REY_LOG_status("Could Not Destroy: amGHOST_WindowWIN32 --> " << "[" << (uint64_t)this << "]")
+        amG_FAILED1("::DestroyWindow()");
+        REY_LOG_status("Could Not Destroy: amGHOST_WindowWIN32.m_hwnd --> " << "[" << (uint64_t)m_hwnd << "]")
     }
-        amG_PASSED("::DestroyWindow()");
-        REY_LOG_status("Destroyed:- amGHOST_WindowWIN32 --> " << "[" << (uint64_t)this << "]");
+        amG_PASSED1("::DestroyWindow()");
+        REY_LOG_status("Destroyed:- amGHOST_WindowWIN32.m_hwnd --> " << "[" << (uint64_t)m_hwnd << "]");
 
     this->m_hwnd = nullptr;
 }

@@ -24,6 +24,8 @@ class amGHOST_VkSurfaceKHR {
     virtual void destroy(void) = 0;
 
     /**
+     * YOU MUST ENABLE:- amGHOST_System::get_vulkan_os_surface_ext_name()
+     * 
      * This thing is like a GROUP node inside of Houdini, haha 😄
      * 
         ```cpp

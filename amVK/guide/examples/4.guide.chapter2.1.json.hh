@@ -1,4 +1,4 @@
-#include "amVK.hh"
+#include "amVK_Instance.hh"
 
 // nlohmann - Handles String Stuffs automatically
 #include <nlohmann/json.hpp>

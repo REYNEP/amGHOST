@@ -10,7 +10,7 @@
  * 
  * Ques #1:- Does this class need to be a SingleTon? -> Kinda, no. But we don't got any problems even if it iss.... yk
  */
-class amVK_Props {
+class amVK_GlobalProps {
   public:
     static inline    VkInstance  s_vk   = nullptr;
   public:
@@ -30,10 +30,10 @@ class amVK_Props {
                           |___/______|           |___/                                                
 */
   public:
-    static inline REY_Array<VkPhysicalDevice>   s_HardwareGPU_List;
+    static inline REY_Array<VkPhysicalDevice>       s_HardwareGPU_List;
         // This doesn't allocate any memory
-    #define amVK_GPU_List           amVK_Props::s_HardwareGPU_List
-    #define amVK_Enumerated_GPUs    amVK_Props::s_HardwareGPU_List
+    #define amVK_GPU_List         amVK_GlobalProps::s_HardwareGPU_List
+    #define amVK_Enumerated_GPUs  amVK_GlobalProps::s_HardwareGPU_List
 
     static                     void EnumeratePhysicalDevices(void);
     static inline VkPhysicalDevice GetARandomPhysicalDevice(void) {
@@ -45,7 +45,7 @@ class amVK_Props {
         return 0;
     }
         // Linear Search
-    static amVK_Props::PD_Index VkPhysicalDevice_2_amVK_Index(VkPhysicalDevice PDevice);
+    static amVK_GlobalProps::PD_Index VkPhysicalDevice_2_amVK_Index(VkPhysicalDevice PDevice);
 
 
 
@@ -61,25 +61,25 @@ class amVK_Props {
 */
   public:
     static inline REY_Array<REY_Array<VkQueueFamilyProperties>>   s_HardwareGPU_QFamProps_List2D;
-    #define amVK_2D_QFAM_PROPs                        amVK_Props::s_HardwareGPU_QFamProps_List2D
+    #define amVK_2D_QFAM_PROPs                        amVK_GlobalProps::s_HardwareGPU_QFamProps_List2D
 
     static void GetPhysicalDeviceQueueFamilyProperties(void);
 
     /** 
-     * @param ID:- Use:- `amVK_Props::VkPhysicalDevice_2_amVK_Index()` if you wanna pass in `VkPhysicalDevice` 
+     * @param ID:- Use:- `amVK_GlobalProps::VkPhysicalDevice_2_amVK_Index()` if you wanna pass in `VkPhysicalDevice` 
      * @returns `VkDeviceQCI.queueFamilyIndex` to be used
      */
-    static inline uint32_t ChooseAQueueFamily_for_GRAPHICS(amVK_Props::PD_Index GPU_k = 0) {
-        return amVK_Props::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, ID);
+    static inline uint32_t ChooseAQueueFamily_for_GRAPHICS(amVK_GlobalProps::PD_Index GPU_k = 0) {
+        return amVK_GlobalProps::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, ID);
     }
-    static        uint32_t ChooseAQueueFamily(VkQueueFlags p_flagBits, amVK_Props::PD_Index GPU_k = 0);
+    static        uint32_t ChooseAQueueFamily(VkQueueFlags p_flagBits, amVK_GlobalProps::PD_Index GPU_k = 0);
     
   /*
    * Export/Visualization Stuffs
    */
   public:
     static void ExportYAML(void) {
-        amVK_Props *P = new amVK_Props();
+        amVK_GlobalProps *P = new amVK_GlobalProps();
         P->_ExportYAML();
             // ryml causes bugs if it has like static shits
     }

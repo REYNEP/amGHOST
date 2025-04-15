@@ -1,5 +1,4 @@
 #include "amVK_Instance.hh"
-#include "amVK_GlobalProps.hh"
 
 // 1. NEXT:-
 // 2. PREV:-
@@ -12,17 +11,19 @@
  */
 void amVK_GlobalProps::EnumeratePhysicalDevices(void) 
 {
+    // ---------------------------- amVK_1D_GPUs -------------------------------
     uint32_t deviceCount = 0;     
         // [implicit valid usage]:- must be 0     [if 3rd-param = nullptr]
 
-        vkEnumeratePhysicalDevices(amVK_Instance::s_vk, &deviceCount, nullptr);
+        vkEnumeratePhysicalDevices(amVK_Instance::vk_Instance, &deviceCount, nullptr);
             // This function is 'output-ing into' deviceCount
 
     amVK_1D_GPUs.n    = deviceCount;
     amVK_1D_GPUs.data = new VkPhysicalDevice[deviceCount];
 
-        VkResult return_code = vkEnumeratePhysicalDevices(amVK_Instance::s_vk, &amVK_1D_GPUs.n, amVK_1D_GPUs.data);
+        VkResult return_code = vkEnumeratePhysicalDevices(amVK_Instance::vk_Instance, &amVK_1D_GPUs.n, amVK_1D_GPUs.data);
         amVK_return_code_log( "vkEnumeratePhysicalDevices()" );
+    // ---------------------------- amVK_1D_GPUs -------------------------------
 
     amVK_GlobalProps::called_EnumeratePhysicalDevices = true;
 }
@@ -33,6 +34,7 @@ void amVK_GlobalProps::EnumeratePhysicalDevices(void)
  */
 void amVK_GlobalProps::EnumerateInstanceExtensions(void) 
 {
+    // ------------------------ amVK_1D_InstanceEXTs ---------------------------
     uint32_t extCount = 0;     
 
         VkResult return_code = vkEnumerateInstanceExtensionProperties(nullptr, &extCount, nullptr);
@@ -43,8 +45,9 @@ void amVK_GlobalProps::EnumerateInstanceExtensions(void)
 
                  return_code = vkEnumerateInstanceExtensionProperties(nullptr, &amVK_1D_InstanceEXTs.n, amVK_1D_InstanceEXTs.data);
         amVK_return_code_log( "vkEnumerateInstanceExtensionProperties()" );
+    // ------------------------ amVK_1D_InstanceEXTs ---------------------------
 
-    amVK_GlobalProps::called_EnumeratePhysicalDevices = true;
+    amVK_GlobalProps::called_EnumerateInstanceExtensions = true;
 }
 
 
@@ -74,6 +77,7 @@ void amVK_GlobalProps::GetPhysicalDeviceQueueFamilyProperties(void) {
         
     amVK_LOOP_GPUs(k)
     {
+        // ------------------------- amVK_2D_GPUs_QFAMs ----------------------------
         REY_Array<VkQueueFamilyProperties> *k_QFamProps = &amVK_2D_GPUs_QFAMs.data[k];
 
         uint32_t queueFamilyCount = 0;
@@ -82,42 +86,40 @@ void amVK_GlobalProps::GetPhysicalDeviceQueueFamilyProperties(void) {
         k_QFamProps->n = queueFamilyCount;
         k_QFamProps->data = new VkQueueFamilyProperties[queueFamilyCount];
             vkGetPhysicalDeviceQueueFamilyProperties(amVK_1D_GPUs[k], &k_QFamProps->n, k_QFamProps->data);
+        // ------------------------- amVK_2D_GPUs_QFAMs ----------------------------
     }
 
     amVK_DONE("vkGetPhysicalDeviceQueueFamilyProperties()" << " 😄");
     amVK_GlobalProps::called_GetPhysicalDeviceQueueFamilyProperties = true;
 }
 
-/**
- *        OUT:- `amVK_2D_GPUs_ImageFMTs`
- * DEPENDENCY:- [AutoCall]:- `amVK_GlobalProps::EnumeratePhysicalDevices()` if hasn't been called 
- */
-void amVK_GlobalProps::SurfaceInfo::GetPhysicalDeviceSurfaceFormatsKHR(void) {
+void amVK_GlobalProps::EnumerateDeviceExtensionProperties(void) {
     if (!amVK_GlobalProps::called_EnumeratePhysicalDevices) {
          amVK_GlobalProps::       EnumeratePhysicalDevices();
     }
 
-    amVK_2D_GPUs_ImageFMTs.reserve(amVK_1D_GPUs.n);
-    
+    amVK_2D_GPUs_EXTs     .reserve(amVK_1D_GPUs.n);
+
     amVK_LOOP_GPUs(k)
     {
-        REY_Array<VkSurfaceFormatKHR> *k_IMG_FMTs = &amVK_2D_GPUs_ImageFMTs.data[k];
+        // ------------------------- amVK_2D_GPUs_EXTs -----------------------------
+        REY_Array<VkExtensionProperties> *k_GPU_EXTs = &amVK_2D_GPUs_EXTs[k];
 
-        uint32_t imageFormatCount = 0;
+        uint32_t extPropertyCount = 0;
             // [implicit valid usage]:- must be 0     [if 3rd-param = nullptr]
-            VkResult return_code = vkGetPhysicalDeviceSurfaceFormatsKHR(amVK_1D_GPUs[k], this->S, &imageFormatCount, nullptr);
-            amVK_RC_silent_check( "vkGetPhysicalDeviceSurfaceFormatsKHR()" );
+            VkResult return_code = vkEnumerateDeviceExtensionProperties(amVK_1D_GPUs[k], nullptr, &extPropertyCount, nullptr);
+            amVK_RC_silent_check( "vkEnumerateDeviceExtensionProperties()" );
 
-        k_IMG_FMTs->n = imageFormatCount;
-        k_IMG_FMTs->data = new VkSurfaceFormatKHR[imageFormatCount];
-                     return_code = vkGetPhysicalDeviceSurfaceFormatsKHR(amVK_1D_GPUs[k], this->S, &k_IMG_FMTs->n, k_IMG_FMTs->data);
-            amVK_return_code_log( "vkGetPhysicalDeviceSurfaceFormatsKHR()" );
+        k_GPU_EXTs->n = extPropertyCount;
+        k_GPU_EXTs->data = new VkExtensionProperties[extPropertyCount];
+                     return_code = vkEnumerateDeviceExtensionProperties(amVK_1D_GPUs[k], nullptr, &k_GPU_EXTs->n, k_GPU_EXTs->data);
+            amVK_return_code_log( "vkEnumerateDeviceExtensionProperties()" );
     
-
-        amVK_DONE("vkGetPhysicalDeviceSurfaceFormatsKHR()" << " 😄");
-        amVK_GlobalProps::SurfaceInfo::called_GetPhysicalDeviceSurfaceFormatsKHR = true;
+        amVK_GlobalProps::called_EnumerateDeviceExtensionProperties = true;
+        // ------------------------- amVK_2D_GPUs_EXTs -----------------------------
     }
 }
+
 
 
 
@@ -166,12 +168,11 @@ amVK_GlobalProps::PD_Index amVK_GlobalProps::VkPhysicalDevice_2_PD_Index(VkPhysi
  * @param ID:- Use:- `amVK_GlobalProps::VkPhysicalDevice_2_PD_Index()` if you wanna pass in `VkPhysicalDevice` 
  * @returns `VkDeviceQCI.queueFamilyIndex` to be used
  */
-uint32_t amVK_GlobalProps::ChooseAQueueFamily(VkQueueFlags p_flagBits, amVK_GlobalProps::PD_Index index) {
-    uint32_t GPU = index;
-    REY_Array<VkQueueFamilyProperties> GPU_k_QFAM_Array = amVK_2D_GPUs_QFAMs[GPU];
+uint32_t amVK_GlobalProps::ChooseAQueueFamily(VkQueueFlags p_flagBits, amVK_GlobalProps::PD_Index GPU_k) {
+    REY_Array<VkQueueFamilyProperties> GPU_k_QFAM_Array = amVK_2D_GPUs_QFAMs[GPU_k];
 
-    amVK_LOOP_QFAMs(GPU, i) {
-        if (amVK_2D_GPUs_QFAMs[GPU][i].queueFlags & p_flagBits) {
+    amVK_LOOP_QFAMs(GPU_k, i) {
+        if (amVK_2D_GPUs_QFAMs[GPU_k][i].queueFlags & p_flagBits) {
             return i;
         }
     }
@@ -184,17 +185,28 @@ uint32_t amVK_GlobalProps::ChooseAQueueFamily(VkQueueFlags p_flagBits, amVK_Glob
 
 
 /*
-                                    _____           _                       ________   _________  
-     /\                            |_   _|         | |                     |  ____\ \ / /__   __| 
-    /  \   _ __ _ __ __ _ _   _      | |  _ __  ___| |_ __ _ _ __   ___ ___| |__   \ V /   | |___ 
-   / /\ \ | '__| '__/ _` | | | |     | | | '_ \/ __| __/ _` | '_ \ / __/ _ \  __|   > <    | / __|
-  / ____ \| |  | | | (_| | |_| |    _| |_| | | \__ \ || (_| | | | | (_|  __/ |____ / . \   | \__ \
- /_/    \_\_|  |_|  \__,_|\__, |   |_____|_| |_|___/\__\__,_|_| |_|\___\___|______/_/ \_\  |_|___/
-                           __/ |_____                                                             
-                          |___/______|                                                            
+                                    ________   _________  
+     /\                            |  ____\ \ / /__   __| 
+    /  \   _ __ _ __ __ _ _   _    | |__   \ V /   | |___ 
+   / /\ \ | '__| '__/ _` | | | |   |  __|   > <    | / __|
+  / ____ \| |  | | | (_| | |_| |   | |____ / . \   | \__ \
+ /_/    \_\_|  |_|  \__,_|\__, |   |______/_/ \_\  |_|___/
+                           __/ |_____                     
+                          |___/______|                    
 */
 #include <cstring>
-bool amVK_GlobalProps::IS_InstanceEXT_Available(const char *extName) {
+bool amVK_GlobalProps::IS_GPU_EXT_Available(amVK_GlobalProps::PD_Index GPU_k, const char *extName) 
+{
+     amVK_LOOP_GPU_EXTs(GPU_k, i) {
+        if (strcmp(amVK_2D_GPUs_EXTs[GPU_k][i].extensionName, extName) == 0) {
+            return true;
+        }
+    }
+
+    return false;
+}
+bool amVK_GlobalProps::IS_InstanceEXT_Available(const char *extName) 
+{
      amVK_LOOP_IEXTs(k) {
         if (strcmp(amVK_1D_InstanceEXTs[k].extensionName, extName) == 0) {
             return true;
@@ -204,7 +216,7 @@ bool amVK_GlobalProps::IS_InstanceEXT_Available(const char *extName) {
     return false;
 }
 
-#include <string.h>
+#include "REY_STDWrap.hh"
 /**
  * @param extName:- must be null-terminated string
 ```
@@ -219,8 +231,7 @@ void amVK_GlobalProps::Add_InstanceEXT_ToEnable(const char* extName) {
     }
     
     if (amVK_GlobalProps::IS_InstanceEXT_Available(extName)) {
-        char  *dont_lose = new char[strlen(extName)];
-        strcpy(dont_lose, extName);
+        char  *dont_lose = REY_strcpy(extName);
 
         REY_ArrayDYN_PUSH_BACK(amVK_1D_InstanceEXTs_Enabled) = dont_lose;
 
@@ -228,7 +239,7 @@ void amVK_GlobalProps::Add_InstanceEXT_ToEnable(const char* extName) {
         amVK_Instance::CI.ppEnabledExtensionNames = amVK_1D_InstanceEXTs_Enabled.data;
     }
     else {
-        REY_LOG_notfound("Vulkan Extension:- " << extName);
+        REY_LOG_notfound("Vulkan Instance Extension:- " << extName);
     }
 }
 void amVK_GlobalProps::Log_InstanceEXTs_Enabled(VkResult ret) {
@@ -266,12 +277,12 @@ void amVK_GlobalProps::Log_InstanceEXTs_Enabled(VkResult ret) {
             LIST IMG_FMTs
 */
 
+#include "amVK_Surface.hh"
 /**
- * CALLS:- `GetPhysicalDeviceSurfaceFormatsKHR()`
+ * CALLS:- `GetPhysicalDeviceSurfaceInfo()`
+ *  PREV:- `EnumeratePhysicalDevices()`
  */
-void amVK_GlobalProps::push_back_VkSurfaceKHR(VkSurfaceKHR S) {
-    amVK_GlobalProps::SurfaceInfo S_Props(S);
-    S_Props.GetPhysicalDeviceSurfaceFormatsKHR();
-
-    amVK_1D_SurfaceInfos.push_back(S_Props);
+void amVK_GlobalProps::push_back_amVK_Surface(amVK_Surface *S) {
+    S->GetPhysicalDeviceSurfaceInfo();
+    amVK_1D_Surfaces.push_back(S);
 }

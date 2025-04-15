@@ -17,52 +17,59 @@
 ## Example
 ```cpp
 #include "amGHOST_System.hh"
-#include "amGHOST_VkSurfaceKHR.hh"
-#include "amVK.hh"
-#include "amVK_Surface.hh"
+#include "amVK_Instance.hh"
 #include "amVK_Device.hh"
+#include "amGHOST_VkSurfaceKHR.hh"
+#include "amVK_Surface.hh"
 #include "amVK_SwapChain.hh"
-#include "amVK_Image.hh"
-#include "amVK_RenderPass.hh"
 #include "amVK_ColorSpace.hh"
+#include "amVK_RenderPass.hh"
+#include "amVK_RenderPass_Descriptors.hh"
 #include "amVK_CommandBuffer.hh"
-#include "REY_Logger.hh"
 
 int main(int argumentCount, char* argumentVector[]) {
     REY::cout << "\n";
 
-    amGHOST_System::create_system();    // initializes amG_HEART
+    amGHOST_System::create_system();
 
-    amGHOST_Window* W = amG_HEART->new_window_interface();
+    amGHOST_Window *W = amGHOST_System::heart->new_window_interface();
     W->create(L"Whatever", 0, 0, 500, 600);
 
 
-    // Let's get an image rendering
+
+    REY_LOG("");
+    REY_LOG("");
+    // TwT
     {
             REY_LOG("");
-        amVK_Props::EnumerateInstanceExtensions();
+        amVK_GlobalProps::EnumerateInstanceExtensions();
         amVK_Instance::Add_InstanceEXT_ToEnable("VK_KHR_surface");
         amVK_Instance::Add_InstanceEXT_ToEnable(amGHOST_System::get_vulkan_os_surface_ext_name());
         amVK_Instance::CreateInstance();    // initializes amVK_HEART
 
-            REY_LOG("");
-        VkSurfaceKHR  VK_S = amGHOST_VkSurfaceKHR::create_surface(W, amVK_Instance::s_vk);
 
             REY_LOG("");
-        amVK_Props::EnumeratePhysicalDevices();
-        amVK_Props::GetPhysicalDeviceQueueFamilyProperties();
-        amVK_Props::EnumerateDeviceExtensionProperties();
+        VkSurfaceKHR  VK_S = amGHOST_VkSurfaceKHR::create_surface(W, amVK_Instance::vk_Instance);
 
-        amVK_Device* D = new amVK_Device(amVK_Props::GetARandom_GPU());
+
+            REY_LOG("");
+        amVK_GlobalProps::EnumeratePhysicalDevices();
+        amVK_GlobalProps::GetPhysicalDeviceQueueFamilyProperties();
+        amVK_GlobalProps::EnumerateDeviceExtensionProperties();
+
+        amVK_Device* D = new amVK_Device(amVK_GlobalProps::GetARandom_GPU());
             D->select_QFAM_Graphics();
             D->Add_GPU_EXT_ToEnable("VK_KHR_swapchain");
             D->CreateDevice();
+
         
             REY_LOG("")
         amVK_Surface   *S  = new amVK_Surface(VK_S);
         amVK_Presenter *PR = S->PR;
                                 PR->bind_Device(D);
-                                PR->create_SwapChain();       // This amVK_SwapChain is Bound to this amVK_Surface
+                                PR->create_SwapChain_interface();       // This amVK_SwapChain is Bound to this amVK_Surface
+            
+            REY_LOG("")
         amVK_SwapChain *SC =    PR->SC;
             SC->konf_ImageSharingMode(VK_SHARING_MODE_EXCLUSIVE);
             SC->konf_Images(
@@ -82,67 +89,30 @@ int main(int argumentCount, char* argumentVector[]) {
             SC->GetSwapChainImagesKHR();
             SC->CreateSwapChainImageViews();
 
-        amVK_RenderPass *RP = PR->create_RenderPass(); 
-            RP->AttachmentInfos.push_back({
-                .format = SC->CI.imageFormat,                                   // Use the color format selected by the swapchain
-                .samples = VK_SAMPLE_COUNT_1_BIT,                               // We don't use multi sampling in this example
-                .loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR,                          // Clear this attachment at the start of the render pass
-                .storeOp = VK_ATTACHMENT_STORE_OP_STORE,                        // Keep its contents after the render pass is finished (for displaying it)
-                .stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE,               // Similar to loadOp, but for stenciling (we don't use stencil here)
-                .stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,             // Similar to storeOp, but for stenciling (we don't use stencil here)
-                .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED,                     // Layout at render pass start. Initial doesn't matter, so we use undefined
-                .finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,                 // Layout to which the attachment is transitioned when the render pass is finished
-                                                                                // As we want to present the color attachment, we transition to PRESENT_KHR
-            });
+        amVK_RenderPass *RP = PR->create_RenderPass_interface();
+            amVK_RPADes::ColorPresentation.format = SC->CI.imageFormat;
 
-            VkAttachmentReference colorReference = {
-                .attachment = 0,
-                .layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
-            };
-            RP->SubpassInfos.push_back({
-                .pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS,
-
-                .inputAttachmentCount = 0,                            // Input attachments can be used to sample from contents of a previous subpass
-                .pInputAttachments = nullptr,                         // (Input attachments not used by this example)
-                .colorAttachmentCount = 1,                            // Subpass uses one color attachment
-                .pColorAttachments = &colorReference,                 // Reference to the color attachment in slot 0
-
-                .pResolveAttachments = nullptr,                       // Resolve attachments are resolved at the end of a sub pass and can be used for e.g. multi sampling
-                .pDepthStencilAttachment = nullptr,                   // (Depth attachments not used by this sample)
-                .preserveAttachmentCount = 0,                         // Preserved attachments can be used to loop (and preserve) attachments through subpasses
-                .pPreserveAttachments = nullptr                       // (Preserve attachments not used by this example)
-            });
-
-            RP->Dependencies.push_back({
-                // Setup dependency and add implicit layout transition from final to initial layout for the color attachment.
-                // (The actual usage layout is preserved through the layout specified in the attachment reference).
-                .srcSubpass = VK_SUBPASS_EXTERNAL,
-                .dstSubpass = 0,
-                .srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                .dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                .srcAccessMask = VK_ACCESS_NONE,
-                .dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_COLOR_ATTACHMENT_READ_BIT,
-            });
+            RP->AttachmentInfos .push_back(amVK_RPADes::ColorPresentation);
+            RP->SubpassInfos    .push_back(amVK_RPSDes::ColorPresentation);
+            RP->Dependencies    .push_back(amVK_RPSDep::ColorPresentation);
 
             RP->sync_Attachments_Subpasses_Dependencies();
             RP->CreateRenderPass();
         
         PR->create_FrameBuffers();
-        amVK_CommandPool *CP = PR->create_CommandPool();
+        amVK_CommandPool *CP = PR->create_CommandPool_interface();
             CP->CreateCommandPool();
     }
+    REY_LOG("");
+    REY_LOG("");
 
-    REY::cout << "\n" << "Press Enter to export data.json & exit 😊 ";
-    REY::cin.get();
-    // char *cs50_string = get_string("Hello from cs50! Press anything to end! ");
 
+
+    REY::cin.get();     // wait for terminal input
     W->destroy();
-    amVK_Props::Export_nilohmannJSON();
-    
-    REY::cout << "\n";
-    return 0;
-}
 
+    REY::cout << "\n";
+}
 ```
 
 ## Naming Conventions

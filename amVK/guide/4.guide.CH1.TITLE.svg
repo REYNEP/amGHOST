@@ -10,10 +10,10 @@
     </linearGradient>
   </defs>
 
-  <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="24" fill="url(#orangePurple)" text-anchor="middle" dy=".3em">
+  <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="32" fill="url(#orangePurple)" text-anchor="middle" dy=".3em">
     The Real "Adventure" begins here!
   </text>
-  <text x="50%" y="70%" font-family="Arial, sans-serif" font-size="12" fill="url(#greyWhite)" text-anchor="middle" dy=".3em">
-    [ well, not really. I believe the real adventure is it SHADERs and Algorithms! ]
+  <text x="50%" y="75%" font-family="Arial, sans-serif" font-size="12" fill="url(#greyWhite)" text-anchor="middle" dy=".3em">
+    [ well, not really. I believe the real adventure is in SHADERs and Algorithms! ]
   </text>
 </svg>

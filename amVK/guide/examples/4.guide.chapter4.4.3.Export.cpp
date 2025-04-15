@@ -1,4 +1,4 @@
-#include "amVK.hh"
+#include "amVK_Instance.hh"
 #include "amVK_Enum2String.hh"
 
 // nlohmann - Handles String Stuffs automatically
@@ -18,7 +18,7 @@ std::string toSTR(void* ptr) {
  * ordered_json -> kinda like std::unordered_map
  *              -> i.e. doesn't automatically sort alphabetically
  */
-void amVK_Props::ExportJSON(void) {
+void amVK_GlobalProps::ExportJSON(void) {
     nlohmann::ordered_json root;
     nlohmann::ordered_json vkEnumeratePhysicalDevices               = nlohmann::ordered_json::object();
     nlohmann::ordered_json vkEnumerateInstanceExtensionProperties   = nlohmann::ordered_json::object();

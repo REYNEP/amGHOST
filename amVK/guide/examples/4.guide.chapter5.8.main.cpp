@@ -1,6 +1,6 @@
 #include "amGHOST_System.hh"
 #include "amGHOST_VkSurfaceKHR.hh"
-#include "amVK.hh"
+#include "amVK_Instance.hh"
 #include "amVK_Device.hh"
 #include "amVK_SwapChain.hh"
 #include "amVK_Image.hh"
@@ -19,7 +19,7 @@ int main(int argumentCount, char* argumentVector[]) {
     // Let's get an image rendering
     {
             REY_LOG("");
-        amVK_Props::EnumerateInstanceExtensions();
+        amVK_GlobalProps::EnumerateInstanceExtensions();
         amVK_Instance::Add_InstanceEXT_ToEnable(VK_KHR_SURFACE_EXTENSION_NAME);
         amVK_Instance::Add_InstanceEXT_ToEnable(amGHOST_System::get_vulkan_os_surface_ext_name());
         amVK_Instance::CreateInstance();    // initializes amVK_HEART
@@ -28,35 +28,35 @@ int main(int argumentCount, char* argumentVector[]) {
         VkSurfaceKHR  VK_S = amGHOST_VkSurfaceKHR::create_surface(W, amVK_Instance::s_vk);
 
             REY_LOG("");
-        amVK_Props::EnumeratePhysicalDevices();
-        amVK_Props::GetPhysicalDeviceQueueFamilyProperties();
-        amVK_Props::EnumerateDeviceExtensionProperties();
+        amVK_GlobalProps::EnumeratePhysicalDevices();
+        amVK_GlobalProps::GetPhysicalDeviceQueueFamilyProperties();
+        amVK_GlobalProps::EnumerateDeviceExtensionProperties();
 
-        amVK_Device* D = new amVK_Device(amVK_Props::GetARandom_PhysicalDevice());
+        amVK_Device* D = new amVK_Device(amVK_GlobalProps::GetARandom_PhysicalDevice());
         D->Select_QFAM_GRAPHICS();
         D->Add_GPU_EXT_ToEnable("VK_KHR_swapchain");
         D->CreateDevice();
         
             REY_LOG("")
-        amVK_Props::push_back_VkSurfaceKHR(VK_S);
+        amVK_GlobalProps::push_back_VkSurfaceKHR(VK_S);
         amVK_SwapChain *SC = new amVK_SwapChain(VK_S, D);
             SC->CI.imageFormat = VK_FORMAT_B8G8R8A8_UNORM;
             SC->CI.imageColorSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
-            SC->CI.minImageCount    = amVK_Props::amVK_1D_SurfaceInfos[0].amVK_1D_GPUs_SurfCAP[0].minImageCount;
-            SC->CI.imageExtent      = amVK_Props::amVK_1D_SurfaceInfos[0].amVK_1D_GPUs_SurfCAP[0].currentExtent;
-            SC->CI.imageArrayLayers = amVK_Props::amVK_1D_SurfaceInfos[0].amVK_1D_GPUs_SurfCAP[0].maxImageArrayLayers;
+            SC->CI.minImageCount    = amVK_GlobalProps::amVK_1D_SurfaceInfos[0].amVK_1D_GPUs_SurfCAP[0].minImageCount;
+            SC->CI.imageExtent      = amVK_GlobalProps::amVK_1D_SurfaceInfos[0].amVK_1D_GPUs_SurfCAP[0].currentExtent;
+            SC->CI.imageArrayLayers = amVK_GlobalProps::amVK_1D_SurfaceInfos[0].amVK_1D_GPUs_SurfCAP[0].maxImageArrayLayers;
             SC->CI.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
             SC->CI.imageUsage       = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 
             SC->CI.compositeAlpha   = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-            SC->CI.preTransform     = amVK_Props::amVK_1D_SurfaceInfos[0].amVK_1D_GPUs_SurfCAP[0].currentTransform;
+            SC->CI.preTransform     = amVK_GlobalProps::amVK_1D_SurfaceInfos[0].amVK_1D_GPUs_SurfCAP[0].currentTransform;
             SC->CI.clipped          = VK_TRUE;
             SC->CI.presentMode      = VK_PRESENT_MODE_FIFO_KHR;
             SC->CI.oldSwapchain     = nullptr;
             SC->createSwapChain();
             SC->GetSwapchainImagesKHR();
             SC->CreateSwapChainImageViews();
-        amVK_Props::amVK_1D_SurfaceInfos[0].SC = SC;
+        amVK_GlobalProps::amVK_1D_SurfaceInfos[0].SC = SC;
 
         amVK_RenderPass *RP = new amVK_RenderPass(D);
             RP->attachments.push_back({
@@ -109,7 +109,7 @@ int main(int argumentCount, char* argumentVector[]) {
     // char *cs50_string = get_string("Hello from cs50! Press anything to end! ");
 
     W->destroy();
-    amVK_Props::Export_nilohmannJSON();
+    amVK_GlobalProps::Export_nilohmannJSON();
     
     REY::cout << "\n";
     return 0;

@@ -63,10 +63,10 @@ void amGHOST_SystemWIN32::_reg_wc()
     };
 
     if (::RegisterClassExW(&(this->_wc)) == 0) {
-        amG_FAILED("::RegisterClassExW(amGHOST_SystemWIN32.wndclass)")
+        amG_FAILED1("::RegisterClassExW(amGHOST_SystemWIN32.wndclass)")
     }
     else {
-        amG_PASSED("::RegisterClassExW(amGHOST_SystemWIN32.wndclass)");
+        amG_PASSED1("::RegisterClassExW(amGHOST_SystemWIN32.wndclass)");
     }
 }
 

@@ -27,20 +27,19 @@ export_on_save:
 ## ex. 1
 ```cpp
 #include "amGHOST/amGHOST_System.hh"
-#include <iostream>
 
 int main(int argumentCount, char* argumentVector[]) {
-    std::cout << "\n";
+    REY::cout << "\n";
 
-    amGHOST_System::create_system(); // Static Func, saves the created system into `amG_HEART`
+    amGHOST_System::create_system();    // initializes amG_HEART
     
     amGHOST_Window* W = amG_HEART->new_window_interface();
     W->create(L"Whatever", 0, 0, 500, 600);
 
-    std::cin.get();     // wait for terminal input
+    REY::cin.get();     // wait for terminal input
     W->destroy();
 
-    std::cout << "\n";
+    REY::cout << "\n";
     return 0;
 }
 ```

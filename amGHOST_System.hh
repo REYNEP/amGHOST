@@ -1,5 +1,6 @@
 #pragma once
 #include "amGHOST_Window.hh"
+#include "REY_Logger.hh"
 
 /**
  * SINGLETON Class
