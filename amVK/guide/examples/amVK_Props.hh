@@ -6,7 +6,7 @@ class amVK_Surface;
 
 /**
  * i don't wanna scatter all the Properties All around my code. So, i'm gonna keep them here 😊
- *   --> Right inside `amVK_GlobalProps` class
+ *   --> Right inside `amVK_InstanceProps` class
  * 
  * Rule #1:- This file cannot have any reference to amVK_Instance. Because that class includes this before declaration
  * Rule #2:- Any Function Implementation that is Intuitive (from the perspective of a beginner) 
@@ -15,7 +15,7 @@ class amVK_Surface;
  * 
  * Ques #1:- Does this class need to be a SingleTon? -> Kinda, no. But we don't got any problems even if it iss.... yk
  */
-class amVK_GlobalProps {
+class amVK_InstanceProps {
   public:
     static inline bool called_EnumeratePhysicalDevices = false;
     static inline bool called_GetPhysicalDeviceQueueFamilyProperties = false;
@@ -26,7 +26,7 @@ class amVK_GlobalProps {
     #define amVK_PhysicalDevice_NOT_FOUND 0xFFFFFFFF
 
     typedef uint32_t                   PD_Index; // VkPhysicalDevice Index -> into -> amVK_1D_GPUs
-    #define amVK_GPU_Index amVK_GlobalProps::PD_Index
+    #define amVK_GPU_Index amVK_InstanceProps::PD_Index
 
   public:
     static void EnumeratePhysicalDevices(void);                         // amVK_1D_GPUs
@@ -83,11 +83,11 @@ class amVK_GlobalProps {
 */
   public:
     /** 
-     * @param ID:- Use:- `amVK_GlobalProps::VkPhysicalDevice_2_PD_Index()` if you wanna pass in `VkPhysicalDevice` 
+     * @param ID:- Use:- `amVK_InstanceProps::VkPhysicalDevice_2_PD_Index()` if you wanna pass in `VkPhysicalDevice` 
      * @returns `VkDeviceQCI.queueFamilyIndex` to be used
      */
     static inline uint32_t ChooseAQueueFamily_for_GRAPHICS(PD_Index  GPU_k = 0) {
-        return amVK_GlobalProps::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, GPU_k);
+        return amVK_InstanceProps::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, GPU_k);
     }
     static        uint32_t ChooseAQueueFamily(VkQueueFlags p_flagBits, PD_Index GPU_k = 0);
 
@@ -134,7 +134,7 @@ class amVK_GlobalProps {
    */
   public:
     static void ExportYAML(void) {
-        amVK_GlobalProps *P = new amVK_GlobalProps();
+        amVK_InstanceProps *P = new amVK_InstanceProps();
         P->_ExportYAML();
             // ryml causes bugs if it has like static shits
     }

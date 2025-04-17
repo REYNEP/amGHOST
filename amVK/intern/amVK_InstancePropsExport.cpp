@@ -1,5 +1,5 @@
 #include "amVK_Instance.hh"
-#include "amVK_GlobalProps.hh"
+#include "amVK_InstanceProps.hh"
 #include "amVK_Enum2String.hh"
 #include <string>
 #include <sstream>
@@ -25,7 +25,7 @@
         // --> it was like all of them were --> QueueFamily0_Properties or like QueueFamily4_Properties
 #include <yyjson.h>
 
-void amVK_GlobalProps::Export_yyJSON(void) {
+void amVK_InstanceProps::Export_yyJSON(void) {
     yyjson_mut_doc *doc = yyjson_mut_doc_new(NULL);
     yyjson_mut_val *root = yyjson_mut_obj(doc);
     yyjson_mut_val *vkEnumeratePhysicalDevices = yyjson_mut_obj(doc);
@@ -169,7 +169,7 @@ char* REY_malloc_copy_std_string(std::string str) {
     return new_var;
 }
 
-void amVK_GlobalProps::_ExportYAML(void) {
+void amVK_InstanceProps::_ExportYAML(void) {
     ryml::Tree tree;                      // Create a YAML tree
     ryml::NodeRef root = tree.rootref();  // Root node (map)
 

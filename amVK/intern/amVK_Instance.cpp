@@ -27,3 +27,20 @@ VkInstanceCreateInfo amVK_Instance::CI = {
     .enabledExtensionCount = 0,
     .ppEnabledExtensionNames = nullptr
 };
+
+
+#include "intern/amVK_log.hh"
+#include "amVK_InstanceProps.hh"
+
+void amVK_Instance::CreateInstance(void)
+{
+    if (vk_Instance) {
+        REY_LOG_EX("[amVK_Instance::CreateInstance]:- A amVK System Already Exists, Please Destroy it before you can create another System.");
+        return;
+    }
+
+    VkResult return_code = vkCreateInstance(&CI, nullptr, &vk_Instance);
+    amVK_return_code_log( "vkCreateInstance()" );  // above variable "return_code" can't be named smth else
+
+    amVK_InstanceProps::log_1D_InstanceEXTs_Enabled(return_code);
+}

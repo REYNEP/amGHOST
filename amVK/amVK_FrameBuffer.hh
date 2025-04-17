@@ -23,13 +23,14 @@ class amVK_FrameBuffer  {
     };
 
   public:
-    amVK_FrameBuffer(amVK_Presenter *paramPR) {
+    amVK_FrameBuffer(void) {}
+    amVK_FrameBuffer(amVK_SurfacePresenter *paramPR) {
         this->PR = paramPR;
         this->CI.renderPass = this->PR->RP->vk_RenderPass;
     }
 
   public:
-    amVK_Presenter *PR = nullptr;       // Basically, Parent Pointer
+    amVK_SurfacePresenter *PR = nullptr;       // Basically, Parent Pointer
     VkFramebuffer vk_FrameBuffer = nullptr;
 
   public:

@@ -115,7 +115,7 @@ nlohmann::ordered_json nlohmann_VkSurfaceFormatKHR(VkSurfaceFormatKHR SFMT) {
 | '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
  */
-#include "amVK_GlobalProps.hh"
+#include "amVK_InstanceProps.hh"
 
 nlohmann::ordered_json nlohmann_Array_VkQueueFamilyProperties(REY_Array<VkQueueFamilyProperties> QFPs) {
     nlohmann::ordered_json dict = nlohmann::ordered_json::object();
@@ -138,14 +138,14 @@ nlohmann::ordered_json nlohmann_Array_VkSurfaceFormatKHR(REY_Array<VkSurfaceForm
     return dict;
 }
 
-nlohmann::ordered_json nlohmann_amVK_SurfaceInfo(amVK_GlobalProps::SurfaceInfo *SInfo) {
+nlohmann::ordered_json nlohmann_amVK_SurfaceInfo(amVK_InstanceProps::SurfaceInfo *SInfo) {
     nlohmann::ordered_json dict = nlohmann::ordered_json::object();
 
         dict["Memory Address"] = toSTR(SInfo->S);
-    REY_Array_LOOP(amVK_GlobalProps::amVK_1D_GPUs, k) {
+    REY_Array_LOOP(amVK_InstanceProps::amVK_1D_GPUs, k) {
         nlohmann::ordered_json GPU_k = nlohmann::ordered_json::object();
 
-            GPU_k["Memory Address"] = toSTR(amVK_GlobalProps::amVK_1D_GPUs[k]);
+            GPU_k["Memory Address"] = toSTR(amVK_InstanceProps::amVK_1D_GPUs[k]);
             GPU_k["vkGetPhysicalDeviceSurfaceFormatsKHR()"] = nlohmann_Array_VkSurfaceFormatKHR(SInfo->amVK_2D_GPUs_ImageFMTs[k]);
 
             VkSurfaceCapabilitiesKHR *SCAP = &(SInfo->amVK_1D_GPUs_SurfCAP[k]);
@@ -160,11 +160,11 @@ nlohmann::ordered_json nlohmann_amVK_SurfaceInfo(amVK_GlobalProps::SurfaceInfo *
 nlohmann::ordered_json nlohmann_amVK_GPUInfo(void) {
     nlohmann::ordered_json dict = nlohmann::ordered_json::object();
 
-    REY_Array_LOOP(amVK_GlobalProps::amVK_1D_GPUs, k) {
+    REY_Array_LOOP(amVK_InstanceProps::amVK_1D_GPUs, k) {
         nlohmann::ordered_json GPU_k = nlohmann::ordered_json::object();
 
-            GPU_k["Memory Address"] = toSTR(amVK_GlobalProps::amVK_1D_GPUs[k]);
-            GPU_k["vkGetPhysicalDeviceQueueFamilyProperties()"] = nlohmann_Array_VkQueueFamilyProperties(amVK_GlobalProps::amVK_2D_GPUs_QFAMs[k]);
+            GPU_k["Memory Address"] = toSTR(amVK_InstanceProps::amVK_1D_GPUs[k]);
+            GPU_k["vkGetPhysicalDeviceQueueFamilyProperties()"] = nlohmann_Array_VkQueueFamilyProperties(amVK_InstanceProps::amVK_2D_GPUs_QFAMs[k]);
 
         dict["[GPU " + std::to_string(k) + "]"] = GPU_k;
     }
@@ -198,7 +198,7 @@ nlohmann::ordered_json nlohmann_amVK_GPUInfo(void) {
  * ordered_json -> kinda like std::unordered_map
  *              -> i.e. doesn't automatically sort alphabetically
  */
-void amVK_GlobalProps::Export_nilohmannJSON(void) {
+void amVK_InstanceProps::Export_nilohmannJSON(void) {
     nlohmann::ordered_json root;
     nlohmann::ordered_json vkEnumeratePhysicalDevices               = nlohmann::ordered_json::object();
     nlohmann::ordered_json vkEnumerateInstanceExtensionProperties   = nlohmann::ordered_json::object();
@@ -211,7 +211,7 @@ void amVK_GlobalProps::Export_nilohmannJSON(void) {
     root["vkEnumerateInstanceExtensionProperties"] = vkEnumerateInstanceExtensionProperties;
 
     amVK_LOOP_SURFs(m) {
-        amVK_GlobalProps::SurfaceInfo *SInfo = &amVK_1D_SurfaceInfos[m];
+        amVK_InstanceProps::SurfaceInfo *SInfo = &amVK_1D_SurfaceInfos[m];
         vkCreate_xxx_SurfaceKHR["[Surface " + std::to_string(m) + "]"] = nlohmann_amVK_SurfaceInfo(SInfo);
     }
     root["vkCreate_xxx_SurfaceKHR"] = vkCreate_xxx_SurfaceKHR;

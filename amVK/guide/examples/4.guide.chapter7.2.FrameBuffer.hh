@@ -23,12 +23,12 @@ class amVK_FrameBuffer  {
     };
 
   public:
-    amVK_FrameBuffer(amVK_Presenter *paramPR) {
+    amVK_FrameBuffer(amVK_SurfacePresenter *paramPR) {
         this->PR = paramPR;
     }
 
   public:
-    amVK_Presenter *PR = nullptr;       // Basically, Parent Pointer
+    amVK_SurfacePresenter *PR = nullptr;       // Basically, Parent Pointer
     VkFramebuffer vk_FrameBuffer = nullptr;
 
   public:
@@ -42,7 +42,7 @@ class amVK_FrameBuffer  {
 
     // amVK_Surface.cpp
 #include "amVK_FrameBuffer.hh"
-amVK_FrameBuffer* amVK_Presenter::create_FrameBuffer(void) {
+amVK_FrameBuffer* amVK_SurfacePresenter::create_FrameBuffer(void) {
     this->FB = new amVK_FrameBuffer(this);
     return this->FB;
 }

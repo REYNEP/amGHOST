@@ -2,7 +2,7 @@
 	"nodes":[
 		{"id":"12e761d3712bf771","type":"file","file":"4.guide.CH1.md","x":2300,"y":2220,"width":1160,"height":1180},
 		{"id":"912f7318a42017cd","type":"file","file":"4.guide.CH2.md","x":4700,"y":2220,"width":1160,"height":1980},
-		{"id":"9e7271afd98be5b6","type":"file","file":"4.guide.CH3.md","x":7260,"y":2220,"width":1160,"height":1020},
+		{"id":"9e7271afd98be5b6","type":"file","file":"4.guide.CH3.md","x":7260,"y":2220,"width":1160,"height":2660},
 		{"id":"188095818dd071e8","type":"file","file":"4.guide.CH4.md","x":9820,"y":2220,"width":1160,"height":1140},
 		{"id":"dfb635eaeb0bef1a","type":"file","file":"4.guide.CH6.md","x":14940,"y":2220,"width":1160,"height":620},
 		{"id":"453e40840b3582d0","type":"file","file":"4.guide.CH7.md","x":17500,"y":2220,"width":1160,"height":580},

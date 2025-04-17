@@ -1,5 +1,5 @@
-// --------------------------- amVK_GlobalProps.hh ---------------------------
-class amVK_GlobalProps {
+// --------------------------- amVK_InstanceProps.hh ---------------------------
+class amVK_InstanceProps {
     ...
   public:
     /**
@@ -23,15 +23,15 @@ class amVK_GlobalProps {
 }
 
 
-// --------------------------- amVK_GlobalProps.cpp ---------------------------
+// --------------------------- amVK_InstanceProps.cpp ---------------------------
 
 /**
  *        OUT:- `amVK_2D_GPUs_ImageFMTs`
- * DEPENDENCY:- [AutoCall]:- `amVK_GlobalProps::EnumeratePhysicalDevices()` if hasn't been called 
+ * DEPENDENCY:- [AutoCall]:- `amVK_InstanceProps::EnumeratePhysicalDevices()` if hasn't been called 
  */
-void amVK_GlobalProps::SurfaceInfo::GetPhysicalDeviceSurfaceInfo(void) {
-    if (!amVK_GlobalProps::called_EnumeratePhysicalDevices) {
-         amVK_GlobalProps::       EnumeratePhysicalDevices();
+void amVK_InstanceProps::SurfaceInfo::GetPhysicalDeviceSurfaceInfo(void) {
+    if (!amVK_InstanceProps::called_EnumeratePhysicalDevices) {
+         amVK_InstanceProps::       EnumeratePhysicalDevices();
     }
 
     amVK_2D_GPUs_ImageFMTs.reserve(amVK_1D_GPUs.n);
@@ -52,7 +52,7 @@ void amVK_GlobalProps::SurfaceInfo::GetPhysicalDeviceSurfaceInfo(void) {
                      return_code = vkGetPhysicalDeviceSurfaceFormatsKHR(amVK_1D_GPUs[k], this->S, &k_IMG_FMTs->n, k_IMG_FMTs->data);
             amVK_return_code_log( "vkGetPhysicalDeviceSurfaceFormatsKHR()" );
     
-        amVK_GlobalProps::SurfaceInfo::called_GetPhysicalDeviceSurfaceFormatsKHR = true;
+        amVK_InstanceProps::SurfaceInfo::called_GetPhysicalDeviceSurfaceFormatsKHR = true;
         // ----------------------- amVK_2D_GPUs_ImageFMTs --------------------------
 
 
@@ -64,7 +64,7 @@ void amVK_GlobalProps::SurfaceInfo::GetPhysicalDeviceSurfaceInfo(void) {
                      return_code = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(amVK_1D_GPUs[k], this->S, k_SURF_CAPs);
             amVK_return_code_log( "vkGetPhysicalDeviceSurfaceCapabilitiesKHR()" );
 
-        amVK_GlobalProps::SurfaceInfo::called_GetPhysicalDeviceSurfaceFormatsKHR = true;
+        amVK_InstanceProps::SurfaceInfo::called_GetPhysicalDeviceSurfaceFormatsKHR = true;
         // ------------------------ amVK_1D_GPUs_SurfCAP ---------------------------
     }
 }

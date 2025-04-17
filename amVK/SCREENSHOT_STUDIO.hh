@@ -16,45 +16,26 @@ class amVK_SwapChain  {
         .pNext = nullptr,
         .flags = 0,
         .surface = nullptr,
-
+            // Shortened to take screenshot, 
         .minImageCount = 2,
         .imageFormat = VK_FORMAT_R8G8B8A8_UNORM,
         .imageColorSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR,
-        
-        .imageExtent = {},
-        .imageArrayLayers = 1,
-        .imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
-        .imageSharingMode = VK_SHARING_MODE_EXCLUSIVE,
-
-        .queueFamilyIndexCount = 0,
-        .pQueueFamilyIndices = nullptr,
-
-        .preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
-        .compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
-        .presentMode = VK_PRESENT_MODE_FIFO_KHR,
-        .clipped = VK_TRUE,
-
-        .oldSwapchain     = nullptr,
+            // More Elements are supposed to be here, I always try to list them all
+        .oldSwapchain     = nullptr,               // (in SortedOrder of Declaration from VkSpecs)
     };
 
     /** Refreshes & Syncs `SurfaceCapabilites` */
-    void             sync_SurfCaps(void) {
-        this->PR->refresh_SurfCaps();
-        VkSurfaceCapabilitiesKHR *SurfCaps = this->PR->fetched_SurfCaps();
-
-        this->CI.minImageCount    = SurfCaps->minImageCount;
-        this->CI.imageExtent      = SurfCaps->currentExtent;
-        this->CI.imageArrayLayers = SurfCaps->maxImageArrayLayers;
-        this->CI.preTransform     = SurfCaps->currentTransform;
-    }
+    void                sync_SurfCaps(void);
     void              konf_Images(VkFormat IF, VkColorSpaceKHR CS, VkImageUsageFlagBits IU, bool autoFallBack = true);
-    void              konf_Compositing(VkPresentModeKHR PM, amVK_CompositeClipping CC, VkCompositeAlphaFlagBitsKHR CA);
-    void              konf_ImageSharingMode(VkSharingMode ISM)  {       CI.imageSharingMode = ISM;}
+    void              konf_Compositing(VkPresentModeKHR PM, amVK_CompositeClipping CC, VkCompositeAlphaFlagBitsKHR CA );
+    void              konf_ImageSharingMode(VkSharingMode ISM)  {CI.imageSharingMode = ISM;}
     VkFormat        active_PixelFormat(void)                    {return CI.imageFormat;}
     VkColorSpaceKHR active_ColorSpace (void)                    {return CI.imageColorSpace;}
 
   public:
-    /** USE:- amVK_SurfacePresenter::create_SwapChain_interface() */
+    /**
+     * USE:- amVK_SurfacePresenter::create_SwapChain_interface()
+     */
     amVK_SwapChain(amVK_SurfacePresenter *PR) {
         this->PR = PR;
         this->CI.surface = PR->S->vk_SurfaceKHR;

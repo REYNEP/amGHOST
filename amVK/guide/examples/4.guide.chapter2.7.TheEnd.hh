@@ -59,16 +59,16 @@ class amVK_Device {
         this->QCI.Default.queueFamilyIndex = qFAM_Index;
     }
     void select_QFAM_Graphics(void) {
-        if (!amVK_GlobalProps::called_GetPhysicalDeviceQueueFamilyProperties) {
-             amVK_GlobalProps::EnumeratePhysicalDevices();
+        if (!amVK_InstanceProps::called_GetPhysicalDeviceQueueFamilyProperties) {
+             amVK_InstanceProps::EnumeratePhysicalDevices();
         }
 
-        if (!amVK_GlobalProps::called_GetPhysicalDeviceQueueFamilyProperties) {
-             amVK_GlobalProps::GetPhysicalDeviceQueueFamilyProperties();
+        if (!amVK_InstanceProps::called_GetPhysicalDeviceQueueFamilyProperties) {
+             amVK_InstanceProps::GetPhysicalDeviceQueueFamilyProperties();
         }
 
-        amVK_GlobalProps::PD_Index GPU_k = this->PD_ID;
-        uint32_t        qFAM_Index = amVK_GlobalProps::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, GPU_k);
+        amVK_InstanceProps::PD_Index GPU_k = this->PD_ID;
+        uint32_t        qFAM_Index = amVK_InstanceProps::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, GPU_k);
 
         this->set_QFAM_Index(qFAM_Index);
     }

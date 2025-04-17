@@ -4,7 +4,7 @@
 
 /**
  * i don't wanna scatter all the Properties All around my code. So, i'm gonna keep them here 😊
- *   --> Right inside `amVK_GlobalProps` class
+ *   --> Right inside `amVK_InstanceProps` class
  * 
  * Rule #1:- This file cannot have any reference to amVK_Instance. Because that class includes this before declaration
  * Rule #2:- Any Function Implementation that is Intuitive (from the perspective of a beginner) 
@@ -13,7 +13,7 @@
  * 
  * Ques #1:- Does this class need to be a SingleTon? -> Kinda, no. But we don't got any problems even if it iss.... yk
  */
-class amVK_GlobalProps {
+class amVK_InstanceProps {
   public:
     static inline bool called_EnumeratePhysicalDevices = false;
     static inline bool called_GetPhysicalDeviceQueueFamilyProperties = false;
@@ -45,7 +45,7 @@ class amVK_GlobalProps {
     typedef uint32_t   PD_Index;
     static inline      PD_Index GetARandom_PhysicalDevice_amVK_Index(void) { return 0; }
         // Linear Search
-    static amVK_GlobalProps::PD_Index VkPhysicalDevice_2_PD_Index(VkPhysicalDevice PDevice);
+    static amVK_InstanceProps::PD_Index VkPhysicalDevice_2_PD_Index(VkPhysicalDevice PDevice);
 
 
 
@@ -64,13 +64,13 @@ class amVK_GlobalProps {
     static void GetPhysicalDeviceQueueFamilyProperties(void);
 
     /** 
-     * @param ID:- Use:- `amVK_GlobalProps::VkPhysicalDevice_2_PD_Index()` if you wanna pass in `VkPhysicalDevice` 
+     * @param ID:- Use:- `amVK_InstanceProps::VkPhysicalDevice_2_PD_Index()` if you wanna pass in `VkPhysicalDevice` 
      * @returns `VkDeviceQCI.queueFamilyIndex` to be used
      */
-    static inline uint32_t ChooseAQueueFamily_for_GRAPHICS(amVK_GlobalProps::PD_Index ID = 0) {
-        return amVK_GlobalProps::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, ID);
+    static inline uint32_t ChooseAQueueFamily_for_GRAPHICS(amVK_InstanceProps::PD_Index ID = 0) {
+        return amVK_InstanceProps::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, ID);
     }
-    static        uint32_t ChooseAQueueFamily(VkQueueFlags p_flagBits, amVK_GlobalProps::PD_Index p_ID = 0);
+    static        uint32_t ChooseAQueueFamily(VkQueueFlags p_flagBits, amVK_InstanceProps::PD_Index p_ID = 0);
     
 
 /*
@@ -85,7 +85,7 @@ class amVK_GlobalProps {
 */
   public:
     static inline REY_Array<VkExtensionProperties> s_InstanceEXT_Props;
-    #define amVK_EXT_PROPs             amVK_GlobalProps::s_InstanceEXT_Props
+    #define amVK_EXT_PROPs             amVK_InstanceProps::s_InstanceEXT_Props
     static void EnumerateInstanceExtensions(void);
     static bool IS_InstanceEXT_Available(const char *extName);
 
@@ -131,7 +131,7 @@ class amVK_GlobalProps {
    */
   public:
     static void ExportYAML(void) {
-        amVK_GlobalProps *P = new amVK_GlobalProps();
+        amVK_InstanceProps *P = new amVK_InstanceProps();
         P->_ExportYAML();
             // ryml causes bugs if it has like static shits
     }

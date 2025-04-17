@@ -1,38 +1,29 @@
 #pragma once
 #include <vulkan/vulkan.h>
 #include "REY_Utils.hh"
+#include "amVK_GPU.hh"
 
 class amVK_Surface;
 
 /**
  * i don't wanna scatter all the Properties All around my code. So, i'm gonna keep them here 😊
- *   --> Right inside `amVK_GlobalProps` class
+ *   --> Right inside `amVK_InstanceProps` class
  * 
- * Rule #1:- This file cannot have any reference to amVK_Instance. Because that class includes this before declaration
- * Rule #2:- Any Function Implementation that is Intuitive (from the perspective of a beginner) 
- *              ==> Does not have to be implemented in the header
- *              ==> it should rather be inside `amVK.cpp`
- * 
- * Ques #1:- Does this class need to be a SingleTon? -> Kinda, no. But we don't got any problems even if it iss.... yk
+ *   #1:- as of 2025, april 19, can't inclue amVK_Instance.hh, cz that file includes this 💁‍♀️
+ *   #2:- 
  */
-class amVK_GlobalProps {
+class amVK_InstanceProps {
   public:
     static inline bool called_EnumeratePhysicalDevices = false;
     static inline bool called_GetPhysicalDeviceQueueFamilyProperties = false;
     static inline bool called_EnumerateInstanceExtensions = false;
     static inline bool called_EnumerateDeviceExtensionProperties = false;
 
-    #define amVK_QueueFamily_NOT_FOUND    0xFFFFFFFF
-    #define amVK_PhysicalDevice_NOT_FOUND 0xFFFFFFFF
-
-    typedef uint32_t                   PD_Index; // VkPhysicalDevice Index -> into -> amVK_1D_GPUs
-    #define amVK_GPU_Index amVK_GlobalProps::PD_Index
-
   public:
-    static void EnumeratePhysicalDevices(void);                         // amVK_1D_GPUs
-    static       void GetPhysicalDeviceQueueFamilyProperties(void);     // amVK_2D_GPUs_QFAMs
-    static void EnumerateInstanceExtensions(void);                      // amVK_1D_InstanceEXTs
-    static void EnumerateDeviceExtensionProperties(void);               // amVK_2D_GPUs_EXTs
+    static void EnumeratePhysicalDevices(void);                      // amVK_1D_GPUs
+    static       void GetPhysicalDeviceQueueFamilyProperties(void);  // amVK_2D_GPUs_QFAMs
+    static void EnumerateInstanceExtensions(void);                   // amVK_1D_InstanceEXTs
+    static void EnumerateDeviceExtensionProperties(void);            // amVK_2D_GPUs_EXTs
 
   public:
         // Array of `HardWare amVK_1D_GPUs` connected to motherboard
@@ -65,8 +56,8 @@ class amVK_GlobalProps {
 */
   public:
         // Linear Search
-    static                PD_Index VkPhysicalDevice_2_PD_Index(VkPhysicalDevice PDevice);
-    static inline         PD_Index GetARandom_GPU_amVK_Index(void) { return 0; }
+    static          amVK_GPU_Index VkPhysicalDevice_2_amVK_GPU_Index(VkPhysicalDevice PDevice);
+    static inline   amVK_GPU_Index GetARandom_GPU_amVK_Index(void) { return 0; }
         // Call: `EnumeratePhysicalDevices();` Before this function
     static inline VkPhysicalDevice GetARandom_GPU(void) { return amVK_1D_GPUs[0]; }
 
@@ -83,13 +74,13 @@ class amVK_GlobalProps {
 */
   public:
     /** 
-     * @param ID:- Use:- `amVK_GlobalProps::VkPhysicalDevice_2_PD_Index()` if you wanna pass in `VkPhysicalDevice` 
+     * @param ID:- Use:- `amVK_InstanceProps::VkPhysicalDevice_2_amVK_GPU_Index()` if you wanna pass in `VkPhysicalDevice` 
      * @returns `VkDeviceQCI.queueFamilyIndex` to be used
      */
-    static inline uint32_t ChooseAQueueFamily_for_GRAPHICS(PD_Index  GPU_k = 0) {
-        return amVK_GlobalProps::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, GPU_k);
+    static inline uint32_t ChooseAQueueFamily_for_GRAPHICS(amVK_GPU_Index  GPU_k = 0) {
+        return amVK_InstanceProps::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, GPU_k);
     }
-    static        uint32_t ChooseAQueueFamily(VkQueueFlags p_flagBits, PD_Index GPU_k = 0);
+    static        uint32_t ChooseAQueueFamily(VkQueueFlags p_flagBits, amVK_GPU_Index GPU_k = 0);
 
 
 /*
@@ -103,12 +94,12 @@ class amVK_GlobalProps {
                           |___/______|                    
 */
   public:
-    static bool  IS_InstanceEXT_Available(const char *extName);                 // amVK_1D_InstanceEXTs
-    static void Add_InstanceEXT_ToEnable (const char *extName);                 // amVK_1D_InstanceEXTs_Enabled
-    static void Log_InstanceEXTs_Enabled (VkResult ret);                        // amVK_1D_InstanceEXTs_Enabled
-    static bool      IS_GPU_EXT_Available(PD_Index GPU_k, const char *extName); // amVK_2D_GPUs_EXTs
-        //         IS_DeviceEXT_Available() --> Same as above
-        // IS_PhysicalDeviceEXT_Available() --> Same as above
+    static bool    is_1D_InstanceEXTs_Available(const char *extName);                       // amVK_1D_InstanceEXTs
+    static void addTo_1D_InstanceEXTs_Enabled  (const char *extName);                       // amVK_1D_InstanceEXTs_Enabled
+    static void   log_1D_InstanceEXTs_Enabled  (VkResult ret);                              // amVK_1D_InstanceEXTs_Enabled
+    static bool        is_2D_GPU_EXTs_Available(amVK_GPU_Index GPU_k, const char *extName); // amVK_2D_GPUs_EXTs
+        //           is_2D_DeviceEXTs_Available() --> Same as above
+        //   is_2D_PhysicalDeviceEXTs_Available() --> Same as above
     
 
 /*
@@ -134,7 +125,7 @@ class amVK_GlobalProps {
    */
   public:
     static void ExportYAML(void) {
-        amVK_GlobalProps *P = new amVK_GlobalProps();
+        amVK_InstanceProps *P = new amVK_InstanceProps();
         P->_ExportYAML();
             // ryml causes bugs if it has like static shits
     }

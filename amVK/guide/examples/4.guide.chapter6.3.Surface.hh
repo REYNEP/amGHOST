@@ -4,7 +4,7 @@
 class amVK_RenderPass;
 class amVK_SwapChain;
 class amVK_Device;
-class amVK_Presenter;
+class amVK_SurfacePresenter;
 
 /**
  * VULKAN-EXT:- `VK_KHR_surface`
@@ -13,7 +13,7 @@ class amVK_Presenter;
 class amVK_Surface {
   public:
     VkSurfaceKHR S = nullptr;       // Set in CONSTRUCTOR
-    amVK_Presenter *PR = nullptr;   // Set in CONSTRUCTOR
+    amVK_SurfacePresenter *PR = nullptr;   // Set in CONSTRUCTOR
     
     amVK_Surface(void) {}
     amVK_Surface(VkSurfaceKHR pS);
@@ -28,7 +28,7 @@ class amVK_Surface {
 };
 
 
-class amVK_Presenter {
+class amVK_SurfacePresenter {
   public:
     amVK_Surface  *S  = nullptr;
     amVK_SwapChain *SC = nullptr;
@@ -41,7 +41,7 @@ class amVK_Presenter {
     
   public:
     void bind_Device(amVK_Device *D);
-    amVK_Presenter  (amVK_Surface* pS) {this->S = pS;}
+    amVK_SurfacePresenter  (amVK_Surface* pS) {this->S = pS;}
 
   public:
     amVK_SwapChain*  create_SwapChain(void);

@@ -1,7 +1,6 @@
 #pragma once
 #include "vulkan/vulkan.h"
 
-
 namespace amVK_RP_AttachmentDescription
 {
         // Change .format before using
@@ -27,10 +26,13 @@ namespace amVK_RP_AttachmentReference
 };
 
 
+
 #define amVK_RPADes amVK_RP_AttachmentDescription
 #define amVK_RPARef amVK_RP_AttachmentReference
 #define amVK_RPSDes amVK_RP_SubpassDescription
 #define amVK_RPSDep amVK_RP_SubpassDependency
+
+
 
 namespace amVK_RP_SubpassDescription
 {

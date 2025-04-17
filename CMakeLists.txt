@@ -30,15 +30,17 @@ project("amGHOST_PROJECT" VERSION 0.1)
         "intern/amGHOST_SystemWIN32.cpp"
         "intern/amGHOST_WindowWIN32.cpp"
         
-        "amVK/intern/amVK_CreateInfos.cpp"
+        "amVK/intern/amVK_Instance.cpp"
+
         "amVK/intern/amVK_Device.cpp"
-        "amVK/intern/amVK_GlobalProps.cpp"
-        "amVK/intern/amVK_GlobalPropsExport.cpp"
-        "amVK/intern/amVK_GlobalPropsExport_nlohmann.cpp"
+        "amVK/intern/amVK_InstanceProps.cpp"
+        "amVK/intern/amVK_InstancePropsExport.cpp"
+        "amVK/intern/amVK_InstancePropsExport_nlohmann.cpp"
         "amVK/intern/amVK_Enum2String.cpp"
         "amVK/intern/amVK_log.cpp"
         "amVK/intern/amVK_SwapChain.cpp"
         "amVK/intern/amVK_Surface.cpp"
+        "amVK/intern/amVK_SurfacePresenter.cpp"
     )
 
     set(INC

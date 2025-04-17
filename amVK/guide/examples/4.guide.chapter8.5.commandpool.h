@@ -15,7 +15,7 @@ class amVK_CommandPool {
   public:
     amVK_CommandPool(amVK_SurfacePresenter *paramPR) {
         this->PR = paramPR;
-        this->CI.queueFamilyIndex = this->PR->D->amVK_1D_QCIs.ptr_Default()->queueFamilyIndex;
+        this->CI.queueFamilyIndex = this->PR->D->QCI.Default.queueFamilyIndex;
     }
 
   public:
@@ -45,13 +45,6 @@ class amVK_CommandBuffer {
         .commandBufferCount = 1
     };
 
-    VkCommandBufferBeginInfo BI = {
-        .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
-        .pNext = 0,
-        .flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT,
-        .pInheritanceInfo = nullptr
-    };
-
   public:
     amVK_CommandBuffer(amVK_SurfacePresenter *paramPR) {
         this->PR = paramPR;
@@ -66,33 +59,5 @@ class amVK_CommandBuffer {
     void AllocateCommandBuffer(void) {
         VkResult return_code = vkAllocateCommandBuffers(this->PR->D->vk_Device, &CI, &this->vk_CommandBuffer);
         amVK_return_code_log( "vkAllocateCommandBuffers()" );     // above variable "return_code" can't be named smth else
-    }
-};
-
-
-
-
-
-class amVK_Semaphore {
-  public:
-    VkSemaphoreCreateInfo CI = {
-        .sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
-        .pNext = nullptr,
-        .flags = 0,
-    };
-
-  public:
-    amVK_Semaphore(amVK_SurfacePresenter *paramPR) {
-        this->PR = paramPR;
-    }
-
-  public:
-    amVK_SurfacePresenter *PR = nullptr;               // Basically, Parent Pointer
-    VkSemaphore vk_Semaphore = nullptr;
-
-  public:
-    void CreateSemaphore(void) {
-        VkResult return_code = vkCreateSemaphore(this->PR->D->vk_Device, &CI, nullptr, &this->vk_Semaphore);
-        amVK_return_code_log( "vkCreateSemaphore()" );     // above variable "return_code" can't be named smth else
     }
 };

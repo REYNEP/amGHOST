@@ -1,32 +1,5 @@
 #pragma once
-#include "amVK_Instance.hh"
-
-struct amVK_Device_QueueCreateInfo {
-    const float Default_QP = 1.0f;
-        // Range = (0.0 -> 1.0) [inclusive]
-        // Within the same device, queues with higher priority may be allotted more processing time than queues with lower priority.
-
-    VkDeviceQueueCreateInfo Default = {
-        .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
-        .pNext = nullptr,
-        .flags = 0,
-        .queueFamilyIndex = 0,
-            // vkGetPhysicalDeviceQueueFamilyProperties() --> look for a QueueFamily that supports `VK_QUEUE_GRAPHICS_BIT`
-        .queueCount = 1,
-        .pQueuePriorities = &Default_QP
-    };
-
-    REY_ArrayDYN<VkDeviceQueueCreateInfo> Array = REY_ArrayDYN<VkDeviceQueueCreateInfo>(nullptr, 0, 0);
-        // No Memory Allocation by default 😊
-        //      1. REY_ArrayDYN.initialize(10)
-        //      2. REY_ARRAY_PUSH_BACK(Array) = your_QueueCI;        [not a function. but rather a preprocessor macro]
-
-        /* Initializes with Space for 2 elements --> [syncs] PushBacks `this->Default` */
-        void init_Array_with_default(void) {
-            Array.initialize(2);
-            REY_ARRAY_PUSH_BACK(Array) = this->Default;
-        }
-};
+#include "amVK_DeviceQCI.hh"
 
 /**
  * Not a "VkPhysicalDevice"
@@ -34,85 +7,45 @@ struct amVK_Device_QueueCreateInfo {
  */
 class amVK_Device {
   public:
-    amVK_Device_QueueCreateInfo QCI;
+    amVK_Array::QCI         amVK_1D_QCIs;
+    void                    sync_1D_QCIs(void);
+    void                    Default_QCI__select_QFAM_Graphics(void) {amVK_1D_QCIs.select_QFAM_Graphics(this->GPU_ID);}
+    
+    REY_ArrayDYN<char*>     amVK_1D_GPU_EXTs_Enabled;
+    void                   addTo_1D_GPU_EXTs_Enabled(const char* extName);  // If Available
+    void                     log_1D_GPU_EXTs_Enabled(VkResult ret);         // CreateDevice() calls this
+
     VkDeviceCreateInfo CI = {
         .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
         .pNext = nullptr,
-            // This one can be pointer to heck ton of things [see docs]
         .flags = 0,
-            // [implicit valid usage]:- must     be 0
-        .queueCreateInfoCount = 1,
-        .pQueueCreateInfos = &QCI.Default,
-            // if you wanna add --> edit `amVK_Device::QCI.Array` --> call `Set_QCI_Array_into_DeviceCI()`
+
+        .queueCreateInfoCount = 0,
+        .pQueueCreateInfos = nullptr,
+            // CreateDevice() calls ---> sync_1D_QCIs()
+
         .enabledLayerCount = 0,
         .ppEnabledLayerNames = nullptr,
-            // [deprecated]             should not be used
+            // [deprecated by VULKAN]
+
         .enabledExtensionCount = 0,
         .ppEnabledExtensionNames = nullptr,
         .pEnabledFeatures = nullptr
     };
 
-    REY_ArrayDYN<char*>   amVK_1D_GPU_EXTs_Enabled;
-    void Add_GPU_EXT_ToEnable(const char* extName);
-    void Log_GPU_EXTs_Enabled(VkResult ret);
-
   public:
+        /** SEE: `amVK_InstanceProps::GetARandom_GPU()` */
+    amVK_Device(amVK_GPU_Index GPU_ID) {_constructor_commons_(GPU_ID);}
     amVK_Device(VkPhysicalDevice PD);
-    /**
-     * SEE: `amVK_GlobalProps::GetARandom_GPU()`
-     */
-    amVK_Device(amVK_GlobalProps::PD_Index index) {
-        PD_ID = index;
-        vk_PhysicalDevice = amVK_GlobalProps::amVK_1D_GPUs[index];
-            // Other Constructor above, does the same shit, but with ERROR_CHECKING
-    }
    ~amVK_Device() {}
+    void _constructor_commons_(amVK_GPU_Index GPU_ID);
 
   public:
-    amVK_GlobalProps::PD_Index PD_ID = amVK_PhysicalDevice_NOT_FOUND;
-    VkPhysicalDevice     vk_PhysicalDevice = nullptr;
-    VkDevice             vk_Device = nullptr;
+    amVK_GPU_Index GPU_ID = amVK_PhysicalDevice_NOT_FOUND;
+    VkPhysicalDevice          vk_PhysicalDevice = nullptr;
+    VkDevice                  vk_Device         = nullptr;
 
   public:
-    /**
-     * @param p1: [VkPhysicalDevice]:- see `amVK_GlobalProps::GetARandom_GPU()`
-     */
-    void CreateDevice(void) {
-        VkResult return_code = vkCreateDevice(vk_PhysicalDevice, &CI, nullptr, &this->vk_Device);
-        amVK_return_code_log( "vkCreateDevice()" );     // above variable "return_code" can't be named smth else
-
-        Log_GPU_EXTs_Enabled(return_code);
-    }
-    void DestroyDevice(void) {
-        vkDestroyDevice(this->vk_Device, nullptr);
-    }
-
-
-
-
-
-
-  public:
-    /* Must Call This:- after editing `amVK_Device::QCI.Array` */
-    void set_QCI_Array_into_DeviceCI(void) {
-        this->CI.queueCreateInfoCount = QCI.Array.neXt;
-        this->CI.pQueueCreateInfos    = QCI.Array.data;
-    }
-    void set_QFAM_Index(uint32_t qFAM_Index) {
-        this->QCI.Default.queueFamilyIndex = qFAM_Index;
-    }
-    void select_QFAM_Graphics(void) {
-        if (!amVK_GlobalProps::called_GetPhysicalDeviceQueueFamilyProperties) {
-             amVK_GlobalProps::EnumeratePhysicalDevices();
-        }
-
-        if (!amVK_GlobalProps::called_GetPhysicalDeviceQueueFamilyProperties) {
-             amVK_GlobalProps::GetPhysicalDeviceQueueFamilyProperties();
-        }
-
-        amVK_GlobalProps::PD_Index GPU_k = this->PD_ID;
-        uint32_t        qFAM_Index = amVK_GlobalProps::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, GPU_k);
-
-        this->set_QFAM_Index(qFAM_Index);
-    }
+    void  CreateDevice(void);
+    void DestroyDevice(void);
 };

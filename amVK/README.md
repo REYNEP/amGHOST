@@ -1,5 +1,27 @@
 ## Read the [`./guide/4.guide.md`](https://github.com/REYNEP/amGHOST/blob/main/amVK/guide/4.guide.md)
 
+## `amVK_Class`
+![image1](./guide/images/readme1.png)
+2560x1200px
+made with affine.pro
+![image2](./guide/images/readme2.png)
+
+## `Flow / Directions / Guide`
+1. `amVK_Instance.hh`
+2. `amVK_GPU.hh`
+3. `amVK_InstanceProps.hh`
+4. `amVK_Device.hh`
+5. `amVK_DeviceQCI.hh`
+6. `amVK_Surface.hh`
+7. `amVK_SurfacePresenter.hh`
+8. `amVK_SwapChain.hh`
+9. `amVK_ColorSpace.hh`
+10. `amVK_RenderPass.hh`
+11. `amVK_RenderPass_Descriptors.hh`
+12. `REY_Utils.hh` ---> `REY_Array` & `REY_ArrayDYN`
+13. `amVK_Image.hh`
+14. `amVK_FrameBuffer.hh`
+
 ## amVK vs amGHOST
 - This is a little bit different than `amGHOST`. 
     - `amGHOST`:- Window & Such objects are instanced from `amG_HEART->new_window_interface()` and such and such. 
@@ -17,10 +39,14 @@
 ## Example
 ```cpp
 #include "amGHOST_System.hh"
+
+#include "amVK_InstanceProps.hh"
 #include "amVK_Instance.hh"
 #include "amVK_Device.hh"
+
 #include "amGHOST_VkSurfaceKHR.hh"
 #include "amVK_Surface.hh"
+
 #include "amVK_SwapChain.hh"
 #include "amVK_ColorSpace.hh"
 #include "amVK_RenderPass.hh"
@@ -42,9 +68,9 @@ int main(int argumentCount, char* argumentVector[]) {
     // TwT
     {
             REY_LOG("");
-        amVK_GlobalProps::EnumerateInstanceExtensions();
-        amVK_Instance::Add_InstanceEXT_ToEnable("VK_KHR_surface");
-        amVK_Instance::Add_InstanceEXT_ToEnable(amGHOST_System::get_vulkan_os_surface_ext_name());
+        amVK_InstanceProps::EnumerateInstanceExtensions();
+        amVK_Instance::addTo_1D_InstanceEXTs_Enabled("VK_KHR_surface");
+        amVK_Instance::addTo_1D_InstanceEXTs_Enabled(amGHOST_System::get_vulkan_os_surface_ext_name());
         amVK_Instance::CreateInstance();    // initializes amVK_HEART
 
 
@@ -53,19 +79,19 @@ int main(int argumentCount, char* argumentVector[]) {
 
 
             REY_LOG("");
-        amVK_GlobalProps::EnumeratePhysicalDevices();
-        amVK_GlobalProps::GetPhysicalDeviceQueueFamilyProperties();
-        amVK_GlobalProps::EnumerateDeviceExtensionProperties();
+        amVK_InstanceProps::EnumeratePhysicalDevices();
+        amVK_InstanceProps::GetPhysicalDeviceQueueFamilyProperties();
+        amVK_InstanceProps::EnumerateDeviceExtensionProperties();
 
-        amVK_Device* D = new amVK_Device(amVK_GlobalProps::GetARandom_GPU());
-            D->select_QFAM_Graphics();
-            D->Add_GPU_EXT_ToEnable("VK_KHR_swapchain");
+        amVK_Device* D = new amVK_Device(amVK_InstanceProps::GetARandom_GPU());
+            D->Default_QCI__select_QFAM_Graphics();
+            D->addTo_1D_GPU_EXTs_Enabled("VK_KHR_swapchain");
             D->CreateDevice();
 
         
             REY_LOG("")
         amVK_Surface   *S  = new amVK_Surface(VK_S);
-        amVK_Presenter *PR = S->PR;
+        amVK_SurfacePresenter  *PR = S->PR;
                                 PR->bind_Device(D);
                                 PR->create_SwapChain_interface();       // This amVK_SwapChain is Bound to this amVK_Surface
             
@@ -86,15 +112,15 @@ int main(int argumentCount, char* argumentVector[]) {
 
             SC->CI.oldSwapchain     = nullptr;
             SC->CreateSwapChain();
-            SC->GetSwapChainImagesKHR();
-            SC->CreateSwapChainImageViews();
+            PR->GetSwapChainImagesKHR();
+            PR->CreateSwapChainImageViews();
 
         amVK_RenderPass *RP = PR->create_RenderPass_interface();
             amVK_RPADes::ColorPresentation.format = SC->CI.imageFormat;
 
-            RP->AttachmentInfos .push_back(amVK_RPADes::ColorPresentation);
-            RP->SubpassInfos    .push_back(amVK_RPSDes::ColorPresentation);
-            RP->Dependencies    .push_back(amVK_RPSDep::ColorPresentation);
+            RP->AttachmentInfos.push_back(amVK_RPADes::ColorPresentation);
+            RP->SubpassInfos   .push_back(amVK_RPSDes::ColorPresentation);
+            RP->Dependencies   .push_back(amVK_RPSDep::ColorPresentation);
 
             RP->sync_Attachments_Subpasses_Dependencies();
             RP->CreateRenderPass();
@@ -133,7 +159,7 @@ int main(int argumentCount, char* argumentVector[]) {
     ```
 2. amVK Object/Instances Creation
     ```cpp
-    amVK_SwapChain* amVK_Presenter::create_SwapChain(void);
+    amVK_SwapChain* amVK_SurfacePresenter::create_SwapChain(void);
     ```
 3. 
 
@@ -196,3 +222,10 @@ VkInstance
 30. craft	🧙♂️ (Artisan)
 31. surfCap 📋 (property-style)
 32. surfCap_ptr 🎯 (or surfCapRef)
+
+
+
+
+ * Rule #1:- Any Function Implementation that is Intuitive (from the perspective of a beginner) 
+ *              ==> Does not have to be implemented in the header
+ *              ==> it should rather be inside `amVK_InstanceProps.cpp`

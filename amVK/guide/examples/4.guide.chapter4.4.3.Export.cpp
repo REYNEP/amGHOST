@@ -18,7 +18,7 @@ std::string toSTR(void* ptr) {
  * ordered_json -> kinda like std::unordered_map
  *              -> i.e. doesn't automatically sort alphabetically
  */
-void amVK_GlobalProps::ExportJSON(void) {
+void amVK_InstanceProps::ExportJSON(void) {
     nlohmann::ordered_json root;
     nlohmann::ordered_json vkEnumeratePhysicalDevices               = nlohmann::ordered_json::object();
     nlohmann::ordered_json vkEnumerateInstanceExtensionProperties   = nlohmann::ordered_json::object();

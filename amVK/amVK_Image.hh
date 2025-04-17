@@ -1,6 +1,7 @@
 #pragma once
 #include "amVK_Instance.hh"
 #include "amVK_Device.hh"
+#include "intern/amVK_log.hh"
 
 class amVK_Image {
   public:
@@ -27,7 +28,7 @@ class amVK_Image {
     VkImageView vk_ImageView = nullptr;
 
   public:
-    void createImageView(void) {
+    void CreateImageView(void) {
         VkResult return_code = vkCreateImageView(this->D->vk_Device, &ViewCI, nullptr, &this->vk_ImageView);
         amVK_return_code_log( "vkCreateImageView()" );     // above variable "return_code" can't be named smth else
     }
