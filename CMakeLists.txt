@@ -30,23 +30,27 @@ project("amGHOST_PROJECT" VERSION 0.1)
         "intern/amGHOST_SystemWIN32.cpp"
         "intern/amGHOST_WindowWIN32.cpp"
         
-        "amVK/intern/amVK_Instance.cpp"
+        "amVK/impl/amVK_Instance.cpp"
+        "amVK/impl/amVK_Device.cpp"
+        "amVK/impl/amVK_InstanceProps.cpp"
+        "amVK/impl/amVK_InstancePropsExport.cpp"
+        "amVK/impl/amVK_InstancePropsExport_nlohmann.cpp"
 
-        "amVK/intern/amVK_Device.cpp"
-        "amVK/intern/amVK_InstanceProps.cpp"
-        "amVK/intern/amVK_InstancePropsExport.cpp"
-        "amVK/intern/amVK_InstancePropsExport_nlohmann.cpp"
-        "amVK/intern/amVK_Enum2String.cpp"
-        "amVK/intern/amVK_log.cpp"
-        "amVK/intern/amVK_SwapChain.cpp"
-        "amVK/intern/amVK_Surface.cpp"
-        "amVK/intern/amVK_SurfacePresenter.cpp"
+        "amVK/common/amVK_Enum2String.cpp"
+        "amVK/common/amVK_log.cpp"
+
+        "amVK/impl/amVK_SwapChain.cpp"
+        "amVK/impl/amVK_Surface.cpp"
+        "amVK/impl/amVK_SurfacePresenter.cpp"
     )
 
     set(INC
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/intern/
         ${CMAKE_CURRENT_SOURCE_DIR}/amVK/
+        ${CMAKE_CURRENT_SOURCE_DIR}/amVK/common
+        ${CMAKE_CURRENT_SOURCE_DIR}/amVK/core
+        ${CMAKE_CURRENT_SOURCE_DIR}/amVK/extras
     )
 # --------------------
 

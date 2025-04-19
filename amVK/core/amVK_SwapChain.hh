@@ -1,15 +1,11 @@
 #pragma once
-#include "amVK_SurfacePresenter.hh"
-#include "amVK_Instance.hh"
-#include "amVK_Device.hh"
-#include "amVK_Image.hh"
-#include "amVK_Surface.hh"
-#include "amVK_ColorSpace.hh"
+#include "amVK/common/amVK.hh"
+#include "amVK/common/amVK_ColorSpace.hh"
 
 /**
  * konf = konfigurieren = configure 💁‍♀️
  */
-class amVK_SwapChain  {
+class amVK_SwapChain {
   public:
     VkSwapchainCreateInfoKHR CI = {
         .sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
@@ -23,6 +19,8 @@ class amVK_SwapChain  {
         
         .imageExtent = {},
         .imageArrayLayers = 1,
+            // CreateSwapChain() calls ---> sync_SurfCaps()
+
         .imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
         .imageSharingMode = VK_SHARING_MODE_EXCLUSIVE,
 
@@ -37,11 +35,7 @@ class amVK_SwapChain  {
         .oldSwapchain     = nullptr,
     };
 
-    /** Refreshes & Syncs `SurfaceCapabilites` */
-    void             sync_SurfCaps(void) {
-        this->PR->refresh_SurfCaps();
-        VkSurfaceCapabilitiesKHR *SurfCaps = this->PR->fetched_SurfCaps();
-
+    void              sync_SurfCaps(VkSurfaceCapabilitiesKHR *SurfCaps) {
         this->CI.minImageCount    = SurfCaps->minImageCount;
         this->CI.imageExtent      = SurfCaps->currentExtent;
         this->CI.imageArrayLayers = SurfCaps->maxImageArrayLayers;
@@ -52,18 +46,15 @@ class amVK_SwapChain  {
     void              konf_ImageSharingMode(VkSharingMode ISM)  {       CI.imageSharingMode = ISM;}
     VkFormat        active_PixelFormat(void)                    {return CI.imageFormat;}
     VkColorSpaceKHR active_ColorSpace (void)                    {return CI.imageColorSpace;}
+    VkExtent2D      active_ImageExtent(void)                    {return CI.imageExtent;}
 
   public:
-    /** USE:- amVK_SurfacePresenter::create_SwapChain_interface() */
-    amVK_SwapChain(amVK_SurfacePresenter *PR) {
-        this->PR = PR;
-        this->CI.surface = PR->S->vk_SurfaceKHR;
+    amVK_SwapChain(VkSurfaceKHR vk_SurfaceKHR) {
+        this->CI.surface =      vk_SurfaceKHR;
     }
 
-  public:
-    amVK_SurfacePresenter *PR = nullptr;
-    VkSwapchainKHR vk_SwapChainKHR = nullptr;
+    VkDevice  used_vk_Device        = nullptr;
+    VkSwapchainKHR vk_SwapChainKHR  = nullptr;
 
-  public:
-    void CreateSwapChain(void);
+    void CreateSwapChain(VkDevice vk_Device);
 };

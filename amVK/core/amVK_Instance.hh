@@ -17,11 +17,11 @@ class amVK_Instance {
 
   public:
     /**  USE:- `amVK_InstanceProps::EnumerateInstanceExtensions()` */
-    static void                   EnumerateInstanceExtensions(void) {
+    static void                     EnumerateInstanceExtensions(void) {
                 amVK_InstanceProps::EnumerateInstanceExtensions();
     }
     /**  USE:- `amVK_InstanceProps::addTo_1D_InstanceEXTs_Enabled()` */
-    static void                   addTo_1D_InstanceEXTs_Enabled(const char* extName) {
+    static void                     addTo_1D_InstanceEXTs_Enabled(const char* extName) {
                 amVK_InstanceProps::addTo_1D_InstanceEXTs_Enabled(extName);
     }
 };

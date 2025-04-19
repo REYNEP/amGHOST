@@ -1,14 +1,8 @@
 #include "amVK_Surface.hh"
 #include "amVK_SurfacePresenter.hh"
 #include "amVK_Instance.hh"
-#include "intern/amVK_log.hh"
+#include "amVK/common/amVK_log.hh"
 #include "amVK_InstanceProps.hh"
-
-amVK_Surface::amVK_Surface(VkSurfaceKHR pS) {
-    this->vk_SurfaceKHR = pS;
-    this->PR = new amVK_SurfacePresenter(this);
-    amVK_InstanceProps::push_back_amVK_Surface(this);
-}
 
 #include "amVK_Surface.hh"
 /**

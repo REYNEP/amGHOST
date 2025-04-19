@@ -1,6 +1,6 @@
 #include "amVK_InstanceProps.hh"
 #include "amVK_Instance.hh"
-#include "intern/amVK_log.hh"
+#include "amVK/common/amVK_log.hh"
 
 // 1. NEXT:-
 // 2. PREV:-

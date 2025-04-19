@@ -7,7 +7,7 @@
 #include "amGHOST_SystemWIN32.hh"
 #include "amGHOST_WindowWIN32.hh" 
 
-#include "amVK/intern/amVK_log.hh"
+#include "amVK/common/amVK_log.hh"
 
 class amGHOST_VkSurfaceKHR_WIN32 : public amGHOST_VkSurfaceKHR {
   public:

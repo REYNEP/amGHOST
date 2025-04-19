@@ -47,6 +47,8 @@ made with affine.pro
 #include "amGHOST_VkSurfaceKHR.hh"
 #include "amVK_Surface.hh"
 
+#include "amVK_SurfacePresenter.hh"
+
 #include "amVK_SwapChain.hh"
 #include "amVK_ColorSpace.hh"
 #include "amVK_RenderPass.hh"
@@ -91,7 +93,8 @@ int main(int argumentCount, char* argumentVector[]) {
         
             REY_LOG("")
         amVK_Surface   *S  = new amVK_Surface(VK_S);
-        amVK_SurfacePresenter  *PR = S->PR;
+        amVK_SurfacePresenter  *PR = new amVK_SurfacePresenter();
+                                PR->bind_Surface(S);
                                 PR->bind_Device(D);
                                 PR->create_SwapChain_interface();       // This amVK_SwapChain is Bound to this amVK_Surface
             
@@ -108,12 +111,14 @@ int main(int argumentCount, char* argumentVector[]) {
                 amVK_CC::YES,               // Clipping:- VK_TRUE
                 amVK_TA::Opaque             // VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR
             );
-            SC->sync_SurfCaps();            // refresh/fetch & set/sync ---> latest SurfCaps
+            PR->sync_SC_SurfCaps();         // refresh/fetch & set/sync ---> latest SurfCaps
 
             SC->CI.oldSwapchain     = nullptr;
-            SC->CreateSwapChain();
-            PR->GetSwapChainImagesKHR();
-            PR->CreateSwapChainImageViews();
+            PR->CreateSwapChain();
+
+        amVK_SwapChainIMGs *SC_IMGs = PR->create_SwapChainImages_interface();
+            SC_IMGs->GetSwapChainImagesKHR();
+            SC_IMGs->CreateSwapChainImageViews();
 
         amVK_RenderPass *RP = PR->create_RenderPass_interface();
             amVK_RPADes::ColorPresentation.format = SC->CI.imageFormat;
@@ -123,11 +128,19 @@ int main(int argumentCount, char* argumentVector[]) {
             RP->Dependencies   .push_back(amVK_RPSDep::ColorPresentation);
 
             RP->sync_Attachments_Subpasses_Dependencies();
-            RP->CreateRenderPass();
+            PR->CreateRenderPass();
         
-        PR->create_FrameBuffers();
+        amVK_RenderPassFBs *FBs = PR->create_FrameBuffers_interface();
+            FBs->CreateFrameBuffers();
         amVK_CommandPool *CP = PR->create_CommandPool_interface();
-            CP->CreateCommandPool();
+            PR->CreateCommandPool();
+            CP->AllocateCommandBuffers();
+            
+            PR->BeginCommandBuffer();
+            PR->RPBI_ReadyUp();
+            PR->BeginRenderPass();
+
+        amVK_InstanceProps::Export_nilohmannJSON();
     }
     REY_LOG("");
     REY_LOG("");

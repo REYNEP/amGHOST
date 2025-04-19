@@ -120,9 +120,9 @@ nlohmann::ordered_json nlohmann_amVK_SwapChain(amVK_SwapChain *SC) {
     nlohmann::ordered_json dict = nlohmann::ordered_json::object();
 
     dict["Memory Address"] = toSTR(SC->vk_SwapChainKHR);
-    REY_Array_LOOP(SC->PR->amVK_1D_SC_IMGs, i) {
-        dict["[SwapChain Image " + std::to_string(i) + "]"] = nlohmann_amVK_Image(&(SC->PR->amVK_1D_SC_IMGs[i]));
-    }
+    //REY_Array_LOOP(SC->amVK_1D_SC_IMGs, i) {
+    //    dict["[SwapChain Image " + std::to_string(i) + "]"] = nlohmann_amVK_Image(&(SC->amVK_1D_SC_IMGs[i]));
+    //}
 
     return dict;
 }
@@ -179,7 +179,7 @@ nlohmann::ordered_json nlohmann_amVK_SurfaceInfo(amVK_Surface *Surf) {
     nlohmann::ordered_json dict = nlohmann::ordered_json::object();
 
         dict["Memory Address"] = toSTR(Surf->vk_SurfaceKHR);
-        dict["vkSwapchainKHR"] = nlohmann_amVK_SwapChain(Surf->PR->SC);
+    //  dict["vkSwapchainKHR"] = nlohmann_amVK_SwapChain(Surf->PR->SC);
         
     REY_Array_LOOP(amVK_InstanceProps::amVK_1D_GPUs, k) {
         nlohmann::ordered_json GPU_k = nlohmann::ordered_json::object();

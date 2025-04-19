@@ -64,23 +64,28 @@ class amVK_SwapChain  {
 
     uint32_t AcquireNextImage(void) {
         uint64_t ns_per_second = 1'000'000'000;
-        uint32_t imageIndex = UINT32_MAX;
 
-        if (this->vk_Semaphore == nullptr) {
+        if (this->vk_SemaPhore == nullptr) {
             this->CreateSemaPhore();
         }
 
-        VkResult return_code = vkAcquireNextImageKHR(this->PR->D->vk_Device, this->vk_SwapChainKHR, 1'000'000'000, vk_Semaphore, nullptr, &imageIndex);
-        if (return_code == VK_ERROR_OUT_OF_DATE_KHR) {
-            REY_LOG_EX("[VK_ERROR_OUT_OF_DATE_KHR] ----> WIP:- WindowResize()");
-        }
-        else if (return_code == VK_SUBOPTIMAL_KHR) {
-            REY_LOG_EX("[VK_ERROR_OUT_OF_DATE_KHR] ----> WIP:- Figure out what to do");
-        }
-        else {
-            amVK_return_code_log( "vkCreateSemaphore()" ); // above variable "return_code" can't be named smth else
-        }
+            VkResult return_code = vkAcquireNextImageKHR(
+                this->D->vk_Device, 
+                this->SC->vk_SwapChainKHR, 
+                1'000'000'000, vk_SemaPhore, nullptr, 
+                &this->NextImageIndex_Acquired
+            );
+            
+            if (return_code == VK_ERROR_OUT_OF_DATE_KHR) {
+                REY_LOG_EX(" [ VK_ERROR_OUT_OF_DATE_KHR ] ----> WIP:- WindowResize()");
+            }
+            else if (return_code == VK_SUBOPTIMAL_KHR) {
+                REY_LOG_EX(" [ VK_SUBOPTIMAL_KHR ] ----> WIP:- Figure out what to do");
+            }
+            else {
+                amVK_return_code_log( "vkAcquireNextImageKHR()" ); // above variable "return_code" can't be named smth else
+            }
 
-        return imageIndex;
+        return this->NextImageIndex_Acquired;
     }
 };

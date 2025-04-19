@@ -1,7 +1,6 @@
 #pragma once
-#include <vulkan/vulkan.h>
-#include "REY_Utils.hh"
-#include "amVK_GPU.hh"
+#include "amVK/common/amVK.hh"
+#include "amVK/common/amVK_GPU.hh"
 
 class amVK_Surface;
 

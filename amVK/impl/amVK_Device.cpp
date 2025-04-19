@@ -1,5 +1,5 @@
 #include "amVK_Device.hh"
-#include "intern/amVK_log.hh"
+#include "amVK/common/amVK_log.hh"
 #include "amVK_InstanceProps.hh"
 
 /** 

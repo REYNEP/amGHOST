@@ -1,8 +1,5 @@
 #pragma once
-
-#include "amVK_Instance.hh"
-#include "amVK_Device.hh"
-#include "amVK_Surface.hh"
+#include <vulkan/vulkan.h>
 
 class amVK_FrameBuffer  {
   public:
@@ -24,18 +21,18 @@ class amVK_FrameBuffer  {
 
   public:
     amVK_FrameBuffer(void) {}
-    amVK_FrameBuffer(amVK_SurfacePresenter *paramPR) {
-        this->PR = paramPR;
-        this->CI.renderPass = this->PR->RP->vk_RenderPass;
+    amVK_FrameBuffer(VkRenderPass vk_RenderPass) {
+        this->CI.renderPass = vk_RenderPass;
     }
 
   public:
-    amVK_SurfacePresenter *PR = nullptr;       // Basically, Parent Pointer
+    VkDevice used_vk_Device      = nullptr;
     VkFramebuffer vk_FrameBuffer = nullptr;
 
   public:
-    void CreateFrameBuffer(void) {
-        VkResult return_code = vkCreateFramebuffer(this->PR->D->vk_Device, &CI, nullptr, &this->vk_FrameBuffer);
+    void CreateFrameBuffer(VkDevice vk_Device) {
+        this->used_vk_Device = vk_Device;
+        VkResult return_code = vkCreateFramebuffer(vk_Device, &CI, nullptr, &this->vk_FrameBuffer);
         amVK_return_code_log( "vkCreateFramebuffer()" );     // above variable "return_code" can't be named smth else
     }
 };

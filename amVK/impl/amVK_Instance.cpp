@@ -29,7 +29,7 @@ VkInstanceCreateInfo amVK_Instance::CI = {
 };
 
 
-#include "intern/amVK_log.hh"
+#include "amVK/common/amVK_log.hh"
 #include "amVK_InstanceProps.hh"
 
 void amVK_Instance::CreateInstance(void)

@@ -1,7 +1,6 @@
 #pragma once
-#include "amVK_Instance.hh"
-#include "amVK_Device.hh"
-#include "intern/amVK_log.hh"
+#include <vulkan/vulkan.h>
+#include "common/amVK_log.hh"
 
 class amVK_Image {
   public:
@@ -18,18 +17,19 @@ class amVK_Image {
 
   public:
     amVK_Image(void) {}
-    amVK_Image(amVK_Device *paramD) {
-        D = paramD;
+    amVK_Image(  VkDevice vk_Device) {
+        this->vk_Device = vk_Device;
     }
+   ~amVK_Image(void) {}
 
   public:
-    amVK_Device *D = nullptr;
-    VkImage vk_Image = nullptr;
-    VkImageView vk_ImageView = nullptr;
+    VkDevice      vk_Device    = nullptr;
+    VkImage       vk_Image     = nullptr;
+    VkImageView   vk_ImageView = nullptr;
 
   public:
-    void CreateImageView(void) {
-        VkResult return_code = vkCreateImageView(this->D->vk_Device, &ViewCI, nullptr, &this->vk_ImageView);
+    void CreateImageView(VkDevice vk_Device) {
+        VkResult return_code = vkCreateImageView(vk_Device, &ViewCI, nullptr, &this->vk_ImageView);
         amVK_return_code_log( "vkCreateImageView()" );     // above variable "return_code" can't be named smth else
     }
 };
