@@ -29,6 +29,7 @@ namespace amVK_Array {
         }
 
       public:
+        uint32_t  get_QFAM_Index          (void) {return Default.queueFamilyIndex;}
         void   select_QFAM_Graphics     (amVK_GPU_Index GPU_ID);
         void      set_QFAM_Index          (uint32_t qFAM_Index) {
             this->ptr_Default()->queueFamilyIndex = qFAM_Index;

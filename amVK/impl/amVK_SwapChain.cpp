@@ -32,10 +32,8 @@ void amVK_SwapChain::konf_Compositing(
     CI.presentMode = PM;
 }
 
-void amVK_SwapChain::CreateSwapChain(VkDevice vk_Device) {
-    this->used_vk_Device = vk_Device;
-    
-    VkResult return_code = vkCreateSwapchainKHR(vk_Device, &CI, nullptr, &this->vk_SwapChainKHR);
+void amVK_SwapChain::CreateSwapChain(void) {
+    VkResult return_code = vkCreateSwapchainKHR(this->D->vk_Device, &CI, nullptr, &(this->vk_SwapChainKHR));
     amVK_return_code_log( "vkCreateSwapchainKHR()" );     // above variable "return_code" can't be named smth else
 }
 
@@ -78,13 +76,13 @@ void amVK_SwapChainIMGs::GetSwapChainImagesKHR(void)
     uint32_t imagesCount = 0;     
         // [implicit valid usage]:- must be 0     [if 3rd-param = nullptr]
 
-        vkGetSwapchainImagesKHR(this->SC->used_vk_Device, this->SC->vk_SwapChainKHR, &imagesCount, nullptr);
+        vkGetSwapchainImagesKHR(this->vk_Device, this->SC->vk_SwapChainKHR, &imagesCount, nullptr);
             // This function is 'output-ing into' deviceCount
 
     this->amVK_1D_SC_IMGs.n    = imagesCount;
     this->amVK_1D_SC_IMGs.data = new VkImage[imagesCount];
 
-        VkResult return_code = vkGetSwapchainImagesKHR(this->SC->used_vk_Device, this->SC->vk_SwapChainKHR, &imagesCount, this->amVK_1D_SC_IMGs.data);
+        VkResult return_code = vkGetSwapchainImagesKHR(this->vk_Device, this->SC->vk_SwapChainKHR, &imagesCount, this->amVK_1D_SC_IMGs.data);
         amVK_return_code_log( "vkGetSwapchainImagesKHR()" );
     // ---------------------------- images1D -------------------------------
 
@@ -104,7 +102,7 @@ void amVK_SwapChainIMGs::CreateSwapChainImageViews(void) {
     REY_Array_LOOP(this->amVK_1D_SC_IMGs, i) {
         this->ViewCI.image = amVK_1D_SC_IMGs[i];
 
-        VkResult return_code = vkCreateImageView(this->SC->used_vk_Device, &this->ViewCI, nullptr, &this->amVK_1D_SC_IMGViews[i]);
+        VkResult return_code = vkCreateImageView(this->vk_Device, &this->ViewCI, nullptr, &this->amVK_1D_SC_IMGViews[i]);
         amVK_return_code_log( "vkCreateImageView()" );
     }
 
@@ -122,8 +120,8 @@ static VkSemaphoreCreateInfo g_SP_CI = {
     .pNext = nullptr,
     .flags = 0
 };
-void  amVK_SwapChainIMGs::CreateSemaPhore(void) {
-    VkResult return_code = vkCreateSemaphore(this->SC->used_vk_Device, &g_SP_CI, nullptr, &this->vk_SemaPhore);
+void  amVK_SwapChainIMGs::AcquireNextImage_SemaPhore_Create(void) {
+    VkResult return_code = vkCreateSemaphore(this->vk_Device, &g_SP_CI, nullptr, &this->AcquireNextImage_SemaPhore);
     amVK_return_code_log( "vkCreateSemaphore()" );     // above variable "return_code" can't be named smth else
 }
 
@@ -136,14 +134,15 @@ void  amVK_SwapChainIMGs::CreateSemaPhore(void) {
 uint32_t amVK_SwapChainIMGs::AcquireNextImage(void) {
     uint64_t ns_per_second = 1'000'000'000;
 
-    if (this->vk_SemaPhore == nullptr) {
-        this->CreateSemaPhore();
+    if (this->AcquireNextImage_SemaPhore == nullptr) {
+        this->AcquireNextImage_SemaPhore_Create();
     }
 
         VkResult return_code = vkAcquireNextImageKHR(
-            this->SC->used_vk_Device, 
+            this->vk_Device,
             this->SC->vk_SwapChainKHR, 
-            1'000'000'000, vk_SemaPhore, nullptr, 
+            1'000'000'000, 
+            AcquireNextImage_SemaPhore, nullptr,
             &this->NextImageIndex_Acquired
         );
         

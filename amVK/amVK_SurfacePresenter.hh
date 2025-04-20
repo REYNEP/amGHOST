@@ -9,9 +9,10 @@
 #include "amVK_RenderPass.hh"
 #include "amVK_RenderPassFBs.hh"
 #include "amVK_CommandPool.hh"
+#include "amVK_RenderPassCMDs.hh"
 
 /**
- * Should be created in amVK_Surface::CONSTRUCTOR 💁‍♀️
+ * For those who don't know, which after which
  */
 class amVK_SurfacePresenter {
   public:
@@ -22,6 +23,7 @@ class amVK_SurfacePresenter {
     amVK_Device         *D = nullptr;
     amVK_RenderPassFBs *FBs = nullptr;
     amVK_SwapChainIMGs *IMGs = nullptr;
+    amVK_RenderPassCMDs  *RPC = nullptr;
     
   public:
     void bind_Device       (amVK_Device* D)   {this->D = D;}
@@ -33,25 +35,25 @@ class amVK_SurfacePresenter {
     void               isBound_Surface(void)  { if (S == nullptr) {REY_LOG_EX("use bind_Surface(); first");} }
 
   public:
-    amVK_SwapChain*     create_SwapChain_interface(void);
-    amVK_SwapChainIMGs* create_SwapChainImages_interface(void);
-    amVK_RenderPass*    create_RenderPass_interface(void);
-    amVK_RenderPassFBs* create_FrameBuffers_interface(void);
-    amVK_CommandPool*   create_CommandPool_interface(void);
-    
-    void                      refresh_SurfCaps(void){          this->S->GetPhysicalDeviceSurfaceCapabilitiesKHR(); }
-    VkSurfaceCapabilitiesKHR* fetched_SurfCaps(void){ return &(this->S->amVK_1D_GPUs_SurfCAP[this->D->GPU_ID]   ); }
-
-    void                      sync_SC_SurfCaps(void){          this->refresh_SurfCaps();        SC->sync_SurfCaps(this->fetched_SurfCaps()); }
-    VkExtent2D              synced_ImageExtent(void){          this->sync_SC_SurfCaps(); return SC->active_ImageExtent(); }
-
-    void              CreateSwapChain(void)         { this->SC->CreateSwapChain  (this->D->vk_Device); }
-    void              CreateRenderPass(void)        { this->RP->CreateRenderPass (this->D->vk_Device); }
-    void              CreateCommandPool(void)       { this->CP->CreateCommandPool(this->D->vk_Device); }
+    /** 
+     * 1) Go Serially. 
+     * 2) Call amVK_Class::FUNC that modify CreateInfos 3
+     * 3) amVK_Class::CreateVkObject() 
+     **/
+    amVK_SwapChain*      create_SwapChain_interface(void);
+    amVK_SwapChainIMGs*  create_SwapChainImages_interface(void);
+    amVK_RenderPass*     create_RenderPass_interface(void);
+    amVK_RenderPassFBs*  create_FrameBuffers_interface(void);
+    amVK_CommandPool*    create_CommandPool_interface(void);
+    amVK_RenderPassCMDs* create_RenderPassCMDs_interface(void);
 
   public:
     VkCommandBuffer active_CMDBUF(void)             { return   this->CP->get_active_CMDBUF(); }
     void            BeginCommandBuffer(void);
-    void            RPBI_ReadyUp(void);
-    void            BeginRenderPass(void);
+    void              EndCommandBuffer(void);
+
+    VkSemaphore RenderingFinished_SemaPhore = nullptr;
+    void        RenderingFinished_SemaPhore_Create(void);
+    void            submit_CMDBUF(void);
+    void                  Present(void);
 };

@@ -1,6 +1,7 @@
 #pragma once
 #include "amVK/common/amVK.hh"
 #include "amVK/common/amVK_log.hh"
+#include "amVK_Device.hh"
 
 class amVK_RenderPass  {
   public:
@@ -20,39 +21,21 @@ class amVK_RenderPass  {
     REY_ArrayDYN<VkAttachmentDescription> AttachmentInfos;
     REY_ArrayDYN<VkSubpassDescription> SubpassInfos;
     REY_ArrayDYN<VkSubpassDependency> Dependencies;
-    void sync_Attachments(void) {
-        CI.attachmentCount = AttachmentInfos.neXt;
-        CI.pAttachments = AttachmentInfos.data;
-    }
-    void sync_Subpasses(void) {
-        CI.subpassCount = SubpassInfos.neXt;
-        CI.pSubpasses = SubpassInfos.data;
-    }
-    void sync_Dependencies(void) {
-        CI.dependencyCount = Dependencies.neXt;
-        CI.pDependencies = Dependencies.data;
-    }
-    void sync_Attachments_Subpasses_Dependencies(void) {
-         sync_Attachments();
-         sync_Subpasses();
-         sync_Dependencies();
-    }
-    void sync_Elements(void) {
-         sync_Attachments_Subpasses_Dependencies();
-    }
+    void sync_Attachments(void);
+    void sync_Subpasses(void);
+    void sync_Dependencies(void);
+    void sync_Attachments_Subpasses_Dependencies(void);
+    void sync_Elements(void) { sync_Attachments_Subpasses_Dependencies(); }
 
   public:
-    amVK_RenderPass() {}
+    amVK_RenderPass(amVK_Device *D) : D(D) {}
    ~amVK_RenderPass() {}
 
-  public:
-    VkDevice used_vk_Device     = nullptr;
-    VkRenderPass  vk_RenderPass = nullptr;
+    amVK_Device *D;
+    VkRenderPass vk_RenderPass = nullptr;
 
-  public:
-    void CreateRenderPass(VkDevice vk_Device) {
-        this->used_vk_Device = vk_Device;
-        VkResult return_code = vkCreateRenderPass(vk_Device, &CI, nullptr, &this->vk_RenderPass);
+    void CreateRenderPass(void) {
+        VkResult return_code = vkCreateRenderPass(this->D->vk_Device, &CI, nullptr, &this->vk_RenderPass);
         amVK_return_code_log( "vkCreateRenderPass()" );     // above variable "return_code" can't be named smth else
     }
 };

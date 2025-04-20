@@ -1,6 +1,9 @@
 #pragma once
 #include "amVK_SwapChain.hh"
 
+/**
+ * amVK_SwapChainIMGs + amVK_RenderPass ---> amVK_RenderPassFBs
+ */
 class amVK_SwapChainIMGs {
   public:
     VkImageViewCreateInfo ViewCI = {
@@ -26,15 +29,16 @@ class amVK_SwapChainIMGs {
         }
     };
 
-    VkExtent2D active_ImageExtent(void) {return this->SC->active_ImageExtent();}
+    inline VkExtent2D active_ImageExtent(void) {return this->SC->active_ImageExtent();}
 
   public:
     amVK_SwapChain *SC = nullptr;
+    VkDevice vk_Device = nullptr;   // Don't wanna dereference `this->SC->D->vk_Device` everytime
 
     REY_Array<VkImage>     amVK_1D_SC_IMGs;
     REY_Array<VkImageView> amVK_1D_SC_IMGViews;
 
-    amVK_SwapChainIMGs(amVK_SwapChain *SC) {this->SC = SC;}
+    amVK_SwapChainIMGs(amVK_SwapChain *SC) {this->SC = SC; this->vk_Device = SC->D->vk_Device;}
    ~amVK_SwapChainIMGs() {}
 
   public:
@@ -46,7 +50,6 @@ class amVK_SwapChainIMGs {
   public:
     uint32_t               NextImageIndex_Acquired = UINT32_MAX;
     uint32_t        AcquireNextImage(void);
-
-    VkSemaphore vk_SemaPhore = nullptr;
-    void     CreateSemaPhore(void);
+    VkSemaphore     AcquireNextImage_SemaPhore = nullptr;
+    void            AcquireNextImage_SemaPhore_Create(void);
 };

@@ -1,6 +1,8 @@
 #pragma once
 #include "amVK/common/amVK.hh"
 #include "amVK/common/amVK_ColorSpace.hh"
+#include "amVK_Surface.hh"
+#include "amVK_Device.hh"
 
 /**
  * konf = konfigurieren = configure 💁‍♀️
@@ -35,7 +37,8 @@ class amVK_SwapChain {
         .oldSwapchain     = nullptr,
     };
 
-    void              sync_SurfCaps(VkSurfaceCapabilitiesKHR *SurfCaps) {
+    void              sync_SurfCaps(void) {
+        VkSurfaceCapabilitiesKHR   *SurfCaps = this->S->current_SurfCaps(this->D->GPU_ID);
         this->CI.minImageCount    = SurfCaps->minImageCount;
         this->CI.imageExtent      = SurfCaps->currentExtent;
         this->CI.imageArrayLayers = SurfCaps->maxImageArrayLayers;
@@ -49,12 +52,10 @@ class amVK_SwapChain {
     VkExtent2D      active_ImageExtent(void)                    {return CI.imageExtent;}
 
   public:
-    amVK_SwapChain(VkSurfaceKHR vk_SurfaceKHR) {
-        this->CI.surface =      vk_SurfaceKHR;
-    }
+    amVK_SwapChain(amVK_Surface *S, amVK_Device *D): S(S), D(D) {this->CI.surface = S->vk_SurfaceKHR;}
+    amVK_Surface *S;
+    amVK_Device  *D;
+    VkSwapchainKHR vk_SwapChainKHR = nullptr;
 
-    VkDevice  used_vk_Device        = nullptr;
-    VkSwapchainKHR vk_SwapChainKHR  = nullptr;
-
-    void CreateSwapChain(VkDevice vk_Device);
+    void CreateSwapChain(void);
 };

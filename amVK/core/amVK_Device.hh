@@ -48,4 +48,9 @@ class amVK_Device {
   public:
     void  CreateDevice(void);
     void DestroyDevice(void);
+    VkQueue get_default_queue() {
+        VkQueue vk_Queue = nullptr;
+        vkGetDeviceQueue(this->vk_Device, this->amVK_1D_QCIs.get_QFAM_Index(), 0, &vk_Queue);
+        return  vk_Queue;
+    }
 };

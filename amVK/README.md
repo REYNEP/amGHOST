@@ -111,13 +111,13 @@ int main(int argumentCount, char* argumentVector[]) {
                 amVK_CC::YES,               // Clipping:- VK_TRUE
                 amVK_TA::Opaque             // VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR
             );
-            PR->sync_SC_SurfCaps();         // refresh/fetch & set/sync ---> latest SurfCaps
+            SC->sync_SurfCaps();            // refresh/fetch & set/sync ---> latest SurfCaps
 
             SC->CI.oldSwapchain     = nullptr;
-            PR->CreateSwapChain();
+            SC->CreateSwapChain();
 
         amVK_SwapChainIMGs *SC_IMGs = PR->create_SwapChainImages_interface();
-            SC_IMGs->GetSwapChainImagesKHR();
+            SC_IMGs->   GetSwapChainImagesKHR();
             SC_IMGs->CreateSwapChainImageViews();
 
         amVK_RenderPass *RP = PR->create_RenderPass_interface();
@@ -128,17 +128,24 @@ int main(int argumentCount, char* argumentVector[]) {
             RP->Dependencies   .push_back(amVK_RPSDep::ColorPresentation);
 
             RP->sync_Attachments_Subpasses_Dependencies();
-            PR->CreateRenderPass();
-        
+            RP->CreateRenderPass();
+
         amVK_RenderPassFBs *FBs = PR->create_FrameBuffers_interface();
             FBs->CreateFrameBuffers();
+
         amVK_CommandPool *CP = PR->create_CommandPool_interface();
-            PR->CreateCommandPool();
+            CP->CreateCommandPool();
             CP->AllocateCommandBuffers();
-            
+
+        amVK_RenderPassCMDs *RP_CMDs = PR->create_RenderPassCMDs_interface();
             PR->BeginCommandBuffer();
-            PR->RPBI_ReadyUp();
-            PR->BeginRenderPass();
+                RP_CMDs->RPBI_AcquireNextFrameBuffer();
+                RP_CMDs->CMDBeginRenderPass();
+                RP_CMDs->CMDSetViewport_n_Scissor();
+                RP_CMDs->CMDEndRenderPass();
+            PR->  EndCommandBuffer();
+            PR->submit_CMDBUF();
+            PR->Present();
 
         amVK_InstanceProps::Export_nilohmannJSON();
     }

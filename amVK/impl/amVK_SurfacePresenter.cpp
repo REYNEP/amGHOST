@@ -4,7 +4,7 @@
 amVK_SwapChain* amVK_SurfacePresenter::create_SwapChain_interface(void) {
             this->isBound_Device();
             this->isBound_Surface();
-            this->SC = new amVK_SwapChain(this->S->vk_SurfaceKHR);
+            this->SC = new amVK_SwapChain(this->S, this->D);
     return  this->SC;
 }
 
@@ -12,7 +12,7 @@ amVK_SwapChain* amVK_SurfacePresenter::create_SwapChain_interface(void) {
 amVK_RenderPass* amVK_SurfacePresenter::create_RenderPass_interface(void) {
             this->isBound_Device();
             this->isBound_Surface();
-            this->RP = new amVK_RenderPass();
+            this->RP = new amVK_RenderPass(this->D);
     return  this->RP;
 }
 
@@ -20,7 +20,7 @@ amVK_RenderPass* amVK_SurfacePresenter::create_RenderPass_interface(void) {
 amVK_CommandPool* amVK_SurfacePresenter::create_CommandPool_interface(void) {
             this->isBound_Device();
             this->isBound_Surface();
-            this->CP = new amVK_CommandPool(this->D->amVK_1D_QCIs.ptr_Default()->queueFamilyIndex);
+            this->CP = new amVK_CommandPool(this->D, this->D->amVK_1D_QCIs.ptr_Default()->queueFamilyIndex);
     return  this->CP;
 }
 
@@ -38,6 +38,14 @@ amVK_RenderPassFBs* amVK_SurfacePresenter::create_FrameBuffers_interface(void) {
             this->isBound_Surface();
             this->FBs = new amVK_RenderPassFBs(this->IMGs, this->RP);
     return  this->FBs;
+}
+
+#include "amVK_RenderPassCMDs.hh"
+amVK_RenderPassCMDs* amVK_SurfacePresenter::create_RenderPassCMDs_interface(void) {
+            this->isBound_Device();
+            this->isBound_Surface();
+            this->RPC = new amVK_RenderPassCMDs(this->FBs, this->active_CMDBUF());
+    return  this->RPC;
 }
 
 
@@ -71,28 +79,96 @@ void  amVK_SurfacePresenter::BeginCommandBuffer(void) {
     VkResult return_code = vkBeginCommandBuffer(this->active_CMDBUF(), &g_CMDBUF_BI);
     amVK_return_code_log( "vkBeginCommandBuffer()" );
 }
-
-static VkClearValue g_ClearValue = {
-    .color = {0.0f, 0.2f, 0.4f, 1.0f}
-};
-static VkRenderPassBeginInfo g_BI = {
-    .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
-    .pNext = nullptr,
-    .renderPass = nullptr,
-    .framebuffer = nullptr,
-    .renderArea = {
-        .offset = {0, 0},
-        .extent = {100, 100}
-    },
-    .clearValueCount = 1,
-    .pClearValues = &g_ClearValue
-};
-void amVK_SurfacePresenter::RPBI_ReadyUp(void) {
-    g_BI.renderPass         = this->RP->vk_RenderPass;
-    g_BI.framebuffer        = this->FBs->AcquireNextFrameBuffer();
-    g_BI.renderArea.extent  = this->synced_ImageExtent();
+    // Ending the render pass will add an implicit barrier, transitioning the frame buffer color attachment to
+    // `VK_IMAGE_LAYOUT_PRESENT_SRC_KHR` for presenting it to the windowing system
+void  amVK_SurfacePresenter::EndCommandBuffer(void) {
+    VkResult return_code = vkEndCommandBuffer(this->active_CMDBUF());
+    amVK_return_code_log( "vkEndCommandBuffer()" );
 }
-void amVK_SurfacePresenter::BeginRenderPass(void) {
-             vkCmdBeginRenderPass(this->active_CMDBUF(), &g_BI, VK_SUBPASS_CONTENTS_INLINE);
-    REY_LOG("vkCmdBeginRenderPass()");
+
+
+
+
+
+static VkSemaphoreCreateInfo g_SP_CI = {
+    .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO,
+    .pNext = nullptr,
+    .flags = 0
+};
+void  amVK_SurfacePresenter::RenderingFinished_SemaPhore_Create(void) {
+    VkResult return_code = vkCreateSemaphore(this->SC->D->vk_Device, &g_SP_CI, nullptr, &this->RenderingFinished_SemaPhore);
+    amVK_return_code_log( "vkCreateSemaphore()" );     // above variable "return_code" can't be named smth else
+}
+static VkPipelineStageFlags g_WaitStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+static VkSubmitInfo g_SI = {
+    .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
+    .pNext = nullptr,
+    .waitSemaphoreCount = 0,
+    .pWaitSemaphores    = nullptr,
+
+    .pWaitDstStageMask = &g_WaitStageMask,
+
+    .commandBufferCount     = 0,
+    .pCommandBuffers        = nullptr,
+    .signalSemaphoreCount   = 0,
+    .pSignalSemaphores      = nullptr
+};
+void amVK_SurfacePresenter::submit_CMDBUF(void) {
+    if (RenderingFinished_SemaPhore == nullptr) {
+        RenderingFinished_SemaPhore_Create();
+    }
+
+    VkSemaphore ImageAvailableSemaphore = this->IMGs->AcquireNextImage_SemaPhore;
+    VkSemaphore RenderingFinishedSemaphore = this->RenderingFinished_SemaPhore;
+    VkCommandBuffer ActiveCommandBuffer = this->active_CMDBUF();
+
+        g_SI.waitSemaphoreCount     = 1;
+        g_SI.pWaitSemaphores        = &ImageAvailableSemaphore;
+        g_SI.signalSemaphoreCount   = 1;
+        g_SI.pSignalSemaphores      = &RenderingFinishedSemaphore;
+        g_SI.commandBufferCount     = 1;
+        g_SI.pCommandBuffers        = &ActiveCommandBuffer;
+            // I don't think VULKAN Objects are literal objects....
+            // I think, VkSemaphore is rather just an ID or smth
+
+    VkResult return_code = vkQueueSubmit(this->D->get_default_queue(), 1, &g_SI, VK_NULL_HANDLE);
+    amVK_return_code_log( "vkQueueSubmit()" );
+}
+
+
+
+
+static VkPresentInfoKHR g_PI = {
+    .sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
+    .pNext = nullptr,
+    .waitSemaphoreCount = 0,
+    .pWaitSemaphores = nullptr,
+    .swapchainCount = 0,
+    .pSwapchains = nullptr,
+    .pImageIndices = nullptr,
+    .pResults = nullptr
+};
+void amVK_SurfacePresenter::Present(void) {
+    VkSemaphore RenderingFinishedSemaphore = this->RenderingFinished_SemaPhore;
+
+        g_PI.waitSemaphoreCount = 1;
+        g_PI.pWaitSemaphores = &RenderingFinishedSemaphore;
+        g_PI.swapchainCount = 1;
+        g_PI.pSwapchains = &this->SC->vk_SwapChainKHR;
+        g_PI.pImageIndices = &this->IMGs->NextImageIndex_Acquired;
+
+        VkResult return_code = vkQueuePresentKHR(
+            this->D->get_default_queue(),
+            &g_PI
+        );
+        
+        if (return_code == VK_ERROR_OUT_OF_DATE_KHR) {
+            REY_LOG_EX(" [ VK_ERROR_OUT_OF_DATE_KHR ] ----> WIP:- WindowResize()");
+        }
+        else if (return_code == VK_SUBOPTIMAL_KHR) {
+            REY_LOG_EX(" [ VK_SUBOPTIMAL_KHR ] ----> WIP:- Figure out what to do");
+        }
+        else {
+            amVK_return_code_log( "vkQueuePresentKHR()" ); // above variable "return_code" can't be named smth else
+        }
 }

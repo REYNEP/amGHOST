@@ -40,6 +40,7 @@ project("amGHOST_PROJECT" VERSION 0.1)
         "amVK/common/amVK_log.cpp"
 
         "amVK/impl/amVK_SwapChain.cpp"
+        "amVK/impl/amVK_RenderPass.cpp"
         "amVK/impl/amVK_Surface.cpp"
         "amVK/impl/amVK_SurfacePresenter.cpp"
     )

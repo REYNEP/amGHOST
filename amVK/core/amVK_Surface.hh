@@ -20,4 +20,9 @@ class amVK_Surface {
     bool called_GetPhysicalDeviceSurfaceCapabilitiesKHR = false;
     void        GetPhysicalDeviceSurfaceInfo(void);
     void        GetPhysicalDeviceSurfaceCapabilitiesKHR(void);
+
+  public:
+    inline void                      refresh_SurfCaps(void)                  {          this->GetPhysicalDeviceSurfaceCapabilitiesKHR();        }
+    inline VkSurfaceCapabilitiesKHR* fetched_SurfCaps(amVK_GPU_Index GPU_ID) { return &(this->amVK_1D_GPUs_SurfCAP[GPU_ID]);                    }
+    inline VkSurfaceCapabilitiesKHR* current_SurfCaps(amVK_GPU_Index GPU_ID) { this->refresh_SurfCaps(); return this->fetched_SurfCaps(GPU_ID); }
 };
