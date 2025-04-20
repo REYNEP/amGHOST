@@ -31,7 +31,7 @@ amGHOST_VkSurfaceKHR* amGHOST_WindowWIN32::init_VkSurface_interface(void) {
      */
 void amGHOST_WindowWIN32::destroy(void)   
 {
-    if (this->m_amGHOST_VkSurface != nullptr) {
+    if (this->m_amGHOST_VkSurface->m_S != nullptr) {
         this->m_amGHOST_VkSurface->destroy();
     }
 

@@ -37,6 +37,10 @@ void amVK_SwapChain::CreateSwapChain(void) {
     amVK_return_code_log( "vkCreateSwapchainKHR()" );     // above variable "return_code" can't be named smth else
 }
 
+void amVK_SwapChain::DestroySwapChain(void) {
+    vkDestroySwapchainKHR(this->D->vk_Device, vk_SwapChainKHR, nullptr);
+}
+
 
 
 
@@ -109,6 +113,12 @@ void amVK_SwapChainIMGs::CreateSwapChainImageViews(void) {
     called_CreateSwapChainImageViews = true;
 }
 
+void amVK_SwapChainIMGs::DestroySwapChainImageViews(void) {
+    REY_Array_LOOP(this->amVK_1D_SC_IMGViews, i) {
+        vkDestroyImageView(this->vk_Device, amVK_1D_SC_IMGViews[i], nullptr);
+    }
+}
+
 
 
 
@@ -123,6 +133,9 @@ static VkSemaphoreCreateInfo g_SP_CI = {
 void  amVK_SwapChainIMGs::AcquireNextImage_SemaPhore_Create(void) {
     VkResult return_code = vkCreateSemaphore(this->vk_Device, &g_SP_CI, nullptr, &this->AcquireNextImage_SemaPhore);
     amVK_return_code_log( "vkCreateSemaphore()" );     // above variable "return_code" can't be named smth else
+}
+void amVK_SwapChainIMGs::AcquireNextImage_SemaPhore_Destroy(void) {
+    vkDestroySemaphore(this->vk_Device, this->AcquireNextImage_SemaPhore, nullptr);
 }
 
 

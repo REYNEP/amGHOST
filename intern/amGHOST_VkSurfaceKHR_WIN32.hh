@@ -11,8 +11,8 @@
 
 class amGHOST_VkSurfaceKHR_WIN32 : public amGHOST_VkSurfaceKHR {
   public:
-    using amGHOST_VkSurfaceKHR::m_S;        // VkSurfaceKHR
-    using amGHOST_VkSurfaceKHR::m_I;        // VkInstance
+    // using amGHOST_VkSurfaceKHR::m_S;        // VkSurfaceKHR
+    // using amGHOST_VkSurfaceKHR::m_I;        // VkInstance
     amGHOST_WindowWIN32 *m_W = nullptr;
 
   public:

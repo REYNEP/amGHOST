@@ -46,10 +46,12 @@ class amVK_SwapChainIMGs {
     bool    called_GetSwapChainImagesKHR         = false;
     bool called_CreateSwapChainImageViews        = false;
     void        CreateSwapChainImageViews(void);             // used_vk_Device
+    void       DestroySwapChainImageViews(void);             
 
   public:
     uint32_t               NextImageIndex_Acquired = UINT32_MAX;
     uint32_t        AcquireNextImage(void);
     VkSemaphore     AcquireNextImage_SemaPhore = nullptr;
     void            AcquireNextImage_SemaPhore_Create(void);
+    void            AcquireNextImage_SemaPhore_Destroy(void);
 };

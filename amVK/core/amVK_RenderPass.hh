@@ -38,4 +38,7 @@ class amVK_RenderPass  {
         VkResult return_code = vkCreateRenderPass(this->D->vk_Device, &CI, nullptr, &this->vk_RenderPass);
         amVK_return_code_log( "vkCreateRenderPass()" );     // above variable "return_code" can't be named smth else
     }
+    void DestroyRenderPass(void) {
+        vkDestroyRenderPass(this->D->vk_Device, vk_RenderPass, nullptr);
+    }
 };

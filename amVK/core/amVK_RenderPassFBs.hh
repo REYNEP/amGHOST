@@ -37,5 +37,6 @@ class amVK_RenderPassFBs {
 
   public:
     void CreateFrameBuffers(void);
+    void DestroyFrameBuffers(void);
     inline   VkFramebuffer        get(uint32_t index) { return amVK_1D_RP_FBs[index]; }
 };

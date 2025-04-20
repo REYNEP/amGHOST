@@ -6,21 +6,79 @@
 made with affine.pro
 ![image2](./guide/images/readme2.png)
 
+## `Files Table`
+
+<table width="100%" border="1">
+<tr>
+<td width="50%">
+</br>
+
+- 🗂️ `common`
+    - 📝 [amVK.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/common/amVK.hh)
+    - 📝 [amVK_ColorSpace.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/common/amVK_ColorSpace.hh)
+    - 📝 [amVK_Enum2String.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/common/amVK_Enum2String.cpp)
+    - 📝 [amVK_Enum2String.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/common/amVK_Enum2String.hh)
+    - 📝 [amVK_GPU.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/common/amVK_GPU.hh)
+    - 📝 [amVK_RenderPass_Descriptors.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/common/amVK_RenderPass_Descriptors.hh)
+    - 📝 [amVK_log.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/common/amVK_log.cpp)
+    - 📝 [amVK_log.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/common/amVK_log.hh)
+- 🗂️ `core`
+    - 📝 [amVK_Instance.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_Instance.hh)
+    - 📝 [amVK_Device.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_Device.hh)
+    - 📝 [amVK_DeviceQCI.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_DeviceQCI.hh)
+    - 📝 [amVK_Surface.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_Surface.hh)
+    - 📝 [amVK_SwapChain.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_SwapChain.hh)
+    - 📝 [amVK_SwapChainIMGs.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_SwapChainIMGs.hh)
+    - 📝 [amVK_RenderPass.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_RenderPass.hh)
+    - 📝 [amVK_RenderPassFBs.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_RenderPassFBs.hh)
+    - 📝 [amVK_CommandPool.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_CommandPool.hh)
+    </br> 
+- 📝 [amVK_SurfacePresenter.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/amVK_SurfacePresenter.hh)
+
+</br>
+</td>
+<td width="50%">
+
+- 🗂️ `extras`
+    - 📝 [SCREENSHOT_STUDIO.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/extras/SCREENSHOT_STUDIO.hh)
+    - 📝 [amVK_CommandBuffer.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/extras/amVK_CommandBuffer.hh)
+    - 📝 [amVK_FrameBuffer.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/extras/amVK_FrameBuffer.hh)
+    - 📝 [amVK_Image.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/extras/amVK_Image.hh)
+    - 📝 [amVK_SemaPhone.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/extras/amVK_SemaPhone.hh)
+
+- 🗂️ `guide`
+    - *(Directory placeholder – add guide files here if any)*
+
+- 🗂️ `impl`
+    - 📝 [amVK_Device.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/impl/amVK_Device.cpp)
+    - 📝 [amVK_Instance.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/impl/amVK_Instance.cpp)
+    - 📝 [amVK_InstanceProps.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/impl/amVK_InstanceProps.cpp)
+    - 📝 [amVK_InstancePropsExport.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/impl/amVK_InstancePropsExport.cpp)
+    - 📝 [amVK_InstancePropsExport_nloh...](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/impl/amVK_InstancePropsExport_nloh...)
+    - 📝 [amVK_Surface.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/impl/amVK_Surface.cpp)
+    - 📝 [amVK_SurfacePresenter.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/impl/amVK_SurfacePresenter.cpp)
+    - 📝 [amVK_SwapChain.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/impl/amVK_SwapChain.cpp)
+
+</td>
+</tr>
+</table>
+
 ## `Flow / Directions / Guide`
 1. `amVK_Instance.hh`
 2. `amVK_GPU.hh`
 3. `amVK_InstanceProps.hh`
-4. `amVK_Device.hh`
-5. `amVK_DeviceQCI.hh`
-6. `amVK_Surface.hh`
-7. `amVK_SurfacePresenter.hh`
+4. `REY_Utils.hh` ---> `REY_Array` & `REY_ArrayDYN`
+5. `amVK_Device.hh`
+6. `amVK_DeviceQCI.hh`
+7. `amVK_Surface.hh`
 8. `amVK_SwapChain.hh`
 9. `amVK_ColorSpace.hh`
-10. `amVK_RenderPass.hh`
-11. `amVK_RenderPass_Descriptors.hh`
-12. `REY_Utils.hh` ---> `REY_Array` & `REY_ArrayDYN`
-13. `amVK_Image.hh`
-14. `amVK_FrameBuffer.hh`
+10. `amVK_SwapChainIMGs.hh`
+11. `amVK_RenderPass.hh`
+12. `amVK_RenderPass_Descriptors.hh`
+13. `amVK_RenderPassFBs.hh`
+14. `amVK_CommandPool.hh`
+15. `amVK_RenderPassCMDs.hh`
 
 ## amVK vs amGHOST
 - This is a little bit different than `amGHOST`. 
@@ -67,6 +125,7 @@ int main(int argumentCount, char* argumentVector[]) {
 
     REY_LOG("");
     REY_LOG("");
+    amVK_SurfacePresenter  *PR = new amVK_SurfacePresenter();
     // TwT
     {
             REY_LOG("");
@@ -93,10 +152,10 @@ int main(int argumentCount, char* argumentVector[]) {
         
             REY_LOG("")
         amVK_Surface   *S  = new amVK_Surface(VK_S);
-        amVK_SurfacePresenter  *PR = new amVK_SurfacePresenter();
-                                PR->bind_Surface(S);
-                                PR->bind_Device(D);
-                                PR->create_SwapChain_interface();       // This amVK_SwapChain is Bound to this amVK_Surface
+        // amVK_SurfacePresenter   *PR = new amVK_SurfacePresenter();
+                                    PR->bind_Surface(S);
+                                    PR->bind_Device(D);
+                                    PR->create_SwapChain_interface();       // This amVK_SwapChain is Bound to this amVK_Surface
             
             REY_LOG("")
         amVK_SwapChain *SC =    PR->SC;
@@ -155,6 +214,9 @@ int main(int argumentCount, char* argumentVector[]) {
 
 
     REY::cin.get();     // wait for terminal input
+        PR->destroy_everything_serially();
+        W->m_amGHOST_VkSurface->destroy();
+        amVK_Instance::DestroyInstance();
     W->destroy();
 
     REY::cout << "\n";

@@ -58,4 +58,5 @@ class amVK_SwapChain {
     VkSwapchainKHR vk_SwapChainKHR = nullptr;
 
     void CreateSwapChain(void);
+    void DestroySwapChain(void);
 };

@@ -47,6 +47,9 @@ class amVK_SurfacePresenter {
     amVK_CommandPool*    create_CommandPool_interface(void);
     amVK_RenderPassCMDs* create_RenderPassCMDs_interface(void);
 
+      // Destroy's even the Instance
+    void destroy_everything_serially(void); 
+
   public:
     VkCommandBuffer active_CMDBUF(void)             { return   this->CP->get_active_CMDBUF(); }
     void            BeginCommandBuffer(void);
@@ -54,6 +57,7 @@ class amVK_SurfacePresenter {
 
     VkSemaphore RenderingFinished_SemaPhore = nullptr;
     void        RenderingFinished_SemaPhore_Create(void);
+    void        RenderingFinished_SemaPhore_Destroy(void);
     void            submit_CMDBUF(void);
     void                  Present(void);
 };

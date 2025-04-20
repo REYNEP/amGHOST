@@ -48,6 +48,18 @@ amVK_RenderPassCMDs* amVK_SurfacePresenter::create_RenderPassCMDs_interface(void
     return  this->RPC;
 }
 
+void amVK_SurfacePresenter::destroy_everything_serially(void) {
+    this->FBs->DestroyFrameBuffers();
+    this->IMGs->DestroySwapChainImageViews();
+    this->SC->DestroySwapChain();
+    this->CP->FreeCommandBuffers();
+    this->RP->DestroyRenderPass();
+    this->IMGs->AcquireNextImage_SemaPhore_Destroy();
+    this->RenderingFinished_SemaPhore_Destroy();
+    this->CP->DestroyCommandPool();
+    this->D->DestroyDevice();
+}
+
 
 
 
@@ -98,6 +110,9 @@ static VkSemaphoreCreateInfo g_SP_CI = {
 void  amVK_SurfacePresenter::RenderingFinished_SemaPhore_Create(void) {
     VkResult return_code = vkCreateSemaphore(this->SC->D->vk_Device, &g_SP_CI, nullptr, &this->RenderingFinished_SemaPhore);
     amVK_return_code_log( "vkCreateSemaphore()" );     // above variable "return_code" can't be named smth else
+}
+void amVK_SurfacePresenter::RenderingFinished_SemaPhore_Destroy(void) {
+    vkDestroySemaphore(this->D->vk_Device, this->RenderingFinished_SemaPhore, nullptr);
 }
 static VkPipelineStageFlags g_WaitStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
 static VkSubmitInfo g_SI = {

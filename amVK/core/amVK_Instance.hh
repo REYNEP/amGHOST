@@ -14,6 +14,7 @@ class amVK_Instance {
   public:
     static inline   VkInstance vk_Instance = nullptr;
     static void CreateInstance(void);
+    static void DestroyInstance(void) {vkDestroyInstance(vk_Instance, nullptr);}
 
   public:
     /**  USE:- `amVK_InstanceProps::EnumerateInstanceExtensions()` */

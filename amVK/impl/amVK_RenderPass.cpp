@@ -53,6 +53,11 @@ void amVK_RenderPassFBs::CreateFrameBuffers(void) {
             amVK_return_code_log( "vkCreateFramebuffer()" );     // above variable "return_code" can't be named smth else
     }
 }
+void amVK_RenderPassFBs::DestroyFrameBuffers(void) {
+    REY_Array_LOOP(this->amVK_1D_RP_FBs, k) {
+        vkDestroyFramebuffer(this->RP->D->vk_Device, this->amVK_1D_RP_FBs[k], nullptr);
+    }
+}
 
 
 

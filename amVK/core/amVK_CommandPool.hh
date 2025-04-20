@@ -28,6 +28,9 @@ class amVK_CommandPool {
         VkResult return_code = vkCreateCommandPool(this->D->vk_Device, &this->CI, nullptr, &this->vk_CommandPool);
         amVK_return_code_log( "vkCreateCommandPool()" );    // above variable "return_code" can't be named smth else
     }
+    void DestroyCommandPool(void) {
+        vkDestroyCommandPool(this->D->vk_Device, vk_CommandPool, nullptr);
+    }
 
 
 
@@ -55,6 +58,10 @@ class amVK_CommandPool {
             amVK_return_code_log( "vkAllocateCommandBuffers()" );
 
         return vk_CommandBuffers;
+    }
+
+    void  FreeCommandBuffers(void) {
+        vkFreeCommandBuffers(this->D->vk_Device, vk_CommandPool, vk_CommandBuffers.n, vk_CommandBuffers.data);
     }
 
   public:
