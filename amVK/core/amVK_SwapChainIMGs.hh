@@ -38,7 +38,11 @@ class amVK_SwapChainIMGs {
     REY_Array<VkImage>     amVK_1D_SC_IMGs;
     REY_Array<VkImageView> amVK_1D_SC_IMGViews;
 
-    amVK_SwapChainIMGs(amVK_SwapChain *SC) {this->SC = SC; this->vk_Device = SC->D->vk_Device;}
+    amVK_SwapChainIMGs(amVK_SwapChain *SC) {
+        this->SC = SC; 
+        this->vk_Device = SC->D->vk_Device;
+        amVK_InstancePropsEXT::push_back_amVK_SurfaceLinks(this);
+    }
    ~amVK_SwapChainIMGs() {}
 
   public:

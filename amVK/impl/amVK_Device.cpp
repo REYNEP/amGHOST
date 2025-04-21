@@ -1,6 +1,6 @@
 #include "amVK_Device.hh"
-#include "amVK/common/amVK_log.hh"
-#include "amVK_InstanceProps.hh"
+#include "amVK/utils/amVK_log.hh"
+#include "amVK_InstancePropsEXT.hh"
 
 /** 
  * Wait, I wanted to write some shits here.... [read the amVK_Guide] 
@@ -12,8 +12,9 @@ amVK_Device::amVK_Device(VkPhysicalDevice PD) {
     else                                         { _constructor_commons_(GPU_ID); }
 }
 void amVK_Device::_constructor_commons_(amVK_GPU_Index GPU_ID) {
-    this->GPU_ID = GPU_ID;
-    vk_PhysicalDevice = amVK_InstanceProps::amVK_1D_GPUs[GPU_ID];
+    this->GPU_ID            = GPU_ID;
+    this->GPU_Props         = &amVK_InstanceProps::amVK_1D_GPUs[GPU_ID];
+    this->vk_PhysicalDevice = GPU_Props->vk_PhysicalDevice;
 }
 
 
@@ -63,14 +64,10 @@ void amVK_Device::DestroyDevice(void) {
 namespace amVK_Array {
     void QCI::select_QFAM_Graphics(amVK_GPU_Index GPU_ID) {
         if (!amVK_InstanceProps::called_EnumeratePhysicalDevices) {
-             amVK_InstanceProps::EnumeratePhysicalDevices();
-        }
-
-        if (!amVK_InstanceProps::called_GetPhysicalDeviceQueueFamilyProperties) {
-             amVK_InstanceProps::GetPhysicalDeviceQueueFamilyProperties();
+             amVK_InstancePropsEXT::EnumeratePhysicalDevices();
         }
         
-        uint32_t  QFAM_Index = amVK_InstanceProps::ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT, GPU_ID);
+        uint32_t  QFAM_Index = amVK_InstanceProps::amVK_1D_GPUs[GPU_ID].ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT);
         this->set_QFAM_Index(QFAM_Index);
     }
 }
@@ -88,11 +85,7 @@ namespace amVK_Array {
 #include "REY_STDWrap.hh"
 void amVK_Device::addTo_1D_GPU_EXTs_Enabled(const char* extName) {
         // VK_KHR_swapchain
-    if (!amVK_InstanceProps::called_EnumerateDeviceExtensionProperties) {
-         amVK_InstanceProps::EnumerateDeviceExtensionProperties();
-    }
-    
-    if (amVK_InstanceProps::is_2D_GPU_EXTs_Available(this->GPU_ID, extName)) {
+    if (amVK_InstanceProps::amVK_1D_GPUs[GPU_ID].isExtensionAvailable(extName)) {
         char  *dont_lose = REY_strcpy(extName);
 
         REY_ArrayDYN_PUSH_BACK(this->amVK_1D_GPU_EXTs_Enabled) = dont_lose;

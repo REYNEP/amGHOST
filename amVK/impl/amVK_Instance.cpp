@@ -28,10 +28,7 @@ VkInstanceCreateInfo amVK_Instance::CI = {
     .ppEnabledExtensionNames = nullptr
 };
 
-
-#include "amVK/common/amVK_log.hh"
-#include "amVK_InstanceProps.hh"
-
+#include "amVK/utils/amVK_log.hh"
 void amVK_Instance::CreateInstance(void)
 {
     if (vk_Instance) {
@@ -42,5 +39,38 @@ void amVK_Instance::CreateInstance(void)
     VkResult return_code = vkCreateInstance(&CI, nullptr, &vk_Instance);
     amVK_return_code_log( "vkCreateInstance()" );  // above variable "return_code" can't be named smth else
 
-    amVK_InstanceProps::log_1D_InstanceEXTs_Enabled(return_code);
+    amVK_Instance::log_1D_Instance_EXTs_Enabled(return_code);
+}
+
+#include "REY_STDWrap.hh"
+#include "amVK_InstancePropsEXT.hh"
+#include "amVK/utils/amVK_log.hh"
+void amVK_Instance::addTo_1D_Instance_EXTs_Enabled(const char* extName) {
+    // VK_KHR_surface
+    if (!amVK_InstanceProps::called_EnumerateInstanceExtensions) {
+                amVK_InstanceProps::EnumerateInstanceExtensions();
+    }
+    
+    if (amVK_InstanceProps::isInstanceEXTAvailable(extName)) {
+        char  *dont_lose = REY_strcpy(extName);
+
+        REY_ArrayDYN_PUSH_BACK(amVK_1D_Instance_EXTs_Enabled) = dont_lose;
+
+        amVK_Instance::CI.enabledExtensionCount = amVK_1D_Instance_EXTs_Enabled.neXt;
+        amVK_Instance::CI.ppEnabledExtensionNames = amVK_1D_Instance_EXTs_Enabled.data;
+    }
+    else {
+        REY_LOG_notfound("Vulkan Instance Extension:- " << extName);
+    }
+}
+void amVK_Instance::log_1D_Instance_EXTs_Enabled(VkResult ret) {
+    if (ret != VK_SUCCESS) {
+        REY_LOG_status("vkCreateInstance() failed 😶‍🌫️");
+    }
+    else {
+        REY_LOG_status("         Enabled VULKAN Extensions' Name:- ");
+        REY_Array_LOOP(amVK_1D_Instance_EXTs_Enabled, k) {
+            REY_LOG_status("              | " << amVK_1D_Instance_EXTs_Enabled[k]);
+        }
+    }
 }

@@ -1,5 +1,5 @@
 #include "amVK_SwapChain.hh"
-#include "amVK/common/amVK_log.hh"
+#include "amVK/utils/amVK_log.hh"
 
 /**
  * TODO:- Implemenet autoFallBack support

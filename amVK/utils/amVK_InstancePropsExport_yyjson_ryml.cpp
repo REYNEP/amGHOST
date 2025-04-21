@@ -1,4 +1,3 @@
-#include "amVK_Instance.hh"
 #include "amVK_InstanceProps.hh"
 #include "amVK_Enum2String.hh"
 #include <string>
@@ -113,19 +112,6 @@ void amVK_InstanceProps::Export_yyJSON(void) {
         yyjson_mut_doc_free(doc);
     // -------------------- Write to file -------------------- //
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
                        _ 

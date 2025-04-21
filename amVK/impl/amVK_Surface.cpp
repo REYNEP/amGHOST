@@ -1,8 +1,8 @@
 #include "amVK_Surface.hh"
 #include "amVK_SurfacePresenter.hh"
 #include "amVK_Instance.hh"
-#include "amVK/common/amVK_log.hh"
-#include "amVK_InstanceProps.hh"
+#include "amVK/utils/amVK_log.hh"
+#include "amVK_InstancePropsEXT.hh"
 
 #include "amVK_Surface.hh"
 /**
@@ -14,7 +14,7 @@
  */
 void amVK_Surface::GetPhysicalDeviceSurfaceInfo(void) {
     if (!amVK_InstanceProps::called_EnumeratePhysicalDevices) {
-         amVK_InstanceProps::       EnumeratePhysicalDevices();
+         amVK_InstancePropsEXT::    EnumeratePhysicalDevices();
     }
 
     amVK_2D_GPUs_ImageFMTs.reserve(amVK_InstanceProps::amVK_1D_GPUs.n);
@@ -27,12 +27,12 @@ void amVK_Surface::GetPhysicalDeviceSurfaceInfo(void) {
 
         uint32_t imageFormatCount = 0;
             // [implicit valid usage]:- must be 0     [if 3rd-param = nullptr]
-            VkResult return_code = vkGetPhysicalDeviceSurfaceFormatsKHR(amVK_InstanceProps::amVK_1D_GPUs[k], this->vk_SurfaceKHR, &imageFormatCount, nullptr);
+            VkResult return_code = vkGetPhysicalDeviceSurfaceFormatsKHR(amVK_InstanceProps::amVK_1D_GPUs[k].vk_PhysicalDevice, this->vk_SurfaceKHR, &imageFormatCount, nullptr);
             amVK_RC_silent_check( "vkGetPhysicalDeviceSurfaceFormatsKHR()" );
 
         k_IMG_FMTs->n = imageFormatCount;
         k_IMG_FMTs->data = new VkSurfaceFormatKHR[imageFormatCount];
-                     return_code = vkGetPhysicalDeviceSurfaceFormatsKHR(amVK_InstanceProps::amVK_1D_GPUs[k], this->vk_SurfaceKHR, &k_IMG_FMTs->n, k_IMG_FMTs->data);
+                     return_code = vkGetPhysicalDeviceSurfaceFormatsKHR(amVK_InstanceProps::amVK_1D_GPUs[k].vk_PhysicalDevice, this->vk_SurfaceKHR, &k_IMG_FMTs->n, k_IMG_FMTs->data);
             amVK_return_code_log( "vkGetPhysicalDeviceSurfaceFormatsKHR()" );
     
         amVK_Surface::called_GetPhysicalDeviceSurfaceFormatsKHR = true;
@@ -41,7 +41,7 @@ void amVK_Surface::GetPhysicalDeviceSurfaceInfo(void) {
         // ------------------------ amVK_1D_GPUs_SurfCAP ---------------------------
         VkSurfaceCapabilitiesKHR *k_SURF_CAPs = &amVK_1D_GPUs_SurfCAP[k];
 
-                     return_code = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(amVK_InstanceProps::amVK_1D_GPUs[k], this->vk_SurfaceKHR, k_SURF_CAPs);
+                     return_code = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(amVK_InstanceProps::amVK_1D_GPUs[k].vk_PhysicalDevice, this->vk_SurfaceKHR, k_SURF_CAPs);
             amVK_return_code_log( "vkGetPhysicalDeviceSurfaceCapabilitiesKHR()" );
 
         amVK_Surface::called_GetPhysicalDeviceSurfaceFormatsKHR = true;
@@ -57,7 +57,7 @@ void amVK_Surface::GetPhysicalDeviceSurfaceInfo(void) {
  */
 void amVK_Surface::GetPhysicalDeviceSurfaceCapabilitiesKHR(void) {
     if (!amVK_InstanceProps::called_EnumeratePhysicalDevices) {
-         amVK_InstanceProps::       EnumeratePhysicalDevices();
+         amVK_InstancePropsEXT::    EnumeratePhysicalDevices();
     }
 
     amVK_1D_GPUs_SurfCAP  .reserve(amVK_InstanceProps::amVK_1D_GPUs.n);
@@ -67,7 +67,7 @@ void amVK_Surface::GetPhysicalDeviceSurfaceCapabilitiesKHR(void) {
         // ------------------------ amVK_1D_GPUs_SurfCAP ---------------------------
         VkSurfaceCapabilitiesKHR *k_SURF_CAPs = &amVK_1D_GPUs_SurfCAP[k];
 
-            VkResult return_code = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(amVK_InstanceProps::amVK_1D_GPUs[k], this->vk_SurfaceKHR, k_SURF_CAPs);
+            VkResult return_code = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(amVK_InstanceProps::amVK_1D_GPUs[k].vk_PhysicalDevice, this->vk_SurfaceKHR, k_SURF_CAPs);
             amVK_return_code_log( "vkGetPhysicalDeviceSurfaceCapabilitiesKHR()" );
 
         amVK_Surface::called_GetPhysicalDeviceSurfaceCapabilitiesKHR = true;

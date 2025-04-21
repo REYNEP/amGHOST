@@ -1,6 +1,6 @@
 #pragma once
 #include <vulkan/vulkan.h>
-#include "common/amVK_log.hh"
+#include "amVK/utils/amVK_log.hh"
 
 class amVK_Image {
   public:

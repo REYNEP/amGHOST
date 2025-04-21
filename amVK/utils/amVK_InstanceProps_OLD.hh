@@ -1,8 +1,15 @@
 #pragma once
-#include "amVK/common/amVK.hh"
-#include "amVK/common/amVK_GPU.hh"
 
-class amVK_Surface;
+#include <vulkan/vulkan.h>
+#include "REY_Utils.hh"
+#include "REY_Types.hh"
+#ifndef amVK_GPU_HH
+    typedef uint32_t amVK_GPU_Index;
+
+    #define amVK_QueueFamily_NOT_FOUND    0xFFFFFFFF
+    #define amVK_PhysicalDevice_NOT_FOUND 0xFFFFFFFF
+    #define amVK_GPU_NOT_FOUND            0xFFFFFFFF
+#endif
 
 /**
  * i don't wanna scatter all the Properties All around my code. So, i'm gonna keep them here 😊
@@ -13,32 +20,50 @@ class amVK_Surface;
  */
 class amVK_InstanceProps {
   public:
-    static inline bool called_EnumeratePhysicalDevices = false;
-    static inline bool called_GetPhysicalDeviceQueueFamilyProperties = false;
-    static inline bool called_EnumerateInstanceExtensions = false;
-    static inline bool called_EnumerateDeviceExtensionProperties = false;
+    struct amVK_MemoryHeap {
+        static inline VkMemoryHeap*  RAM_SharedWith_GPU = nullptr;
+        static inline VkMemoryHeap* VRAM                = nullptr;
+        static inline VkMemoryHeap* VRAM_SharedWith_CPU = nullptr;
+    } MEMHeapPTR;
 
+    struct amVK_MemoryHeapIndex {
+        static inline uint32_t       RAM_SharedWith_GPU = 1;
+        static inline uint32_t      VRAM                = 0;
+        static inline uint32_t      VRAM_SharedWith_CPU = 2;
+    } MEMHeapID;
+
+    static void REY_CategorizeMemoryHeaps(void);
+    
   public:
-    static void EnumeratePhysicalDevices(void);                      // amVK_1D_GPUs
-    static       void GetPhysicalDeviceQueueFamilyProperties(void);  // amVK_2D_GPUs_QFAMs
-    static void EnumerateInstanceExtensions(void);                   // amVK_1D_InstanceEXTs
-    static void EnumerateDeviceExtensionProperties(void);            // amVK_2D_GPUs_EXTs
+    static inline bool called_EnumeratePhysicalDevices                      = false;
+    static inline bool       called_GetPhysicalDeviceQueueFamilyProperties  = false;
+    static inline bool       called_GetPhysicalDeviceFeatures               = false;
+    static inline bool       called_GetPhysicalDeviceMemoryProperties       = false;
+    static inline bool called_EnumerateInstanceExtensions                   = false;
+    static inline bool called_EnumerateDeviceExtensionProperties            = false;
+
+    static void               EnumeratePhysicalDevices(VkInstance vk_Instance);  // amVK_1D_GPUs
+    static void                     GetPhysicalDeviceQueueFamilyProperties(void);// amVK_2D_GPUs_QFAMs
+    static void                     GetPhysicalDeviceFeatures(void);             // amVK_1D_GPUs_Features
+    static void                     GetPhysicalDeviceMemoryProperties(void);     // amVK_1D_GPUs_MEMProps
+    static void               EnumerateInstanceExtensions(void);                 // amVK_1D_InstanceEXTs
+    static void               EnumerateDeviceExtensionProperties(void);          // amVK_2D_GPUs_EXTs
 
   public:
         // Array of `HardWare amVK_1D_GPUs` connected to motherboard
-    static inline REY_Array<VkPhysicalDevice>                           amVK_1D_GPUs;
-    static inline REY_Array<REY_Array<VkQueueFamilyProperties>>         amVK_2D_GPUs_QFAMs;
-    static inline REY_Array<VkExtensionProperties>                      amVK_1D_InstanceEXTs;
-    static inline REY_ArrayDYN<char*>                                   amVK_1D_InstanceEXTs_Enabled;
-    static inline REY_ArrayDYN<amVK_Surface *>                          amVK_1D_Surfaces;
-    static inline REY_Array<REY_Array<VkExtensionProperties>>           amVK_2D_GPUs_EXTs;
+    static inline REY_Array<          VkPhysicalDevice>                             amVK_1D_GPUs;
+    static inline REY_Array<          VkPhysicalDeviceFeatures>                     amVK_1D_GPUs_Features;
+    static inline REY_Array<          VkPhysicalDeviceMemoryProperties>             amVK_1D_GPUs_MEMProps;
+    static inline REY_Array<          VkExtensionProperties>                        amVK_1D_InstanceEXTs;
+    static inline REY_Array<REY_Array<VkExtensionProperties>>                       amVK_2D_GPUs_EXTs;
+    static inline REY_Array<REY_Array<VkQueueFamilyProperties>>                     amVK_2D_GPUs_QFAMs;
         // REY_Array  doesn't allocate any memory by default
 
     #define amVK_LOOP_GPUs(_var_)           for (uint32_t _var_ = 0,  lim = amVK_1D_GPUs.n;             _var_ < lim;  _var_++)
     #define amVK_LOOP_IEXTs(_var_)          for (uint32_t _var_ = 0,  lim = amVK_1D_InstanceEXTs.n;     _var_ < lim;  _var_++)
     #define amVK_LOOP_GPU_EXTs(_k_, _var_)  for (uint32_t _var_ = 0,  lim = amVK_2D_GPUs_EXTs[_k_].n;   _var_ < lim;  _var_++)
     #define amVK_LOOP_QFAMs(_k_, _var_)     for (uint32_t _var_ = 0,  lim = amVK_2D_GPUs_QFAMs[_k_].n;  _var_ < lim;  _var_++)
-    #define amVK_LOOP_SURFs(_var_)          for (uint32_t _var_ = 0,  lim = amVK_1D_Surfaces.n;         _var_ < lim;  _var_++)
+    #define amVK_LOOP_SURFs(_var_)          for (uint32_t _var_ = 0,  lim = amVK_1D_SurfaceLinks.n;     _var_ < lim;  _var_++)
     #define amVK_LOOP_SURF_FMTs(_SurfaceInfoPTR_, _GPU_k_, _var_) \
         for (uint32_t _var_ = 0, lim = _SurfaceInfoPTR_->amVK_2D_GPUs_ImageFMTs[_GPU_k_].n;             _var_ < lim;  _var_++)
 
@@ -94,29 +119,9 @@ class amVK_InstanceProps {
 */
   public:
     static bool    is_1D_InstanceEXTs_Available(const char *extName);                       // amVK_1D_InstanceEXTs
-    static void addTo_1D_InstanceEXTs_Enabled  (const char *extName);                       // amVK_1D_InstanceEXTs_Enabled
-    static void   log_1D_InstanceEXTs_Enabled  (VkResult ret);                              // amVK_1D_InstanceEXTs_Enabled
     static bool        is_2D_GPU_EXTs_Available(amVK_GPU_Index GPU_k, const char *extName); // amVK_2D_GPUs_EXTs
         //           is_2D_DeviceEXTs_Available() --> Same as above
         //   is_2D_PhysicalDeviceEXTs_Available() --> Same as above
-    
-
-/*
-                                     _____             __               _____        __          
-     /\                             / ____|           / _|             |_   _|      / _|         
-    /  \   _ __ _ __ __ _ _   _    | (___  _   _ _ __| |_ __ _  ___ ___  | |  _ __ | |_ ___  ___ 
-   / /\ \ | '__| '__/ _` | | | |    \___ \| | | | '__|  _/ _` |/ __/ _ \ | | | '_ \|  _/ _ \/ __|
-  / ____ \| |  | | | (_| | |_| |    ____) | |_| | |  | || (_| | (_|  __/_| |_| | | | || (_) \__ \
- /_/    \_\_|  |_|  \__,_|\__, |   |_____/ \__,_|_|  |_| \__,_|\___\___|_____|_| |_|_| \___/|___/
-                           __/ |_____                                                            
-                          |___/______|                                                           
-    
-    for each (VkSurfaceKHR)
-        for each (GPU)
-            LIST IMG_FMTs
-*/
-  public:
-    static void push_back_amVK_Surface(amVK_Surface *S);                 // amVK_1D_Surfaces
 
 
    /*

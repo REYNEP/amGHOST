@@ -1,5 +1,6 @@
 #pragma once
 #include "amVK_DeviceQCI.hh"
+#include "amVK/utils/amVK_GPUProps.hh"
 
 /**
  * Not a "VkPhysicalDevice"
@@ -41,9 +42,10 @@ class amVK_Device {
     void _constructor_commons_(amVK_GPU_Index GPU_ID);
 
   public:
-    amVK_GPU_Index GPU_ID = amVK_PhysicalDevice_NOT_FOUND;
-    VkPhysicalDevice          vk_PhysicalDevice = nullptr;
-    VkDevice                  vk_Device         = nullptr;
+    amVK_GPU_Index  GPU_ID             = amVK_PhysicalDevice_NOT_FOUND;
+    amVK_GPUProps*  GPU_Props          = nullptr;
+    VkPhysicalDevice vk_PhysicalDevice = nullptr;
+    VkDevice         vk_Device         = nullptr;
 
   public:
     void  CreateDevice(void);

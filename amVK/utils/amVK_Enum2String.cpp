@@ -378,3 +378,30 @@ std::vector<std::string> vulkan_surfaceTransformFlags_Names(VkSurfaceTransformFl
     return surfaceTransformFlags_STR_ARRAY;
 }
 #undef STR
+
+std::vector<std::string> vulkan_memoryHeapFlags_Names(VkMemoryHeapFlags memoryHeapFlags) {
+    std::vector<std::string> memoryHeapFlags_STR_ARRAY;
+
+    if (memoryHeapFlags & VK_MEMORY_HEAP_DEVICE_LOCAL_BIT)       { memoryHeapFlags_STR_ARRAY.push_back("VK_MEMORY_HEAP_DEVICE_LOCAL_BIT"); }
+    if (memoryHeapFlags & VK_MEMORY_HEAP_MULTI_INSTANCE_BIT)     { memoryHeapFlags_STR_ARRAY.push_back("VK_MEMORY_HEAP_MULTI_INSTANCE_BIT"); }
+    if (memoryHeapFlags & VK_MEMORY_HEAP_MULTI_INSTANCE_BIT_KHR) { memoryHeapFlags_STR_ARRAY.push_back("VK_MEMORY_HEAP_MULTI_INSTANCE_BIT_KHR"); }
+
+    return memoryHeapFlags_STR_ARRAY;
+}
+
+std::vector<std::string> vulkan_memoryPropertyFlags_Names(VkMemoryPropertyFlags memoryPropertyFlags) {
+    std::vector<std::string> memoryPropertyFlags_STR_ARRAY;
+
+    #define STR(r) if (memoryPropertyFlags & r) { memoryPropertyFlags_STR_ARRAY.push_back(#r); }
+    STR(VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT)
+    STR(VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT)
+    STR(VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)
+    STR(VK_MEMORY_PROPERTY_HOST_CACHED_BIT)
+    STR(VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT)
+    STR(VK_MEMORY_PROPERTY_PROTECTED_BIT)
+    STR(VK_MEMORY_PROPERTY_DEVICE_COHERENT_BIT_AMD)
+    STR(VK_MEMORY_PROPERTY_DEVICE_UNCACHED_BIT_AMD)
+    STR(VK_MEMORY_PROPERTY_RDMA_CAPABLE_BIT_NV)
+
+    return memoryPropertyFlags_STR_ARRAY;
+}

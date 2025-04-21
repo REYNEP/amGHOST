@@ -1,6 +1,6 @@
 #pragma once
 #include "amVK/common/amVK.hh"
-#include "amVK/common/amVK_log.hh"
+#include "amVK/utils/amVK_log.hh"
 #include "amVK_Device.hh"
 
 class amVK_RenderPass  {

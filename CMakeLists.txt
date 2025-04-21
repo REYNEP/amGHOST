@@ -32,17 +32,21 @@ project("amGHOST_PROJECT" VERSION 0.1)
         
         "amVK/impl/amVK_Instance.cpp"
         "amVK/impl/amVK_Device.cpp"
-        "amVK/impl/amVK_InstanceProps.cpp"
-        "amVK/impl/amVK_InstancePropsExport.cpp"
-        "amVK/impl/amVK_InstancePropsExport_nlohmann.cpp"
+        
+        "amVK/utils/amVK_log.cpp"
+        "amVK/utils/amVK_InstanceProps.cpp"
+        "amVK/utils/amVK_GPUProps.cpp"
+        "amVK/utils/amVK_Enum2String.cpp"
+        "amVK/utils/amVK_InstancePropsExport_nlohmann.cpp"
 
-        "amVK/common/amVK_Enum2String.cpp"
-        "amVK/common/amVK_log.cpp"
+        "amVK/impl/amVK_InstancePropsEXT.cpp"
 
+        "amVK/impl/amVK_Surface.cpp"
         "amVK/impl/amVK_SwapChain.cpp"
         "amVK/impl/amVK_RenderPass.cpp"
-        "amVK/impl/amVK_Surface.cpp"
+        
         "amVK/impl/amVK_SurfacePresenter.cpp"
+        "amVK/mesh/amVK_VertexBuffer.cpp"
     )
 
     set(INC
@@ -52,6 +56,8 @@ project("amGHOST_PROJECT" VERSION 0.1)
         ${CMAKE_CURRENT_SOURCE_DIR}/amVK/common
         ${CMAKE_CURRENT_SOURCE_DIR}/amVK/core
         ${CMAKE_CURRENT_SOURCE_DIR}/amVK/extras
+        ${CMAKE_CURRENT_SOURCE_DIR}/amVK/mesh
+        ${CMAKE_CURRENT_SOURCE_DIR}/amVK/utils
     )
 # --------------------
 

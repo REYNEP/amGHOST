@@ -46,9 +46,7 @@ class amVK_SurfacePresenter {
     amVK_RenderPassFBs*  create_FrameBuffers_interface(void);
     amVK_CommandPool*    create_CommandPool_interface(void);
     amVK_RenderPassCMDs* create_RenderPassCMDs_interface(void);
-
-      // Destroy's even the Instance
-    void destroy_everything_serially(void); 
+    void                destroy_everything_serially(void); 
 
   public:
     VkCommandBuffer active_CMDBUF(void)             { return   this->CP->get_active_CMDBUF(); }

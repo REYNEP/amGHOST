@@ -19,3 +19,6 @@ std::vector<std::string> vulkan_queueFlags_Names(VkQueueFlags queueFlags);
 std::vector<std::string> vulkan_imageUsageFlags_Names(VkImageUsageFlags imageUsageFlags);
 std::vector<std::string> vulkan_compositeAlphaFlags_Names(VkCompositeAlphaFlagsKHR compositeAlphaFlags);
 std::vector<std::string> vulkan_surfaceTransformFlags_Names(VkSurfaceTransformFlagsKHR surfaceTransformFlags);
+
+std::vector<std::string> vulkan_memoryHeapFlags_Names    (VkMemoryHeapFlags memoryHeapFlags);
+std::vector<std::string> vulkan_memoryPropertyFlags_Names(VkMemoryPropertyFlags memoryPropertyFlags);

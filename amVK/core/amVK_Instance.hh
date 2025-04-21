@@ -1,6 +1,6 @@
 #pragma once
 #include <vulkan/vulkan.h>
-#include "amVK_InstanceProps.hh"
+#include "amVK_InstancePropsEXT.hh"
 
 /**
  * SINGLETON Class Wrapper around VkInstance
@@ -17,12 +17,12 @@ class amVK_Instance {
     static void DestroyInstance(void) {vkDestroyInstance(vk_Instance, nullptr);}
 
   public:
+    static inline REY_ArrayDYN<char*> amVK_1D_Instance_EXTs_Enabled;
+    static void                      addTo_1D_Instance_EXTs_Enabled(const char* extName);  // If Available
+    static void                        log_1D_Instance_EXTs_Enabled(VkResult ret);         // CreateDevice() calls this
+
     /**  USE:- `amVK_InstanceProps::EnumerateInstanceExtensions()` */
     static void                     EnumerateInstanceExtensions(void) {
                 amVK_InstanceProps::EnumerateInstanceExtensions();
-    }
-    /**  USE:- `amVK_InstanceProps::addTo_1D_InstanceEXTs_Enabled()` */
-    static void                     addTo_1D_InstanceEXTs_Enabled(const char* extName) {
-                amVK_InstanceProps::addTo_1D_InstanceEXTs_Enabled(extName);
     }
 };

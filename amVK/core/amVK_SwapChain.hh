@@ -1,6 +1,7 @@
 #pragma once
 #include "amVK/common/amVK.hh"
 #include "amVK/common/amVK_ColorSpace.hh"
+#include "amVK_InstancePropsEXT.hh"
 #include "amVK_Surface.hh"
 #include "amVK_Device.hh"
 
@@ -52,7 +53,7 @@ class amVK_SwapChain {
     VkExtent2D      active_ImageExtent(void)                    {return CI.imageExtent;}
 
   public:
-    amVK_SwapChain(amVK_Surface *S, amVK_Device *D): S(S), D(D) {this->CI.surface = S->vk_SurfaceKHR;}
+    amVK_SwapChain(amVK_Surface *S, amVK_Device *D) : S(S), D(D){this->CI.surface = S->vk_SurfaceKHR;}
     amVK_Surface *S;
     amVK_Device  *D;
     VkSwapchainKHR vk_SwapChainKHR = nullptr;
