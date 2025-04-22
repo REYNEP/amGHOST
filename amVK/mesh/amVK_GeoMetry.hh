@@ -2,6 +2,8 @@
 #include <vulkan/vulkan.h>
 #include <REY_Utils.hh>
 
+VkShaderModule LoadSPIRVShaderModule(VkDevice device, const char* filename);
+
 namespace amVK_PSCI {
         // PSCI = PipelineStateCreateInfo
     inline VkPipelineInputAssemblyStateCreateInfo InputAssembly = {
@@ -20,7 +22,7 @@ namespace amVK_PSCI {
         .rasterizerDiscardEnable = false,
         .polygonMode = VK_POLYGON_MODE_FILL,
         .cullMode    = VK_CULL_MODE_BACK_BIT,
-        .frontFace   = VK_FRONT_FACE_COUNTER_CLOCKWISE,
+        .frontFace   = VK_FRONT_FACE_CLOCKWISE,
         .depthBiasEnable = false,
         .depthBiasConstantFactor = 0.0f,
         .depthBiasClamp = 0.0f,

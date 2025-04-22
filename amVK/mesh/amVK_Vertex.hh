@@ -40,9 +40,9 @@ namespace amVK_PSCI {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO,
         .pNext = nullptr,
         .flags = 0,
-        .vertexBindingDescriptionCount = 1,
-        .pVertexBindingDescriptions = &amVK_VertexInputBinding,
-        .vertexAttributeDescriptionCount = 2,
-        .pVertexAttributeDescriptions = amVK_VertexInputAttributs_BAKED
+        .vertexBindingDescriptionCount = 0, // 1,
+        .pVertexBindingDescriptions = nullptr, // &amVK_VertexInputBinding,
+        .vertexAttributeDescriptionCount = 0, // 2,
+        .pVertexAttributeDescriptions = nullptr// amVK_VertexInputAttributs_BAKED
     };
 };

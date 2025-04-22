@@ -42,6 +42,7 @@ project("amGHOST_PROJECT" VERSION 0.1)
         "amVK/core/amVK_SwapChain.cpp"
         "amVK/core/amVK_RenderPass.cpp"
         "amVK/core/amVK_PipelineGRAPHICS.cpp"
+        "amVK/core/amVK_Commands.cpp"
         
         "amVK/impl/amVK_SurfacePresenter.cpp"
         "amVK/mesh/amVK_VertexBuffer.cpp"

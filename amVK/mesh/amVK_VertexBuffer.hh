@@ -56,4 +56,13 @@ class amVK_VertexBuffer {
         .alignment = 0,
         .memoryTypeBits = 0
     };
+
+  public:
+    VkDeviceSize offsets[1] = { 0 };
+    void  CMDBindVertexBuffers(VkCommandBuffer CMDBUF) {
+        vkCmdBindVertexBuffers(CMDBUF, 0, 1, &vk_Buffer, offsets);
+    }
+    void  CMDDraw(VkCommandBuffer CMDBUF) {
+        vkCmdDraw(CMDBUF, Vertices.n, 1, 0, 0);
+    }
 };

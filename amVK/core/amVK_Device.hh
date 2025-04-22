@@ -1,6 +1,5 @@
 #pragma once
-#include "amVK_DeviceQCI.hh"
-#include "amVK/utils/amVK_GPUProps.hh"
+#include "amVK_DeviceQueues.hh"
 
 /**
  * Not a "VkPhysicalDevice"
@@ -8,13 +7,24 @@
  */
 class amVK_Device {
   public:
-    amVK_Array::QCI         amVK_1D_QCIs;
-    void                    sync_1D_QCIs(void);
-    void                    Default_QCI__select_QFAM_Graphics(void) {amVK_1D_QCIs.select_QFAM_Graphics(this->GPU_ID);}
+    amVK_Device(amVK_GPUProps *GPUProps) : Queues(GPUProps), GPUProps(GPUProps), vk_PhysicalDevice(GPUProps->vk_PhysicalDevice) {}
+   ~amVK_Device() {}
+
+  public:
+    amVK_GPUProps*            GPUProps = nullptr;
+    VkPhysicalDevice vk_PhysicalDevice = nullptr;
+    VkDevice         vk_Device         = nullptr;
+
+  public:
+    amVK_DeviceQueues      Queues;      // see `QCI::amVK_QueueCount` & `amVK_GPUProps::QFamID`
+              void sync_1D_QCIs(void) { 
+        Queues.generate_1D_QCIs(); 
+        Queues.    sync_1D_QCIs(&this->CI); 
+    }
     
     REY_ArrayDYN<char*>     amVK_1D_GPU_EXTs_Enabled;
     void                   addTo_1D_GPU_EXTs_Enabled(const char* extName);  // If Available
-    void                     log_1D_GPU_EXTs_Enabled(VkResult ret);         // CreateDevice() calls this
+    void                     log_1D_GPU_EXTs_Enabled(VkResult ret);         // CreateDevice() calls ---> this function
 
     VkDeviceCreateInfo CI = {
         .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
@@ -24,6 +34,7 @@ class amVK_Device {
         .queueCreateInfoCount = 0,
         .pQueueCreateInfos = nullptr,
             // CreateDevice() calls ---> sync_1D_QCIs()
+            // CreateDevice() calls ---> REY_Calculate_QFam_MaxQueueCount_Queried()
 
         .enabledLayerCount = 0,
         .ppEnabledLayerNames = nullptr,
@@ -35,24 +46,7 @@ class amVK_Device {
     };
 
   public:
-        /** SEE: `amVK_InstanceProps::GetARandom_GPU()` */
-    amVK_Device(amVK_GPU_Index GPU_ID) {_constructor_commons_(GPU_ID);}
-    amVK_Device(VkPhysicalDevice PD);
-   ~amVK_Device() {}
-    void _constructor_commons_(amVK_GPU_Index GPU_ID);
-
-  public:
-    amVK_GPU_Index  GPU_ID             = amVK_PhysicalDevice_NOT_FOUND;
-    amVK_GPUProps*  GPU_Props          = nullptr;
-    VkPhysicalDevice vk_PhysicalDevice = nullptr;
-    VkDevice         vk_Device         = nullptr;
-
-  public:
-    void  CreateDevice(void);
+    void  CreateDevice(uint32_t GraphicQueueCount);
+    void     GetDeviceQueues(void) { Queues.GetDeviceQueues(vk_Device); }
     void DestroyDevice(void);
-    VkQueue get_default_queue() {
-        VkQueue vk_Queue = nullptr;
-        vkGetDeviceQueue(this->vk_Device, this->amVK_1D_QCIs.get_QFAM_Index(), 0, &vk_Queue);
-        return  vk_Queue;
-    }
 };

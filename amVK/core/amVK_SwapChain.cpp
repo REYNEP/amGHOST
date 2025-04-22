@@ -125,18 +125,6 @@ void amVK_SwapChainIMGs::DestroySwapChainImageViews(void) {
 
 
 
-static VkSemaphoreCreateInfo g_SP_CI = {
-    .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO,
-    .pNext = nullptr,
-    .flags = 0
-};
-void  amVK_SwapChainIMGs::AcquireNextImage_SemaPhore_Create(void) {
-    VkResult return_code = vkCreateSemaphore(this->vk_Device, &g_SP_CI, nullptr, &this->AcquireNextImage_SemaPhore);
-    amVK_return_code_log( "vkCreateSemaphore()" );     // above variable "return_code" can't be named smth else
-}
-void amVK_SwapChainIMGs::AcquireNextImage_SemaPhore_Destroy(void) {
-    vkDestroySemaphore(this->vk_Device, this->AcquireNextImage_SemaPhore, nullptr);
-}
 
 
 
@@ -144,6 +132,18 @@ void amVK_SwapChainIMGs::AcquireNextImage_SemaPhore_Destroy(void) {
 
 
 
+/*
+
+                          _          _   _           _   _____                            
+     /\                  (_)        | \ | |         | | |_   _|                           
+    /  \   ___ __ _ _   _ _ _ __ ___|  \| | _____  _| |_  | |  _ __ ___   __ _  __ _  ___ 
+   / /\ \ / __/ _` | | | | | '__/ _ \ . ` |/ _ \ \/ / __| | | | '_ ` _ \ / _` |/ _` |/ _ \
+  / ____ \ (_| (_| | |_| | | | |  __/ |\  |  __/>  <| |_ _| |_| | | | | | (_| | (_| |  __/
+ /_/    \_\___\__, |\__,_|_|_|  \___|_| \_|\___/_/\_\\__|_____|_| |_| |_|\__,_|\__, |\___|
+                 | |                                                            __/ |     
+                 |_|                                                           |___/      
+
+*/
 uint32_t amVK_SwapChainIMGs::AcquireNextImage(void) {
     uint64_t ns_per_second = 1'000'000'000;
 
@@ -170,4 +170,21 @@ uint32_t amVK_SwapChainIMGs::AcquireNextImage(void) {
         }
 
     return this->NextImageIndex_Acquired;
+}
+
+
+
+
+
+static VkSemaphoreCreateInfo g_SP_CI = {
+    .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO,
+    .pNext = nullptr,
+    .flags = 0
+};
+void  amVK_SwapChainIMGs::AcquireNextImage_SemaPhore_Create(void) {
+    VkResult return_code = vkCreateSemaphore(this->vk_Device, &g_SP_CI, nullptr, &this->AcquireNextImage_SemaPhore);
+    amVK_return_code_log( "vkCreateSemaphore()" );     // above variable "return_code" can't be named smth else
+}
+void amVK_SwapChainIMGs::AcquireNextImage_SemaPhore_Destroy(void) {
+    vkDestroySemaphore(this->vk_Device, this->AcquireNextImage_SemaPhore, nullptr);
 }

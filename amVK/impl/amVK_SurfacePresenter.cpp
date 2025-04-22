@@ -16,12 +16,12 @@ amVK_RenderPass* amVK_SurfacePresenter::create_RenderPass_interface(void) {
     return  this->RP;
 }
 
-#include "amVK_CommandBuffer.hh"
-amVK_CommandPool* amVK_SurfacePresenter::create_CommandPool_interface(void) {
+#include "amVK_CommandPoolMAN.hh"
+amVK_CommandPoolMAN* amVK_SurfacePresenter::create_CommandPoolMAN_interface(void) {
             this->isBound_Device();
             this->isBound_Surface();
-            this->CP = new amVK_CommandPool(this->D, this->D->amVK_1D_QCIs.ptr_Default()->queueFamilyIndex);
-    return  this->CP;
+            this->CPM = new amVK_CommandPoolMAN(this->D);
+    return  this->CPM;
 }
 
 #include "amVK_SwapChainIMGs.hh"
@@ -40,23 +40,15 @@ amVK_RenderPassFBs* amVK_SurfacePresenter::create_FrameBuffers_interface(void) {
     return  this->FBs;
 }
 
-#include "amVK_RenderPassCMDs.hh"
-amVK_RenderPassCMDs* amVK_SurfacePresenter::create_RenderPassCMDs_interface(void) {
-            this->isBound_Device();
-            this->isBound_Surface();
-            this->RPC = new amVK_RenderPassCMDs(this->FBs, this->active_CMDBUF());
-    return  this->RPC;
-}
-
 void amVK_SurfacePresenter::destroy_everything_serially(void) {
     this->FBs->DestroyFrameBuffers();
     this->IMGs->DestroySwapChainImageViews();
     this->SC->DestroySwapChain();
-    this->CP->FreeCommandBuffers();
+    //this->CP_G->FreeCommandBuffers();
     this->RP->DestroyRenderPass();
     this->IMGs->AcquireNextImage_SemaPhore_Destroy();
     this->RenderingFinished_SemaPhore_Destroy();
-    this->CP->DestroyCommandPool();
+    //this->CP_G->DestroyCommandPool();
     this->D->DestroyDevice();
 }
 
@@ -81,22 +73,7 @@ void amVK_SurfacePresenter::destroy_everything_serially(void) {
 
 
 
-static VkCommandBufferBeginInfo g_CMDBUF_BI = {
-    .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
-    .pNext = 0,
-    .flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT,
-    .pInheritanceInfo = nullptr
-};
-void  amVK_SurfacePresenter::BeginCommandBuffer(void) {
-    VkResult return_code = vkBeginCommandBuffer(this->active_CMDBUF(), &g_CMDBUF_BI);
-    amVK_return_code_log( "vkBeginCommandBuffer()" );
-}
-    // Ending the render pass will add an implicit barrier, transitioning the frame buffer color attachment to
-    // `VK_IMAGE_LAYOUT_PRESENT_SRC_KHR` for presenting it to the windowing system
-void  amVK_SurfacePresenter::EndCommandBuffer(void) {
-    VkResult return_code = vkEndCommandBuffer(this->active_CMDBUF());
-    amVK_return_code_log( "vkEndCommandBuffer()" );
-}
+
 
 
 
@@ -128,7 +105,7 @@ static VkSubmitInfo g_SI = {
     .signalSemaphoreCount   = 0,
     .pSignalSemaphores      = nullptr
 };
-void amVK_SurfacePresenter::submit_CMDBUF(void) {
+void amVK_SurfacePresenter::submit_CMDBUF(VkQueue vk_Queue) {
     if (RenderingFinished_SemaPhore == nullptr) {
         RenderingFinished_SemaPhore_Create();
     }
@@ -146,7 +123,7 @@ void amVK_SurfacePresenter::submit_CMDBUF(void) {
             // I don't think VULKAN Objects are literal objects....
             // I think, VkSemaphore is rather just an ID or smth
 
-    VkResult return_code = vkQueueSubmit(this->D->get_default_queue(), 1, &g_SI, VK_NULL_HANDLE);
+    VkResult return_code = vkQueueSubmit(vk_Queue, 1, &g_SI, VK_NULL_HANDLE);
     amVK_return_code_log( "vkQueueSubmit()" );
 }
 
@@ -163,7 +140,7 @@ static VkPresentInfoKHR g_PI = {
     .pImageIndices = nullptr,
     .pResults = nullptr
 };
-void amVK_SurfacePresenter::Present(void) {
+void amVK_SurfacePresenter::Present(VkQueue vk_Queue) {
     VkSemaphore RenderingFinishedSemaphore = this->RenderingFinished_SemaPhore;
 
         g_PI.waitSemaphoreCount = 1;
@@ -173,7 +150,7 @@ void amVK_SurfacePresenter::Present(void) {
         g_PI.pImageIndices = &this->IMGs->NextImageIndex_Acquired;
 
         VkResult return_code = vkQueuePresentKHR(
-            this->D->get_default_queue(),
+            vk_Queue,
             &g_PI
         );
         

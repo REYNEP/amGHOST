@@ -2,14 +2,14 @@
 #include <vulkan/vulkan.h>
 
 #include "amVK_Device.hh"
+#include "amVK_DeviceQueues.hh"
 #include "amVK_Surface.hh"
 
 #include "amVK_SwapChain.hh"
 #include "amVK_SwapChainIMGs.hh"
 #include "amVK_RenderPass.hh"
 #include "amVK_RenderPassFBs.hh"
-#include "amVK_CommandPool.hh"
-#include "amVK_RenderPassCMDs.hh"
+#include "amVK_CommandPoolMAN.hh"
 
 /**
  * For those who don't know, which after which
@@ -19,11 +19,11 @@ class amVK_SurfacePresenter {
     amVK_Surface   *S  = nullptr;
     amVK_SwapChain  *SC = nullptr;
     amVK_RenderPass  *RP = nullptr;
-    amVK_CommandPool  *CP = nullptr;
-    amVK_Device         *D = nullptr;
-    amVK_RenderPassFBs *FBs = nullptr;
-    amVK_SwapChainIMGs *IMGs = nullptr;
-    amVK_RenderPassCMDs  *RPC = nullptr;
+    amVK_Device        *D = nullptr;
+    amVK_CommandPool  *CP_G = nullptr;
+    amVK_RenderPassFBs  *FBs = nullptr;
+    amVK_SwapChainIMGs   *IMGs = nullptr;
+    amVK_CommandPoolMAN    *CPM = nullptr;
     
   public:
     void bind_Device       (amVK_Device* D)   {this->D = D;}
@@ -44,18 +44,16 @@ class amVK_SurfacePresenter {
     amVK_SwapChainIMGs*  create_SwapChainImages_interface(void);
     amVK_RenderPass*     create_RenderPass_interface(void);
     amVK_RenderPassFBs*  create_FrameBuffers_interface(void);
-    amVK_CommandPool*    create_CommandPool_interface(void);
-    amVK_RenderPassCMDs* create_RenderPassCMDs_interface(void);
+    amVK_CommandPoolMAN* create_CommandPoolMAN_interface(void);
+    void                    set_CommandPool_Presentation(amVK_CommandPool* CP) {this->CP_G = CP;}
     void                destroy_everything_serially(void); 
 
   public:
-    VkCommandBuffer active_CMDBUF(void)             { return   this->CP->get_active_CMDBUF(); }
-    void            BeginCommandBuffer(void);
-    void              EndCommandBuffer(void);
+    VkCommandBuffer active_CMDBUF(void)             { return   this->CP_G->get_active_CMDBUF(); }
 
     VkSemaphore RenderingFinished_SemaPhore = nullptr;
     void        RenderingFinished_SemaPhore_Create(void);
     void        RenderingFinished_SemaPhore_Destroy(void);
-    void            submit_CMDBUF(void);
-    void                  Present(void);
+    void            submit_CMDBUF(VkQueue vk_Queue);
+    void                  Present(VkQueue vk_Queue);
 };

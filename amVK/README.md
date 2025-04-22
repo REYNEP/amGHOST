@@ -116,6 +116,7 @@ made with affine.pro
 #include "amVK_InstancePropsEXT.hh"
 #include "amVK_Instance.hh"
 #include "amVK_Device.hh"
+#include "amVK_DeviceQueues.hh"
 
 #include "amGHOST_VkSurfaceKHR.hh"
 #include "amVK_Surface.hh"
@@ -126,7 +127,7 @@ made with affine.pro
 #include "amVK_ColorSpace.hh"
 #include "amVK_RenderPass.hh"
 #include "amVK_RenderPass_Descriptors.hh"
-#include "amVK_CommandBuffer.hh"
+#include "amVK_CommandPoolMAN.hh"
 
 #include "mesh/amVK_Vertex.hh"
 #include "mesh/amVK_VertexBuffer.hh"
@@ -150,6 +151,8 @@ int main(int argumentCount, char* argumentVector[]) {
     {
             REY_LOG("");
         amVK_InstanceProps::EnumerateInstanceExtensions();
+        amVK_InstanceProps::EnumerateInstanceLayerProperties();
+        amVK_Instance::addTo_1D_Instance_Layers_Enabled("VK_LAYER_KHRONOS_validation");
         amVK_Instance::addTo_1D_Instance_EXTs_Enabled("VK_KHR_surface");
         amVK_Instance::addTo_1D_Instance_EXTs_Enabled(amGHOST_System::get_vulkan_os_surface_ext_name());
         amVK_Instance::CreateInstance();    // initializes amVK_HEART
@@ -164,11 +167,12 @@ int main(int argumentCount, char* argumentVector[]) {
         amVK_GPUProps  *GPUProps = amVK_InstancePropsEXT::GetARandom_GPU();
                         GPUProps->GetPhysicalDeviceQueueFamilyProperties();
                         GPUProps->EnumerateDeviceExtensionProperties();
+                        GPUProps->REY_CategorizeQueueFamilies();
 
-        amVK_Device* D = new amVK_Device(GPUProps->vk_PhysicalDevice);
-            D->Default_QCI__select_QFAM_Graphics();
+        amVK_Device* D = new amVK_Device(GPUProps);
             D->addTo_1D_GPU_EXTs_Enabled("VK_KHR_swapchain");
-            D->CreateDevice();
+            D->CreateDevice(1);
+            D->GetDeviceQueues();
 
         
             REY_LOG("")
@@ -212,15 +216,15 @@ int main(int argumentCount, char* argumentVector[]) {
             RP->sync_Attachments_Subpasses_Dependencies();
             RP->CreateRenderPass();
 
-        amVK_RenderPassFBs *FBs = PR->create_FrameBuffers_interface();
-            FBs->CreateFrameBuffers();
+        amVK_RenderPassFBs *RP_FBs = PR->create_FrameBuffers_interface();
+            RP_FBs->CreateFrameBuffers();
 
-        amVK_CommandPool *CP = PR->create_CommandPool_interface();
-            CP->CreateCommandPool();
-            CP->AllocateCommandBuffers();
+        amVK_CommandPoolMAN  *CPMAN = PR->create_CommandPoolMAN_interface();
+            amVK_CommandPool *CP = CPMAN->InitializeCommandPool(D->Queues.Used_QFamID.Graphics);
+                CP->CreateCommandPool(amVK_Sync::CommandPoolCreateFlagBits::RecordBuffer_Once);
+                CP->AllocateCommandBuffers();
 
-        // Pipeline & VkTriangle
-        {
+        // ------------------------- Pipeline & VkTriangle ----------------------------
             amVK_Vertex vertices[3] = {
                 { {  0.00f,  0.25f, 0.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } },   // v0 (red)
                 { { -0.25f, -0.25f, 0.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } },   // v1 (green)
@@ -240,19 +244,35 @@ int main(int argumentCount, char* argumentVector[]) {
                 VB.UnMapMemory();
                 VB.BindBufferMemory();
 
-            amVK_PipelineGRAPHICS* PLG = new amVK_PipelineGRAPHICS(RP);
+            amVK_PipelineGRAPHICS* PLG = new amVK_PipelineGRAPHICS(RP_FBs);
                 PLG->CreateGraphicsPipeline();
-        }
+        // ------------------------- Pipeline & VkTriangle ----------------------------
+        
+        // ------------------------- CommandBufferRecording ----------------------------
+            VkCommandBuffer CB = CP->BeginCommandBuffer();
+                RP_FBs->RPBI_AcquireNextFrameBuffer();
+                RP_FBs->CMDBeginRenderPass(CB);
+                RP_FBs->CMDSetViewport_n_Scissor(CB);
+                PLG->CMDBindPipeline(CB);
+                    VB.CMDBindVertexBuffers(CB);
+                    VB.CMDDraw(CB);
+                RP_FBs->CMDEndRenderPass(CB);
+            CP->  EndCommandBuffer();
 
-        amVK_RenderPassCMDs *RP_CMDs = PR->create_RenderPassCMDs_interface();
-            PR->BeginCommandBuffer();
-                RP_CMDs->RPBI_AcquireNextFrameBuffer();
-                RP_CMDs->CMDBeginRenderPass();
-                RP_CMDs->CMDSetViewport_n_Scissor();
-                RP_CMDs->CMDEndRenderPass();
-            PR->  EndCommandBuffer();
-            PR->submit_CMDBUF();
-            PR->Present();
+        // ------------------------- CommandBufferRecording ----------------------------
+        
+        // ------------------------- Render Loop ----------------------------
+            while(true) {
+                PR->set_CommandPool_Presentation(CP);
+                PR->submit_CMDBUF(D->Queues.GraphicsQ(0));
+                PR->Present(D->Queues.GraphicsQ(0));
+
+                vkQueueWaitIdle(D->Queues.GraphicsQ(0));
+                RP_FBs->RPBI_AcquireNextFrameBuffer();
+
+                REY::cin.get();
+            }
+        // ------------------------- Render Loop ----------------------------
     }
     REY_LOG("");
     REY_LOG("");
@@ -317,45 +337,6 @@ VkInstance
     RenderLoop
         Record(VkCommandBuffer)
 ```
-
-## Verbs to Remember
-1. query_SurfCap 🕵️♂️
-2. update_SurfCap 🔄
-3. load_SurfCap 📥
-4. acquire_SurfCap 🔗
-5. get_SurfCap 📤
-6. grab_SurfCap	👐
-7. snag_SurfCap	🎣 (Quick pull)
-8. pluck_SurfCap	✂️ (Precision)
-9. selected_gpu_surfCap	🎯 (Targeted)	Emphasizes the GPU_Index selection.
-10. current_surfCap	⏳ (Stateful)
-11. yoink_SurfCap	🦄 (Playful)	VkSurfaceCapabilitiesKHR* cap = yoink_SurfCap();
-12. procure_SurfCap	🕴️ (Formal)	procure_SurfCap() → Sounds like a business transaction!
-13. obtain_SurfCap	🏆 (Success)
-14. collect_SurfCap	📚 (Gathering)
-15. retrieve_SurfCap	🎯 (Accuracy)
-16. sync_SurfCap	🔄 (Sync State)
-17. pull_SurfCap	🪢 (Tug-of-war)
-18. refresh_SurfCap	💫 (Update)
-19. reload_SurfCap	♻️ (Reload)
-20. populate_SurfCap	🌱 (Fill Data)
-21. enumerate_SurfCap	📇 (Listing)
-22. summon_SurfCap	🧙♂️ (Magic)
-23. harvest_SurfCap	🌾 (Farm)
-24. fish_SurfCap	🎣 (Fishing)
-25. dial in	🎛️ (Precision)
-26. shape up	🌟 (Polishing)
-27. rig	🛠️ (Hacky)
-28. tailor	👗 (Custom-fit)
-29. access_SurfCap 🔍
-30. craft	🧙♂️ (Artisan)
-31. surfCap 📋 (property-style)
-32. surfCap_ptr 🎯 (or surfCapRef)
-
-📟📇
-
-
-
 
  * Rule #1:- Any Function Implementation that is Intuitive (from the perspective of a beginner) 
  *              ==> Does not have to be implemented in the header

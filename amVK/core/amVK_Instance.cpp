@@ -40,6 +40,7 @@ void amVK_Instance::CreateInstance(void)
     amVK_return_code_log( "vkCreateInstance()" );  // above variable "return_code" can't be named smth else
 
     amVK_Instance::log_1D_Instance_EXTs_Enabled(return_code);
+    amVK_Instance::log_1D_Instance_Layers_Enabled(return_code);
 }
 
 #include "REY_STDWrap.hh"
@@ -56,7 +57,7 @@ void amVK_Instance::addTo_1D_Instance_EXTs_Enabled(const char* extName) {
 
         REY_ArrayDYN_PUSH_BACK(amVK_1D_Instance_EXTs_Enabled) = dont_lose;
 
-        amVK_Instance::CI.enabledExtensionCount = amVK_1D_Instance_EXTs_Enabled.neXt;
+        amVK_Instance::CI.enabledExtensionCount   = amVK_1D_Instance_EXTs_Enabled.neXt;
         amVK_Instance::CI.ppEnabledExtensionNames = amVK_1D_Instance_EXTs_Enabled.data;
     }
     else {
@@ -71,6 +72,34 @@ void amVK_Instance::log_1D_Instance_EXTs_Enabled(VkResult ret) {
         REY_LOG_status("         Enabled VULKAN Extensions' Name:- ");
         REY_Array_LOOP(amVK_1D_Instance_EXTs_Enabled, k) {
             REY_LOG_status("              | " << amVK_1D_Instance_EXTs_Enabled[k]);
+        }
+    }
+}
+void amVK_Instance::addTo_1D_Instance_Layers_Enabled(const char* layerName) {
+    if (!amVK_InstanceProps::called_EnumerateInstanceLayerProperties) {
+                amVK_InstanceProps::EnumerateInstanceLayerProperties();
+    }
+    
+    if (amVK_InstanceProps::isInstanceLayerAvailable(layerName)) {
+        char  *dont_lose = REY_strcpy(layerName);
+
+        REY_ArrayDYN_PUSH_BACK(amVK_1D_Instance_Layers_Enabled) = dont_lose;
+
+        amVK_Instance::CI.enabledLayerCount   = amVK_1D_Instance_Layers_Enabled.neXt;
+        amVK_Instance::CI.ppEnabledLayerNames = amVK_1D_Instance_Layers_Enabled.data;
+    }
+    else {
+        REY_LOG_notfound("Vulkan Instance Extension:- " << layerName);
+    }
+}
+void amVK_Instance::log_1D_Instance_Layers_Enabled(VkResult ret) {
+    if (ret != VK_SUCCESS) {
+        REY_LOG_status("vkCreateInstance() failed 😶‍🌫️");
+    }
+    else {
+        REY_LOG_status("         Enabled VULKAN Extensions' Name:- ");
+        REY_Array_LOOP(amVK_1D_Instance_Layers_Enabled, k) {
+            REY_LOG_status("              | " << amVK_1D_Instance_Layers_Enabled[k]);
         }
     }
 }
@@ -241,11 +270,16 @@ void amVK_InstancePropsEXT::Export_nilohmannJSON_EXT(void) {
     nlohmann::ordered_json root;
 
         nlohmann::ordered_json vkEnumerateInstanceExtensionProperties   = nlohmann::ordered_json::object();
+        nlohmann::ordered_json vkEnumerateInstanceLayerProperties       = nlohmann::ordered_json::object();
         nlohmann::ordered_json vkCreate_xxx_SurfaceKHR                  = nlohmann::ordered_json::object();
 
         amVK_LOOP_IEXTs(i) {
             std::string value = "specVersion" + std::to_string(amVK_1D_InstanceEXTs[i].specVersion);
             vkEnumerateInstanceExtensionProperties[amVK_1D_InstanceEXTs[i].extensionName] = value;
+        }
+
+        amVK_LOOP_ILayers(i) {
+            vkEnumerateInstanceLayerProperties[amVK_1D_InstanceLayers[i].layerName] = amVK_1D_InstanceLayers[i].description;
         }
     
         REY_Array_LOOP(amVK_1D_SurfaceLinks, m) {
@@ -253,7 +287,8 @@ void amVK_InstancePropsEXT::Export_nilohmannJSON_EXT(void) {
             vkCreate_xxx_SurfaceKHR["[Surface " + std::to_string(m) + "]"] = nlohmannEXT_amVK_SurfaceLinks(SurfLinks);
         }
    
-    root["vkEnumerateInstanceExtensionProperties"] = vkEnumerateInstanceExtensionProperties; 
+    root["vkEnumerateInstanceExtensionProperties"] = vkEnumerateInstanceExtensionProperties;
+    root["vkEnumerateInstanceLayerProperties"] = vkEnumerateInstanceLayerProperties;
     root["vkCreate_xxx_SurfaceKHR"] = vkCreate_xxx_SurfaceKHR;
     root["vkEnumeratePhysicalDevices"] = nlohmann_amVK_1D_GPUs();
     

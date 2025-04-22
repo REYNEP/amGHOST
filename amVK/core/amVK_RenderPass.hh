@@ -6,7 +6,7 @@
 class amVK_RenderPass  {
   public:
     VkRenderPassCreateInfo CI = {
-        .sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
+        .sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO,
         .pNext = nullptr,
         .flags = 0,
         .attachmentCount = 0,
@@ -28,17 +28,12 @@ class amVK_RenderPass  {
     void sync_Elements(void) { sync_Attachments_Subpasses_Dependencies(); }
 
   public:
-    amVK_RenderPass(amVK_Device *D) : D(D) {}
+    amVK_RenderPass(amVK_Device *D) {this->D = D;}
    ~amVK_RenderPass() {}
 
-    amVK_Device *D;
+    amVK_Device *D = nullptr;
     VkRenderPass vk_RenderPass = nullptr;
 
-    void CreateRenderPass(void) {
-        VkResult return_code = vkCreateRenderPass(this->D->vk_Device, &CI, nullptr, &this->vk_RenderPass);
-        amVK_return_code_log( "vkCreateRenderPass()" );     // above variable "return_code" can't be named smth else
-    }
-    void DestroyRenderPass(void) {
-        vkDestroyRenderPass(this->D->vk_Device, vk_RenderPass, nullptr);
-    }
+    void CreateRenderPass(void);
+    void DestroyRenderPass(void);
 };

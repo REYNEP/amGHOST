@@ -39,7 +39,7 @@ class amVK_SwapChain {
     };
 
     void              sync_SurfCaps(void) {
-        VkSurfaceCapabilitiesKHR   *SurfCaps = this->S->current_SurfCaps(this->D->GPU_ID);
+        VkSurfaceCapabilitiesKHR   *SurfCaps = this->S->current_SurfCaps(this->D->GPUProps->ID);
         this->CI.minImageCount    = SurfCaps->minImageCount;
         this->CI.imageExtent      = SurfCaps->currentExtent;
         this->CI.imageArrayLayers = SurfCaps->maxImageArrayLayers;

@@ -34,7 +34,7 @@ void amVK_InstanceProps::EnumeratePhysicalDevices(VkInstance vk_Instance)
         amVK_1D_GPUs.n    = TMP.n;
         amVK_1D_GPUs.data = static_cast<amVK_GPUProps*>(REY_malloc(sizeof(amVK_GPUProps) * TMP.n));
     REY_Array_LOOP(TMP, k) {
-        new (&amVK_1D_GPUs.data[k]) amVK_GPUProps(TMP[k]);
+        new (&amVK_1D_GPUs.data[k]) amVK_GPUProps(TMP[k], k);
     }
 }
 
@@ -58,6 +58,28 @@ void amVK_InstanceProps::EnumerateInstanceExtensions(void)
     // ------------------------ amVK_1D_InstanceEXTs ---------------------------
 
     amVK_InstanceProps::called_EnumerateInstanceExtensions = true;
+}
+
+/**
+ *  OUT:- amVK_1D_InstanceLayers
+ * PREV:- No Dependency 😄
+ */
+void amVK_InstanceProps::EnumerateInstanceLayerProperties(void) 
+{
+    // ------------------------ amVK_1D_InstanceLayers ---------------------------
+    uint32_t layerCount = 0;     
+
+        VkResult return_code = vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
+        amVK_RC_silent_check( "vkEnumerateInstanceLayerProperties()" );
+
+    amVK_1D_InstanceLayers.n    = layerCount;
+    amVK_1D_InstanceLayers.data = new VkLayerProperties[layerCount];
+
+                 return_code = vkEnumerateInstanceLayerProperties(&amVK_1D_InstanceLayers.n, amVK_1D_InstanceLayers.data);
+        amVK_return_code_log( "vkEnumerateInstanceLayerProperties()" );
+    // ------------------------ amVK_1D_InstanceLayers ---------------------------
+
+    amVK_InstanceProps::called_EnumerateInstanceLayerProperties = true;
 }
 
 
@@ -94,7 +116,15 @@ amVK_GPU_Index amVK_InstanceProps::VkPhysicalDevice_2_amVK_GPU_Index(VkPhysicalD
             return k;
         }
     }
+
+    REY_LOG_EX("amVK_PhysicalDevice_NOT_FOUND:- " << PDevice);
+    if (called_EnumeratePhysicalDevices) {
+        REY_LOG("But yes, amVK_InstanceProps::EnumeratePhysicalDevices() have been called 🤔");
+    }
     return amVK_PhysicalDevice_NOT_FOUND;
+}
+amVK_GPUProps* amVK_InstanceProps::Get_GPUProps(VkPhysicalDevice PDevice) {
+    return &amVK_1D_GPUs[VkPhysicalDevice_2_amVK_GPU_Index(PDevice)];
 }
 
 /*
@@ -110,8 +140,18 @@ amVK_GPU_Index amVK_InstanceProps::VkPhysicalDevice_2_amVK_GPU_Index(VkPhysicalD
 #include <cstring>
 bool amVK_InstanceProps::isInstanceEXTAvailable(const char *extName) 
 {
-     amVK_LOOP_IEXTs(k) {
+    amVK_LOOP_IEXTs(k) {
         if (strcmp(amVK_1D_InstanceEXTs[k].extensionName, extName) == 0) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool amVK_InstanceProps::isInstanceLayerAvailable(const char *layerName) {
+    amVK_LOOP_ILayers(k) {
+        if (strcmp(amVK_1D_InstanceLayers[k].layerName, layerName) == 0) {
             return true;
         }
     }

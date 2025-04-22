@@ -18,6 +18,13 @@ void amVK_RenderPass::sync_Attachments_Subpasses_Dependencies(void) {
         sync_Dependencies();
 }
 
+void        amVK_RenderPass::CreateRenderPass(void) {
+    VkResult return_code = vkCreateRenderPass(D->vk_Device, &CI, nullptr, &vk_RenderPass);
+    amVK_return_code_log( "vkCreateRenderPass()" );     // above variable "return_code" can't be named smth else
+}
+void amVK_RenderPass::DestroyRenderPass(void) {
+    vkDestroyRenderPass(D->vk_Device, vk_RenderPass, nullptr);
+}
 
 
 
@@ -29,19 +36,40 @@ void amVK_RenderPass::sync_Attachments_Subpasses_Dependencies(void) {
 
 
 
-#include "amVK_RenderPassFBs.hh"
 
+
+
+
+
+
+
+/*
+
+              __      ___  __         _____  _____  ______                        ____         __  __              
+              \ \    / / |/ /        |  __ \|  __ \|  ____|                      |  _ \       / _|/ _|             
+   __ _ _ __ __\ \  / /| ' /         | |__) | |__) | |__ _ __ __ _ _ __ ___   ___| |_) |_   _| |_| |_ ___ _ __ ___ 
+  / _` | '_ ` _ \ \/ / |  <          |  _  /|  ___/|  __| '__/ _` | '_ ` _ \ / _ \  _ <| | | |  _|  _/ _ \ '__/ __|
+ | (_| | | | | | \  /  | . \         | | \ \| |    | |  | | | (_| | | | | | |  __/ |_) | |_| | | | ||  __/ |  \__ \
+  \__,_|_| |_| |_|\/   |_|\_\        |_|  \_\_|    |_|  |_|  \__,_|_| |_| |_|\___|____/ \__,_|_| |_| \___|_|  |___/
+                          ______ ______                                                                            
+                         |______|______|                                                                           
+
+ */
 void amVK_RenderPassFBs::CreateFrameBuffers(void) {
     if (this->SC_IMGs->called_GetSwapChainImagesKHR == false) {
-        this->SC_IMGs->GetSwapChainImagesKHR();
+        this->SC_IMGs->       GetSwapChainImagesKHR();
     }
     if (this->SC_IMGs->called_CreateSwapChainImageViews == false) {
-        this->SC_IMGs->CreateSwapChainImageViews();
+        this->SC_IMGs->       CreateSwapChainImageViews();
     }
 
-    VkExtent2D imageExtent = this->SC_IMGs->active_ImageExtent();
-        this->CI.width  = imageExtent.width;
-        this->CI.height = imageExtent.height;
+        RPBI.renderArea.extent = this->SC_IMGs->SC->active_ImageExtent();
+        Scissor.extent         = RPBI.renderArea.extent;
+        Viewport.width         = Scissor.extent.width;
+        Viewport.height        = Scissor.extent.height;
+        this->CI.width         = Scissor.extent.width;
+        this->CI.height        = Scissor.extent.height;
+        this->CI.renderPass    = this->RP->vk_RenderPass;
 
     this->amVK_1D_RP_FBs.reserve(this->SC_IMGs->amVK_1D_SC_IMGs.n);
 
@@ -69,76 +97,33 @@ void amVK_RenderPassFBs::DestroyFrameBuffers(void) {
 
 
 
+/*
 
-
-#include "amVK_RenderPassCMDs.hh"
-
-static VkClearValue g_ClearValue = {
-    .color = {0.0f, 0.2f, 0.4f, 1.0f}
-};
-static VkRenderPassBeginInfo g_RPBI = {
-    .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
-    .pNext = nullptr,
-    .renderPass = nullptr,
-    .framebuffer = nullptr,
-    .renderArea = {
-        .offset = {0, 0},
-        .extent = {100, 100}
-    },
-    .clearValueCount = 1,
-    .pClearValues = &g_ClearValue
-};
-void amVK_RenderPassCMDs::RPBI_AcquireNextFrameBuffer(void) {
-    uint32_t nextImageIndex = this->SC_IMGs->AcquireNextImage();
-      g_RPBI.framebuffer    = this->RP_FBs->get(nextImageIndex);
+  _______ .______    __    __         ______   ______   .___  ___. .___  ___.      ___      .__   __.  _______  
+ /  _____||   _  \  |  |  |  |       /      | /  __  \  |   \/   | |   \/   |     /   \     |  \ |  | |       \ 
+|  |  __  |  |_)  | |  |  |  |      |  ,----'|  |  |  | |  \  /  | |  \  /  |    /  ^  \    |   \|  | |  .--.  |
+|  | |_ | |   ___/  |  |  |  |      |  |     |  |  |  | |  |\/|  | |  |\/|  |   /  /_\  \   |  . `  | |  |  |  |
+|  |__| | |  |      |  `--'  |      |  `----.|  `--'  | |  |  |  | |  |  |  |  /  _____  \  |  |\   | |  '--'  |
+ \______| | _|       \______/   _____\______| \______/  |__|  |__| |__|  |__| /__/     \__\ |__| \__| |_______/ 
+                               |______|                                                                         
+ 
+ */
+#include "amVK_RenderPassFBs.hh"
+void amVK_RenderPassFBs::RPBI_AcquireNextFrameBuffer(void) {
+    uint32_t nextImageIndex         = this->SC_IMGs->AcquireNextImage();
+             RPBI.framebuffer       = this->amVK_1D_RP_FBs[nextImageIndex];
 }
-/** WELL, If SurfCaps have changed, SwapChainImages/ImageViews/FrameBuffers, all would have to be ReCreated 💁‍♀️ */
-void amVK_RenderPassCMDs::RPBI_SyncSurfCaps(void) {
-    this->SC->sync_SurfCaps();
-    g_RPBI.renderArea.extent = this->SC->active_ImageExtent();
-}
-
-
-
-
-
-
-void amVK_RenderPassCMDs::CMDBeginRenderPass(void) {
-    g_RPBI.renderPass        = this->RP->vk_RenderPass;
-    g_RPBI.renderArea.extent = this->SC->active_ImageExtent();
-    
-                        vkCmdBeginRenderPass(this->CMDBUF, &g_RPBI, VK_SUBPASS_CONTENTS_INLINE);
+void  amVK_RenderPassFBs::CMDBeginRenderPass(VkCommandBuffer CMDBUF) {
+                        vkCmdBeginRenderPass(CMDBUF, &RPBI, VK_SUBPASS_CONTENTS_INLINE);
                REY_LOG("vkCmdBeginRenderPass()");
 }
-void amVK_RenderPassCMDs::CMDEndRenderPass(void) {
-                        vkCmdEndRenderPass(this->CMDBUF);
+void  amVK_RenderPassFBs::CMDEndRenderPass(VkCommandBuffer CMDBUF) {
+                        vkCmdEndRenderPass(CMDBUF);
                REY_LOG("vkCmdEndRenderPass()");
 }
-
-
-
-
-
-
-static VkViewport g_Viewport = {
-    .x = (float)0,
-    .y = (float)0,
-    .width = (float)0,
-    .height = (float)0,
-    .minDepth = (float)0.0f,
-    .maxDepth = (float)1.0f,
-};
-static VkRect2D g_Scissor = {
-    .offset = {0, 0},
-    .extent = {}
-};
-void amVK_RenderPassCMDs::CMDSetViewport_n_Scissor(void) {
-    g_Scissor.extent  = g_RPBI.renderArea.extent;
-    g_Viewport.width  = g_Scissor.extent.width;
-    g_Viewport.height = g_Scissor.extent.height;
-
-                vkCmdSetViewport(CMDBUF, 0, 1, &g_Viewport);
+void amVK_RenderPassFBs::CMDSetViewport_n_Scissor(VkCommandBuffer CMDBUF) {
+             vkCmdSetViewport(CMDBUF, 0, 1, &Viewport);
     REY_LOG("vkCmdSetViewport()");
-                vkCmdSetScissor(CMDBUF, 0, 1, &g_Scissor);
+             vkCmdSetScissor (CMDBUF, 0, 1, &Scissor);
     REY_LOG("vkCmdSetScissor()");
 }

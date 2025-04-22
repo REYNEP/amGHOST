@@ -3,6 +3,12 @@
 #include "REY_Utils.hh"
 #include "REY_Types.hh"
 
+typedef uint32_t amVK_GPU_Index;
+
+#define amVK_QueueFamily_NOT_FOUND    0xFFFFFFFF
+#define amVK_PhysicalDevice_NOT_FOUND 0xFFFFFFFF
+#define amVK_GPU_NOT_FOUND            0xFFFFFFFF
+
 class amVK_GPUProps {
   public:
     struct amVK_MemoryHeap {
@@ -28,9 +34,23 @@ class amVK_GPUProps {
 
     bool called_REY_CategorizeMemoryHeaps = false;
     void        REY_CategorizeMemoryHeaps(void);
-    bool          isExtensionAvailable(const char*  extName);
+    bool called_REY_CategorizeQueueFamilies = false;
+    void        REY_CategorizeQueueFamilies(void);
+
+    struct amVK_QueueFamilyIndex {
+        uint32_t       Graphics = UINT32_MAX;
+        uint32_t    VideoEncode = UINT32_MAX;
+        uint32_t    VideoDecode = UINT32_MAX;
+        uint32_t        Compute = UINT32_MAX;
+        uint32_t       Transfer = UINT32_MAX;
+        uint32_t  SparseBinding = UINT32_MAX;
+    } QFamID;
+
+                //  Doesn't depened on the Categorized QueueFamilies
     uint32_t        ChooseAQueueFamily(VkQueueFlags p_flagBits);
     #define         ChooseAQueueFamily_GRAPHICS() ChooseAQueueFamily(VK_QUEUE_GRAPHICS_BIT)
+
+    bool          isExtensionAvailable(const char*  extName);
     
   public:
     bool called_GetPhysicalDeviceQueueFamilyProperties  = false;
@@ -43,12 +63,13 @@ class amVK_GPUProps {
     void        GetPhysicalDeviceMemoryProperties(void);
 
   public:
+            amVK_GPU_Index                                   ID;
               VkPhysicalDevice                      vk_PhysicalDevice;
               VkPhysicalDeviceFeatures                 Features;
               VkPhysicalDeviceMemoryProperties         MEMProps;
     REY_Array<VkQueueFamilyProperties>                amVK_1D_GPUs_QFAMs;
     REY_Array<VkExtensionProperties>                  amVK_1D_GPUs_EXTs;
 
-    amVK_GPUProps(VkPhysicalDevice PD);
+    amVK_GPUProps(VkPhysicalDevice PD, amVK_GPU_Index ID);
    ~amVK_GPUProps() {}
 };
