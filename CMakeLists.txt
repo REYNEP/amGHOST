@@ -30,20 +30,18 @@ project("amGHOST_PROJECT" VERSION 0.1)
         "intern/amGHOST_SystemWIN32.cpp"
         "intern/amGHOST_WindowWIN32.cpp"
         
-        "amVK/impl/amVK_Instance.cpp"
-        "amVK/impl/amVK_Device.cpp"
-        
         "amVK/utils/amVK_log.cpp"
         "amVK/utils/amVK_InstanceProps.cpp"
         "amVK/utils/amVK_GPUProps.cpp"
         "amVK/utils/amVK_Enum2String.cpp"
         "amVK/utils/amVK_InstancePropsExport_nlohmann.cpp"
 
-        "amVK/impl/amVK_InstancePropsEXT.cpp"
-
-        "amVK/impl/amVK_Surface.cpp"
-        "amVK/impl/amVK_SwapChain.cpp"
-        "amVK/impl/amVK_RenderPass.cpp"
+        "amVK/core/amVK_Instance.cpp"
+        "amVK/core/amVK_Device.cpp"
+        "amVK/core/amVK_Surface.cpp"
+        "amVK/core/amVK_SwapChain.cpp"
+        "amVK/core/amVK_RenderPass.cpp"
+        "amVK/core/amVK_PipelineGRAPHICS.cpp"
         
         "amVK/impl/amVK_SurfacePresenter.cpp"
         "amVK/mesh/amVK_VertexBuffer.cpp"

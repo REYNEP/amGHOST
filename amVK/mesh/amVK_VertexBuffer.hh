@@ -18,7 +18,7 @@ class amVK_VertexBuffer {
     VkMemoryRequirements vk_MemoryReq;
     VkDeviceMemory vk_DeviceMemory;
     void* vk_MappedMemoryData = nullptr;
-        // vk_MemoryReq.size  v/s  CI.size ..... 🤔
+    //    vk_MemoryReq.size  v/s  CI.size ..... 🤔
 
   public:
     VkBufferCreateInfo CI = {

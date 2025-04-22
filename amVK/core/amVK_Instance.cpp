@@ -1,3 +1,121 @@
+#include "amVK_Instance.hh"
+
+    // [1 Per VkInstance]:- All of these options should basically be set by the one who is gonna use amVK and create an APP/Software 🤷‍♀️
+VkApplicationInfo amVK_Instance::AppInfo = {
+    .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+    .pNext = nullptr,
+    .pApplicationName = "amVK_ApplicationInfo.pApplicationName not given",
+        // [implicit valid usage]:- must not be NULL
+    .applicationVersion = VK_MAKE_API_VERSION(0, 0, 0, 0),
+    .pEngineName = "amVK_ApplicationInfo.pEngineName not given",
+        // [implicit valid usage]:- must not be NULL
+    .engineVersion = VK_MAKE_API_VERSION(0, 0, 0, 0),
+    .apiVersion = VK_API_VERSION_1_0
+        // version of the Vulkan API against which the application expects to run on
+};
+
+VkInstanceCreateInfo amVK_Instance::CI = {
+    .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
+        // [implicit valid usage]:- must     be <above_value>
+    .pNext = nullptr,
+        // [implicit valid usage]:- must     be NULL
+    .flags = 0,
+        // [implicit valid usage]:- must     be 0
+    .pApplicationInfo = &AppInfo,
+    .enabledLayerCount = 0,
+    .ppEnabledLayerNames = nullptr,
+    .enabledExtensionCount = 0,
+    .ppEnabledExtensionNames = nullptr
+};
+
+#include "amVK/utils/amVK_log.hh"
+void amVK_Instance::CreateInstance(void)
+{
+    if (vk_Instance) {
+        REY_LOG_EX("[amVK_Instance::CreateInstance]:- A amVK System Already Exists, Please Destroy it before you can create another System.");
+        return;
+    }
+
+    VkResult return_code = vkCreateInstance(&CI, nullptr, &vk_Instance);
+    amVK_return_code_log( "vkCreateInstance()" );  // above variable "return_code" can't be named smth else
+
+    amVK_Instance::log_1D_Instance_EXTs_Enabled(return_code);
+}
+
+#include "REY_STDWrap.hh"
+#include "amVK_InstancePropsEXT.hh"
+#include "amVK/utils/amVK_log.hh"
+void amVK_Instance::addTo_1D_Instance_EXTs_Enabled(const char* extName) {
+    // VK_KHR_surface
+    if (!amVK_InstanceProps::called_EnumerateInstanceExtensions) {
+                amVK_InstanceProps::EnumerateInstanceExtensions();
+    }
+    
+    if (amVK_InstanceProps::isInstanceEXTAvailable(extName)) {
+        char  *dont_lose = REY_strcpy(extName);
+
+        REY_ArrayDYN_PUSH_BACK(amVK_1D_Instance_EXTs_Enabled) = dont_lose;
+
+        amVK_Instance::CI.enabledExtensionCount = amVK_1D_Instance_EXTs_Enabled.neXt;
+        amVK_Instance::CI.ppEnabledExtensionNames = amVK_1D_Instance_EXTs_Enabled.data;
+    }
+    else {
+        REY_LOG_notfound("Vulkan Instance Extension:- " << extName);
+    }
+}
+void amVK_Instance::log_1D_Instance_EXTs_Enabled(VkResult ret) {
+    if (ret != VK_SUCCESS) {
+        REY_LOG_status("vkCreateInstance() failed 😶‍🌫️");
+    }
+    else {
+        REY_LOG_status("         Enabled VULKAN Extensions' Name:- ");
+        REY_Array_LOOP(amVK_1D_Instance_EXTs_Enabled, k) {
+            REY_LOG_status("              | " << amVK_1D_Instance_EXTs_Enabled[k]);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+
+
+ ,ggggggggggg,                                           ,ggggggg,  ,ggg,          ,gg,ggggggggggggggg
+dP"""88""""""Y8,                                       ,dP""""""Y8bdP"""Y8,      ,dP'dP""""""88"""""""
+Yb,  88      `8b                                       d8'    a  Y8Yb,_  "8b,   d8"  Yb,_    88       
+ `"  88      ,8P                                       88     "Y8P' `""    Y8,,8P'    `""    88       
+     88aaaad8P"                                        `8baaaa              Y88"             88       
+     88""""",gggggg,    ,ggggg,   gg,gggg,      ,g,   ,d8P""""             ,888b             88       
+     88     dP""""8I   dP"  "Y8gggI8P"  "Yb    ,8'8,  d8"                 d8" "8b,           88       
+     88    ,8'    8I  i8'    ,8I  I8'    ,8i  ,8'  Yb Y8,               ,8P'    Y8,    gg,   88       
+     88   ,dP     Y8,,d8,   ,d8' ,I8 _  ,d8' ,8'_   8)`Yba,,_____,     d8"       "Yb,   "Yb,,8P       
+     88   8P      `Y8P"Y8888P"   PI8 YY88888PP' "YY8P8P `"Y8888888   ,8P'          "Y8    "Y8P'       
+                                  I8                                                                  
+                                  I8                                                                  
+                                  I8                                                                  
+                                  I8                                                                  
+                                  I8                                                                  
+                                  I8                                                                  
+
+
+ */
 #include "amVK_InstancePropsEXT.hh"
 
 #include "amVK_Instance.hh"
@@ -84,17 +202,6 @@ nlohmann::ordered_json nlohmannEXT_amVK_SwapChainIMGs(amVK_SwapChainIMGs *SC_IMG
 
     return dict;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 nlohmann::ordered_json nlohmannEXT_amVK_SurfaceLinks(amVK_SurfaceLinks SurfLinks) {
     nlohmann::ordered_json dict = nlohmann::ordered_json::object();

@@ -1,10 +1,10 @@
 ## Read the [`./guide/4.guide.md`](https://github.com/REYNEP/amGHOST/blob/main/amVK/guide/4.guide.md)
 
 ## `amVK_Class`
-![image1](./guide/images/readme1.png)
+![image1](./../amVK_Guide/P1/images/readme1.png)
 2560x1200px
 made with affine.pro
-![image2](./guide/images/readme2.png)
+![image2](./../amVK_Guide/P1/images/readme2.png)
 
 ## `Files Table`
 
@@ -14,56 +14,71 @@ made with affine.pro
 </br>
 
 - 🗂️ `common`
-    - 📝 [amVK.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/common/amVK.hh)
-    - 📝 [amVK_ColorSpace.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/common/amVK_ColorSpace.hh)
-    - 📝 [amVK_Enum2String.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/common/amVK_Enum2String.cpp)
-    - 📝 [amVK_Enum2String.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/common/amVK_Enum2String.hh)
-    - 📝 [amVK_GPU.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/common/amVK_GPU.hh)
-    - 📝 [amVK_RenderPass_Descriptors.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/common/amVK_RenderPass_Descriptors.hh)
-    - 📝 [amVK_log.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/common/amVK_log.cpp)
-    - 📝 [amVK_log.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/common/amVK_log.hh)
+    - 📝 [amVK.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/common/amVK.hh)
+    - 📝 [amVK_GPU.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/common/amVK_GPU.hh)
+    - 📝 [amVK_RenderPass_Descriptors.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/common/amVK_RenderPass_Descriptors.hh)
+    - 📝 [amVK_log.cpp](https://github.com/REYNEP/amGHOST/blob/main/amVK/common/amVK_log.cpp)
+    - 📝 [amVK_log.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/common/amVK_log.hh)
+
 - 🗂️ `core`
-    - 📝 [amVK_Instance.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_Instance.hh)
-    - 📝 [amVK_Device.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_Device.hh)
-    - 📝 [amVK_DeviceQCI.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_DeviceQCI.hh)
-    - 📝 [amVK_Surface.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_Surface.hh)
-    - 📝 [amVK_SwapChain.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_SwapChain.hh)
-    - 📝 [amVK_SwapChainIMGs.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_SwapChainIMGs.hh)
-    - 📝 [amVK_RenderPass.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_RenderPass.hh)
-    - 📝 [amVK_RenderPassFBs.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_RenderPassFBs.hh)
-    - 📝 [amVK_CommandPool.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/core/amVK_CommandPool.hh)
+    - 📝 [amVK_CommandPool.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_CommandPool.hh)
+    - 📝 [amVK_Device.cpp](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_Device.cpp)
+    - 📝 [amVK_Device.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_Device.hh)
+    - 📝 [amVK_DeviceOCL.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_DeviceOCL.hh)
+    - 📝 [amVK_Instance.cpp](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_Instance.cpp)
+    - 📝 [amVK_Instance.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_Instance.hh)
+    - 📝 [amVK_InstancePropsEXT.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_InstancePropsEXT.hh)
+    - 📝 [amVK_Pipeline.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_Pipeline.hh)
+    - 📝 [amVK_RenderPass.cpp](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_RenderPass.cpp)
+    - 📝 [amVK_RenderPass.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_RenderPass.hh)
+    - 📝 [amVK_RenderPassCMDs.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_RenderPassCMDs.hh)
+    - 📝 [amVK_RenderPassFBs.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_RenderPassFBs.hh)
+    - 📝 [amVK_Surface.cpp](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_Surface.cpp)
+    - 📝 [amVK_Surface.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_Surface.hh)
+    - 📝 [amVK_SwapChain.cpp](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_SwapChain.cpp)
+    - 📝 [amVK_SwapChain.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_SwapChain.hh)
+    - 📝 [amVK_SwapChainIMGs.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_SwapChainIMGs.hh)
     </br> 
-- 📝 [amVK_SurfacePresenter.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/amVK_SurfacePresenter.hh)
+- 📝 [amVK_SurfacePresenter.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/amVK_SurfacePresenter.hh)
 
 </br>
 </td>
 <td width="50%">
 
 - 🗂️ `extras`
-    - 📝 [SCREENSHOT_STUDIO.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/extras/SCREENSHOT_STUDIO.hh)
-    - 📝 [amVK_CommandBuffer.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/extras/amVK_CommandBuffer.hh)
-    - 📝 [amVK_FrameBuffer.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/extras/amVK_FrameBuffer.hh)
-    - 📝 [amVK_Image.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/extras/amVK_Image.hh)
-    - 📝 [amVK_SemaPhone.hh](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/extras/amVK_SemaPhone.hh)
-
-- 🗂️ `guide`
-    - *(Directory placeholder – add guide files here if any)*
+    - 📝 [amVK_CommandBuffer.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/extras/amVK_CommandBuffer.hh)
+    - 📝 [amVK_FrameBuffer.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/extras/amVK_FrameBuffer.hh)
+    - 📝 [amVK_Image.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/extras/amVK_Image.hh)
+    - 📝 [amVK_SemaPhone.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/extras/amVK_SemaPhone.hh)
+    - 📝 [SCREENSHOT_STUDIO.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/extras/SCREENSHOT_STUDIO.hh)
 
 - 🗂️ `impl`
-    - 📝 [amVK_Device.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/impl/amVK_Device.cpp)
-    - 📝 [amVK_Instance.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/impl/amVK_Instance.cpp)
-    - 📝 [amVK_InstanceProps.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/impl/amVK_InstanceProps.cpp)
-    - 📝 [amVK_InstancePropsExport.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/impl/amVK_InstancePropsExport.cpp)
-    - 📝 [amVK_InstancePropsExport_nloh...](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/impl/amVK_InstancePropsExport_nloh...)
-    - 📝 [amVK_Surface.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/impl/amVK_Surface.cpp)
-    - 📝 [amVK_SurfacePresenter.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/impl/amVK_SurfacePresenter.cpp)
-    - 📝 [amVK_SwapChain.cpp](https://github.com/REYNEP/amGHOST/blob/7376cdb5c2c6eee19655dae436e6cf8edd02e1d5/amVK/impl/amVK_SwapChain.cpp)
+    - 📝 [amVK_SurfacePresenter.cpp](https://github.com/REYNEP/amGHOST/blob/main/amVK/impl/amVK_SurfacePresenter.cpp)
+    - 📝 [amVK_SurfacePresenter.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/impl/amVK_SurfacePresenter.hh)
+
+- 🗂️ `mesh`
+    - 📝 [amVK_Vertex.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/mesh/amVK_Vertex.hh)
+    - 📝 [amVK_VertexBuffer.cpp](https://github.com/REYNEP/amGHOST/blob/main/amVK/mesh/amVK_VertexBuffer.cpp)
+    - 📝 [amVK_VertexBuffer.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/mesh/amVK_VertexBuffer.hh)
+
+- 🗂️ `utils`
+    - 📝 [amVK_Enum2String.cpp](https://github.com/REYNEP/amGHOST/blob/main/amVK/utils/amVK_Enum2String.cpp)
+    - 📝 [amVK_Enum2String.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/utils/amVK_Enum2String.hh)
+    - 📝 [amVK_GPUProps.cpp](https://github.com/REYNEP/amGHOST/blob/main/amVK/utils/amVK_GPUProps.cpp)
+    - 📝 [amVK_GPUProps.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/utils/amVK_GPUProps.hh)
+    - 📝 [amVK_InstanceProps_OLD.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/utils/amVK_InstanceProps_OLD.hh)
+    - 📝 [amVK_InstanceProps.cpp](https://github.com/REYNEP/amGHOST/blob/main/amVK/utils/amVK_InstanceProps.cpp)
+    - 📝 [amVK_InstanceProps.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/utils/amVK_InstanceProps.hh)
+    - 📝 [amVK_InstancePropsExport_nlohmann.cpp](https://github.com/REYNEP/amGHOST/blob/main/amVK/utils/amVK_InstancePropsExport_nlohmann.cpp)
+    - 📝 [amVK_InstancePropsExport_yyson_ryml.cpp](https://github.com/REYNEP/amGHOST/blob/main/amVK/utils/amVK_InstancePropsExport_yyson_ryml.cpp)
+    - 📝 [amVK_nlohmann.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/utils/amVK_nlohmann.hh)
 
 </td>
 </tr>
 </table>
 
 ## `Flow / Directions / Guide`
+- WIP
 1. `amVK_Instance.hh`
 2. `amVK_GPU.hh`
 3. `amVK_InstanceProps.hh`
@@ -98,7 +113,7 @@ made with affine.pro
 ```cpp
 #include "amGHOST_System.hh"
 
-#include "amVK_InstanceProps.hh"
+#include "amVK_InstancePropsEXT.hh"
 #include "amVK_Instance.hh"
 #include "amVK_Device.hh"
 
@@ -112,6 +127,11 @@ made with affine.pro
 #include "amVK_RenderPass.hh"
 #include "amVK_RenderPass_Descriptors.hh"
 #include "amVK_CommandBuffer.hh"
+
+#include "mesh/amVK_Vertex.hh"
+#include "mesh/amVK_VertexBuffer.hh"
+
+#include "amVK_PipelineGRAPHICS.hh"
 
 int main(int argumentCount, char* argumentVector[]) {
     REY::cout << "\n";
@@ -130,8 +150,8 @@ int main(int argumentCount, char* argumentVector[]) {
     {
             REY_LOG("");
         amVK_InstanceProps::EnumerateInstanceExtensions();
-        amVK_Instance::addTo_1D_InstanceEXTs_Enabled("VK_KHR_surface");
-        amVK_Instance::addTo_1D_InstanceEXTs_Enabled(amGHOST_System::get_vulkan_os_surface_ext_name());
+        amVK_Instance::addTo_1D_Instance_EXTs_Enabled("VK_KHR_surface");
+        amVK_Instance::addTo_1D_Instance_EXTs_Enabled(amGHOST_System::get_vulkan_os_surface_ext_name());
         amVK_Instance::CreateInstance();    // initializes amVK_HEART
 
 
@@ -140,11 +160,12 @@ int main(int argumentCount, char* argumentVector[]) {
 
 
             REY_LOG("");
-        amVK_InstanceProps::EnumeratePhysicalDevices();
-        amVK_InstanceProps::GetPhysicalDeviceQueueFamilyProperties();
-        amVK_InstanceProps::EnumerateDeviceExtensionProperties();
+        amVK_InstancePropsEXT::EnumeratePhysicalDevices();
+        amVK_GPUProps  *GPUProps = amVK_InstancePropsEXT::GetARandom_GPU();
+                        GPUProps->GetPhysicalDeviceQueueFamilyProperties();
+                        GPUProps->EnumerateDeviceExtensionProperties();
 
-        amVK_Device* D = new amVK_Device(amVK_InstanceProps::GetARandom_GPU());
+        amVK_Device* D = new amVK_Device(GPUProps->vk_PhysicalDevice);
             D->Default_QCI__select_QFAM_Graphics();
             D->addTo_1D_GPU_EXTs_Enabled("VK_KHR_swapchain");
             D->CreateDevice();
@@ -152,6 +173,8 @@ int main(int argumentCount, char* argumentVector[]) {
         
             REY_LOG("")
         amVK_Surface   *S  = new amVK_Surface(VK_S);
+            S->GetPhysicalDeviceSurfaceInfo();
+            S->GetPhysicalDeviceSurfaceCapabilitiesKHR();
         // amVK_SurfacePresenter   *PR = new amVK_SurfacePresenter();
                                     PR->bind_Surface(S);
                                     PR->bind_Device(D);
@@ -196,6 +219,31 @@ int main(int argumentCount, char* argumentVector[]) {
             CP->CreateCommandPool();
             CP->AllocateCommandBuffers();
 
+        // Pipeline & VkTriangle
+        {
+            amVK_Vertex vertices[3] = {
+                { {  0.00f,  0.25f, 0.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } },   // v0 (red)
+                { { -0.25f, -0.25f, 0.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } },   // v1 (green)
+                { {  0.25f, -0.25f, 0.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } },   // v2 (blue)
+            };
+            amVK_VertexBuffer VB(D, REY_Array<amVK_Vertex>(vertices, 3));
+                VB.CreateBuffer();
+
+            GPUProps->GetPhysicalDeviceFeatures();
+            GPUProps->GetPhysicalDeviceMemoryProperties();
+            GPUProps->REY_CategorizeMemoryHeaps();
+
+                VB.GetBufferMemoryRequirements();
+                VB.AllocateMemory();
+                VB.MapMemory();
+                VB.CopyIntoMemory();
+                VB.UnMapMemory();
+                VB.BindBufferMemory();
+
+            amVK_PipelineGRAPHICS* PLG = new amVK_PipelineGRAPHICS(RP);
+                PLG->CreateGraphicsPipeline();
+        }
+
         amVK_RenderPassCMDs *RP_CMDs = PR->create_RenderPassCMDs_interface();
             PR->BeginCommandBuffer();
                 RP_CMDs->RPBI_AcquireNextFrameBuffer();
@@ -205,8 +253,6 @@ int main(int argumentCount, char* argumentVector[]) {
             PR->  EndCommandBuffer();
             PR->submit_CMDBUF();
             PR->Present();
-
-        amVK_InstanceProps::Export_nilohmannJSON();
     }
     REY_LOG("");
     REY_LOG("");
@@ -214,6 +260,7 @@ int main(int argumentCount, char* argumentVector[]) {
 
 
     REY::cin.get();     // wait for terminal input
+        amVK_InstancePropsEXT::Export_nilohmannJSON_EXT();
         PR->destroy_everything_serially();
         W->m_amGHOST_VkSurface->destroy();
         amVK_Instance::DestroyInstance();
@@ -304,6 +351,8 @@ VkInstance
 30. craft	🧙♂️ (Artisan)
 31. surfCap 📋 (property-style)
 32. surfCap_ptr 🎯 (or surfCapRef)
+
+📟📇
 
 
 

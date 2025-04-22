@@ -26,6 +26,11 @@ namespace amVK_ImageFormat
     inline constexpr VkFormat RGBA_8bpc_SINT     = VK_FORMAT_R8G8B8A8_SINT;     // 42
     inline constexpr VkFormat RGBA_8bpc_SRGB     = VK_FORMAT_R8G8B8A8_SRGB;     // 43
 
+    inline constexpr VkFormat RGB_32bpc_SFLOAT   = VK_FORMAT_R32G32B32_SFLOAT;  // 
+    inline constexpr VkFormat XYZ_32bpc_SFLOAT   = VK_FORMAT_R32G32B32_SFLOAT;
+    inline constexpr VkFormat RGBA_32bpc_SFLOAT  = VK_FORMAT_R32G32B32A32_SFLOAT;
+    inline constexpr VkFormat XYZW_32bpc_SFLOAT  = VK_FORMAT_R32G32B32A32_SFLOAT;
+
         // Common Depth/Stencil Formats
     inline constexpr VkFormat D32_SFLOAT         = VK_FORMAT_D32_SFLOAT;
     inline constexpr VkFormat D24_UNORM_S8_UINT  = VK_FORMAT_D24_UNORM_S8_UINT;
