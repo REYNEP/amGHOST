@@ -92,10 +92,10 @@ amVK_CommandPoolMAN::amVK_CommandPoolMAN(amVK_Device *D) {
 /** \see amVK_GPUProps::amVK_QueueFamilyIndex + \see amVK_Device::amVK_1D_QCIs */
 amVK_CommandPool* amVK_CommandPoolMAN::InitializeCommandPool(uint32_t queueFamilyIndex)
 {
-    if              (queueFamilyIndex >= D->Queues.amVK_2D_Queues.n) {
-        REY_LOG_EX( "queueFamilyIndex >= D->Queues.amVK_2D_Queues.n")
+    if              (queueFamilyIndex >= D->GPUProps->get_QFamCount()) {
+        REY_LOG_EX( "queueFamilyIndex >= D->GPUProps->get_QFamCount()")
     }
-    if (D->Queues.amVK_1D_QFam_QCount_EXT_incUserPushed[queueFamilyIndex] == 0) {
+    if (D->Queues.amVK_1D_QFAMs_QCount_TOTAL[queueFamilyIndex] == 0) {
         REY_LOG_EX( "0 Queues Queried from QFam-" << queueFamilyIndex << "\n    Stil Initializing");
     }
 

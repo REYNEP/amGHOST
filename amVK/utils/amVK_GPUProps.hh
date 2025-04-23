@@ -11,6 +11,18 @@ typedef uint32_t amVK_GPU_Index;
 
 class amVK_GPUProps {
   public:
+    amVK_GPUProps(VkPhysicalDevice PD, amVK_GPU_Index ID);
+   ~amVK_GPUProps() {}
+
+            amVK_GPU_Index                                   ID;
+              VkPhysicalDevice                      vk_PhysicalDevice;
+              VkPhysicalDeviceFeatures                 Features;
+              VkPhysicalDeviceMemoryProperties         MEMProps;
+    REY_Array<VkQueueFamilyProperties>                amVK_1D_GPUs_QFAMs;
+    REY_Array<VkExtensionProperties>                  amVK_1D_GPUs_EXTs;
+    uint32_t              get_QFamCount(void) {return amVK_1D_GPUs_QFAMs.n;}
+
+  public:
     struct amVK_MemoryHeap {
         VkMemoryHeap*  CPU_GPU_Synced        = nullptr;
         VkMemoryHeap*  CPU_GPU_Synced_Cached = nullptr;
@@ -61,15 +73,4 @@ class amVK_GPUProps {
     void        GetPhysicalDeviceQueueFamilyProperties(void);
     void        GetPhysicalDeviceFeatures(void);
     void        GetPhysicalDeviceMemoryProperties(void);
-
-  public:
-            amVK_GPU_Index                                   ID;
-              VkPhysicalDevice                      vk_PhysicalDevice;
-              VkPhysicalDeviceFeatures                 Features;
-              VkPhysicalDeviceMemoryProperties         MEMProps;
-    REY_Array<VkQueueFamilyProperties>                amVK_1D_GPUs_QFAMs;
-    REY_Array<VkExtensionProperties>                  amVK_1D_GPUs_EXTs;
-
-    amVK_GPUProps(VkPhysicalDevice PD, amVK_GPU_Index ID);
-   ~amVK_GPUProps() {}
 };

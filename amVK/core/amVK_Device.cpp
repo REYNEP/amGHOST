@@ -94,35 +94,27 @@ amVK_DeviceQueues::amVK_DeviceQueues(amVK_GPUProps *GPUProps) {
     this->Used_QFamID.Compute       = GPUProps->QFamID.Compute;
     this->Used_QFamID.Transfer      = GPUProps->QFamID.Transfer;
     this->Used_QFamID.SparseBinding = GPUProps->QFamID.SparseBinding;
+
+    REY_Array_RESERVE(amVK_1D_QFAMs_QCount_Internal, GPUProps->get_QFamCount(), 0);
+    REY_Array_RESERVE(amVK_1D_QFAMs_QCount_TOTAL,    GPUProps->get_QFamCount(), 0);
+    REY_Array_RESERVE(amVK_1D_QFAMs_QCount_USER,     GPUProps->get_QFamCount(), 0);
 }
 void amVK_DeviceQueues::generate_1D_QCIs(void) {
     this->generate_1D_QFam_QCount();
 
-        REY_Array_LOOP(amVK_1D_QFam_QCount, k) {
-            if (amVK_1D_QFam_QCount[k] > 0) {
+        REY_Array_LOOP(amVK_1D_QFAMs_QCount_Internal, k) {
+            uint32_t queueCount;
+                queueCount = amVK_1D_QFAMs_QCount_Internal[k] + amVK_1D_QFAMs_QCount_USER[k];
+            if (queueCount > 0) {
                 amVK_DeviceQueues::s_CI_Template.queueFamilyIndex = k;
-                amVK_DeviceQueues::s_CI_Template.queueCount = amVK_1D_QFam_QCount[k];
+                amVK_DeviceQueues::s_CI_Template.queueCount = queueCount;
 
                 amVK_1D_QCIs.push_back(amVK_DeviceQueues::s_CI_Template);
             }
+            this->amVK_1D_QFAMs_QCount_TOTAL[k] = queueCount;
         }
 
     called_generate_1D_QCIs = true;
-}
-void amVK_DeviceQueues::REY_Calculate_amVK_1D_QFam_QCount_EXT_incUserPushed(void) {
-    if        (amVK_1D_QFam_QCount_EXT_incUserPushed.data != nullptr) {
-        delete amVK_1D_QFam_QCount_EXT_incUserPushed.data;
-    }
-
-    REY_Array_RESERVE(amVK_1D_QFam_QCount_EXT_incUserPushed, this->GPUProps->amVK_1D_GPUs_QFAMs.n, 0);
-
-    REY_Array_LOOP(amVK_1D_QCIs, k) {
-        uint32_t QFamID = amVK_1D_QCIs[k].queueFamilyIndex;
-        uint32_t QCount = amVK_1D_QCIs[k].queueCount;
-           this->amVK_1D_QFam_QCount_EXT_incUserPushed[QFamID] += QCount;
-    }
-
-    called_REY_Calculate_amVK_1D_QFam_QCount_EXT_incUserPushed = true;
 }
 void amVK_DeviceQueues::sync_1D_QCIs(VkDeviceCreateInfo* DeviceCI) {
     if (    amVK_1D_QCIs.data == nullptr) {
@@ -132,18 +124,37 @@ void amVK_DeviceQueues::sync_1D_QCIs(VkDeviceCreateInfo* DeviceCI) {
     DeviceCI->pQueueCreateInfos    = this->amVK_1D_QCIs.data;
 }
 void amVK_DeviceQueues::GetDeviceQueues(VkDevice vk_Device) {
-    if (called_REY_Calculate_amVK_1D_QFam_QCount_EXT_incUserPushed == false) {
-        this-> REY_Calculate_amVK_1D_QFam_QCount_EXT_incUserPushed();
-    }
-    this->amVK_2D_Queues.reserve(amVK_1D_QFam_QCount_EXT_incUserPushed.n);
+    TheArrays.Graphics      .reserve(QCount.Graphics);
+    TheArrays.VideoEncode   .reserve(QCount.VideoEncode);
+    TheArrays.VideoDecode   .reserve(QCount.VideoDecode);
+    TheArrays.Compute       .reserve(QCount.Compute);
+    TheArrays.Transfer      .reserve(QCount.Transfer);
+    TheArrays.SparseBinding .reserve(QCount.SparseBinding);
 
-    REY_Array_LOOP(amVK_1D_QFam_QCount_EXT_incUserPushed, k) {
-        if        (amVK_1D_QFam_QCount_EXT_incUserPushed[k] == 0) { continue; }
+    REY_Array<uint32_t>   amVK_1D_QFAMs_QCount_Gotten;
+        REY_Array_RESERVE(amVK_1D_QFAMs_QCount_Gotten, amVK_1D_QFAMs_QCount_USER.n, 0);
 
-        this->amVK_2D_Queues[k].reserve(amVK_1D_QFam_QCount_EXT_incUserPushed[k]);
+    #define _GetDeviceQueue(vk_Device, QFAM_k, pQueue)   \
+           vkGetDeviceQueue(vk_Device, QFAM_k, amVK_1D_QFAMs_QCount_Gotten[QFAM_k], pQueue);  \
+           amVK_1D_QFAMs_QCount_Gotten[QFAM_k]++;
 
-        for (uint32_t i = 0, lim = amVK_1D_QFam_QCount_EXT_incUserPushed[k]; i < lim; i++) {
-            vkGetDeviceQueue(vk_Device, k, i, &this->amVK_2D_Queues[k][i]);
+    for (int i = 0;  i < QCount.Graphics; i++)       { _GetDeviceQueue(vk_Device, Used_QFamID.Graphics, &this->TheArrays.Graphics[i]);           }
+    for (int i = 0;  i < QCount.VideoEncode; i++)    { _GetDeviceQueue(vk_Device, Used_QFamID.VideoEncode, &this->TheArrays.VideoEncode[i]);     }
+    for (int i = 0;  i < QCount.VideoDecode; i++)    { _GetDeviceQueue(vk_Device, Used_QFamID.VideoDecode, &this->TheArrays.VideoDecode[i]);     }
+    for (int i = 0;  i < QCount.Compute; i++)        { _GetDeviceQueue(vk_Device, Used_QFamID.Compute, &this->TheArrays.Compute[i]);             }
+    for (int i = 0;  i < QCount.Transfer; i++)       { _GetDeviceQueue(vk_Device, Used_QFamID.Transfer, &this->TheArrays.Transfer[i]);           }
+    for (int i = 0;  i < QCount.SparseBinding; i++)  { _GetDeviceQueue(vk_Device, Used_QFamID.SparseBinding, &this->TheArrays.SparseBinding[i]); }
+
+    this->  TheArrays.amVK_2D_QFAMs_Queues.reserve(amVK_1D_QFAMs_QCount_USER.n);
+    REY_Array_LOOP   (amVK_1D_QFAMs_QCount_USER, k) {
+        if           (amVK_1D_QFAMs_QCount_USER[k] > 0) {
+            TheArrays.amVK_2D_QFAMs_Queues[k].reserve(amVK_1D_QFAMs_QCount_USER[k]);
+
+            for (uint32_t i = 0, lim = amVK_1D_QFAMs_QCount_USER[k]; i < lim; i++) {
+                _GetDeviceQueue(vk_Device, k, &this->TheArrays.amVK_2D_QFAMs_Queues[k][i]);
+            }
         }
     }
+
+    called_GetDeviceQueues = true;
 }

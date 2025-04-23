@@ -55,6 +55,7 @@ void amVK_RenderPass::DestroyRenderPass(void) {
                          |______|______|                                                                           
 
  */
+#include "amVK_RenderPassFBs.hh"
 void amVK_RenderPassFBs::CreateFrameBuffers(void) {
     if (this->SC_IMGs->called_GetSwapChainImagesKHR == false) {
         this->SC_IMGs->       GetSwapChainImagesKHR();
