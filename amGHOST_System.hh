@@ -30,6 +30,7 @@ class amGHOST_System {
 
   public:
     virtual amGHOST_Window* new_window_interface(void) = 0;     /** However, To Initialize/Create \see amGHOST_Window.hh */
+    virtual void dispatch_events(void) = 0;
 
   public:
     /**

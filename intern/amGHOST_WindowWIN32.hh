@@ -52,6 +52,10 @@ class amGHOST_WindowWIN32 : public amGHOST_Window {
 
   public:
     void destroy(void);
+    void resposnd_to_OS(void) {
+        amGHOST_SystemWIN32*    heart_win32 = (amGHOST_SystemWIN32 *) amGHOST_System::heart;
+                                heart_win32->dispatch_events();
+    }
     void show_window(void) {
         ::ShowWindow(this->m_hwnd, SW_SHOW);
         ::SetFocus(this->m_hwnd);

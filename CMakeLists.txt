@@ -27,8 +27,10 @@ project("amGHOST_PROJECT" VERSION 0.1)
 # --------------------
     set(SRC
         "amGHOST_System.cpp"
+        "amGHOST_Event.cpp"
         "intern/amGHOST_SystemWIN32.cpp"
         "intern/amGHOST_WindowWIN32.cpp"
+        "intern/WIN32_EXT/spy.cpp"
         
         "amVK/utils/amVK_log.cpp"
         "amVK/utils/amVK_InstanceProps.cpp"
@@ -51,6 +53,8 @@ project("amGHOST_PROJECT" VERSION 0.1)
     set(INC
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/intern/
+        ${CMAKE_CURRENT_SOURCE_DIR}/amGE/
+        
         ${CMAKE_CURRENT_SOURCE_DIR}/amVK/
         ${CMAKE_CURRENT_SOURCE_DIR}/amVK/common
         ${CMAKE_CURRENT_SOURCE_DIR}/amVK/core
@@ -59,6 +63,7 @@ project("amGHOST_PROJECT" VERSION 0.1)
         ${CMAKE_CURRENT_SOURCE_DIR}/amVK/utils
     )
 # --------------------
+include(${CMAKE_CURRENT_SOURCE_DIR}/intern/WIN32_EXT/extract.cmake)
 
 # --------------------
             add_library    (amGHOST ${SRC})

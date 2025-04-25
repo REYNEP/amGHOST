@@ -112,42 +112,85 @@ void amGHOST_SystemWIN32::_unreg_wc(void) {
  */
 
 /**
- * NOT EVERYTHING SHOULD BE HERE....
+ * NOT EVERYTHING SHOULD BE HERE.... inside WndProc
  *  EG: WM_SIZE should call \fn amGHOST_WindowWIN32::_MSG_kWindowResized()
  */
-LRESULT WINAPI amGHOST_SystemWIN32::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+
+#include "WIN32_EXT/amGHOST_DebugWIN32.hh"
+/** 
+ * ## 😉 win32 "Window Procedure Function" [WndProc]
+ * - INFO
+ *      - - called by process_events() -> ::DispatchMessageA()
+ *      - - Deals with OS Messages and Events, hwnd is the Handle to Window
+ * 
+ * - Windows asks for this function to be a GLOBAL STATIC function. But why would this work while being defined inside a Class?
+ * - WHY-THIS-WORKS:-
+ *   - - C++ treats MEMBER_FUNCs and free functions [i.e. PUBLIC_STATIC_FUNCs] differently 
+ *              MEMBER_FUNCs need to have access to a "this" pointer, and typically that's passed in as a hidden first parameter to MEMBER_FUNCs
+ *   You can, however, declare "WndProc" as a PUBLIC_STATIC_FUNC, which eliminates the this pointer. [https://stackoverflow.com/a/17221900]
+ * 
+ * - EASTER:- Let's See if anyone can use the Power of this being Public, 
+ *       - - [I mean you could just call amGHOST_SystemWIN32::WndProc() & pass in aruments to it, MANUALLY CREATING "EVENTS"]
+ *           That's It POWERRRRRR
+ */
+LRESULT WINAPI amGHOST_SystemWIN32::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
+{
     switch (msg) {
         case WM_CREATE:
             // Handle window creation
+            REY_LOG("WM_CREATE");
             return 0;
 
         case WM_DESTROY:
             // Handle window destruction
-            PostQuitMessage(0);
+            ::PostQuitMessage(0);
+            REY_LOG("WM_DESTROY");
             return 0;
 
         case WM_PAINT: {
             // Handle window painting
             PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hwnd, &ps);
-            FillRect(hdc, &ps.rcPaint, (HBRUSH) (COLOR_WINDOW + 1));
-            EndPaint(hwnd, &ps);
+            HDC hdc = ::BeginPaint(hwnd, &ps);
+            ::FillRect(hdc, &ps.rcPaint, (HBRUSH) (COLOR_WINDOW + 1));
+            ::EndPaint(hwnd, &ps);
+            REY_LOG("WM_PAINT");
             return 0;
         }
 
         case WM_SIZE:
             // Handle window resizing
+            REY_LOG("WM_SIZE");
             return 0;
 
         case WM_KEYDOWN:
             // Handle key press
             if (wParam == VK_ESCAPE) {
-                DestroyWindow(hwnd);
+                ::DestroyWindow(hwnd);
             }
+            REY_LOG("WM_KEYDOWN");
             return 0;
 
         default:
             // Handle other messages
+            REY_LOG_WIN32_message_name(msg);
             return DefWindowProc(hwnd, msg, wParam, lParam);
+    }
+}
+
+/** Written with help from Github Copilot vscode extension */
+void amGHOST_SystemWIN32::dispatch_events(void) {
+    MSG msg;
+    while (
+        ::PeekMessage(          // Returns false when no event is available
+            &msg,               // OUT Variable
+            nullptr,            // [hwnd] nullptr:- retrieves messages for any window created by the calling thread
+            0,                  // minimum value of the range of messages to be retrieved.     Use 0 to retrieve all messages
+            0,                  // maximum value of the range of messages to be retrieved.     Use 0 to retrieve all messages
+            PM_REMOVE           // [PM_REMOVE]:- Messages are removed from the queue after being retrieved.    / [PM_NOREMOVE] / [PM_NOYIELD]
+        )
+    )
+    {
+        ::TranslateMessage(&msg);   // Preprocess keyboard messages (optional)
+        ::DispatchMessage(&msg);    // Send the message to WndProc
     }
 }
