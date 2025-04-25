@@ -3,16 +3,18 @@
 // Must   not include         "amGHOST_System.hh" -> otherwise ♾️-loop of includes😶‍🌫️
 // But we can include that in `amGHOST_Window.cpp`
 
+#include "amGHOST_EventTypes.hh"
+
 class amGHOST_VkSurfaceKHR;
 
 class amGHOST_Window {
   public:
-    uint32_t    m_posX = 0;
-    uint32_t    m_posY = 0;
-    uint32_t    m_sizeX = 0;
-    uint32_t    m_sizeY = 0;
-    const wchar_t* m_title = L"amGHOST_WINDOW:- TITLE WASNT SET";
-    amGHOST_VkSurfaceKHR* m_amGHOST_VkSurface = nullptr;    // this->destroy() ==> destroys m_VkSurface
+    uint32_t              m_posX              = 0;
+    uint32_t              m_posY              = 0;
+    uint32_t              m_sizeX             = 0;
+    uint32_t              m_sizeY             = 0;
+    const wchar_t*        m_title             = L"amGHOST_WINDOW:- TITLE WASNT SET";
+    amGHOST_VkSurfaceKHR* m_amGHOST_VkSurface = nullptr;                                    // amGHOST_Window::destroy() destroys ===> m_VkSurface
 
     amGHOST_Window() {};
    ~amGHOST_Window() {};

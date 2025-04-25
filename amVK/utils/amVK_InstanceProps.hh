@@ -38,7 +38,7 @@ class amVK_InstanceProps {
     static          amVK_GPUProps*                      Get_GPUProps(VkPhysicalDevice PDevice);     // Calls Above function
     static          amVK_GPUProps*              GetARandom_GPU(void);
     static inline   amVK_GPU_Index              GetARandom_GPU_amVK_Index(void)  { return 0; }
-    static inline   amVK_GPU_Index               PD_2_ID(VkPhysicalDevice PD)    { VkPhysicalDevice_2_amVK_GPU_Index(PD); }
+    static inline   amVK_GPU_Index               PD_2_ID(VkPhysicalDevice PD)    { return VkPhysicalDevice_2_amVK_GPU_Index(PD); }
     static bool                   isInstanceEXTAvailable(const char *extName);                      // amVK_1D_InstanceEXTs
     static bool                   isInstanceLayerAvailable(const char *layerName);                  // amVK_1D_InstanceLayers
    /** 

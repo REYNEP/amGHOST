@@ -112,7 +112,7 @@ void amVK_SurfacePresenter::submit_CMDBUF(VkQueue vk_Queue) {
 
     VkSemaphore ImageAvailableSemaphore = this->IMGs->AcquireNextImage_SemaPhore;
     VkSemaphore RenderingFinishedSemaphore = this->RenderingFinished_SemaPhore;
-    VkCommandBuffer ActiveCommandBuffer = this->active_CMDBUF();
+    VkCommandBuffer ActiveCommandBuffer = this->CMDBuf;
 
         g_SI.waitSemaphoreCount     = 1;
         g_SI.pWaitSemaphores        = &ImageAvailableSemaphore;

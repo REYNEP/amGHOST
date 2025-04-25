@@ -46,7 +46,7 @@ class amVK_Device {
     };
 
   public:
-    void  CreateDevice(uint32_t GraphicQueueCount);
+    void  CreateDevice(uint32_t GraphicsQueueCount);
     void     GetDeviceQueues(void) { Queues.GetDeviceQueues(vk_Device); }
     void DestroyDevice(void);
 };

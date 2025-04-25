@@ -2,8 +2,8 @@
 #include "amVK/utils/amVK_log.hh"
 #include "amVK_InstancePropsEXT.hh"
 
-void amVK_Device::CreateDevice(uint32_t GraphicQueueCount) {
-    this->Queues.QCount.Graphics = GraphicQueueCount;
+void amVK_Device::CreateDevice(uint32_t GraphicsQueueCount) {
+    this->Queues.QCount.Graphics = GraphicsQueueCount;
     this->sync_1D_QCIs();
     
         VkResult return_code = vkCreateDevice(vk_PhysicalDevice, &CI, nullptr, &this->vk_Device);
@@ -100,7 +100,18 @@ amVK_DeviceQueues::amVK_DeviceQueues(amVK_GPUProps *GPUProps) {
     REY_Array_RESERVE(amVK_1D_QFAMs_QCount_USER,     GPUProps->get_QFamCount(), 0);
 }
 void amVK_DeviceQueues::generate_1D_QCIs(void) {
-    this->generate_1D_QFam_QCount();
+    this->generate_1D_QFAMs_QCount();
+
+    amVK_DeviceQueues::s_QueuePrority = 1.0f;
+    amVK_DeviceQueues::s_CI_Template = {
+        .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+        .pNext = nullptr,
+        .flags = 0,
+        .queueFamilyIndex = 0,
+            // VULKAN:- The queueFamilyIndex member of each element of pQueueCreateInfos must be unique within pQueueCreateInfos
+        .queueCount = 0,
+        .pQueuePriorities = &s_QueuePrority
+    };
 
         REY_Array_LOOP(amVK_1D_QFAMs_QCount_Internal, k) {
             uint32_t queueCount;
@@ -108,6 +119,11 @@ void amVK_DeviceQueues::generate_1D_QCIs(void) {
             if (queueCount > 0) {
                 amVK_DeviceQueues::s_CI_Template.queueFamilyIndex = k;
                 amVK_DeviceQueues::s_CI_Template.queueCount = queueCount;
+
+                // ErrorCheck:- Are we asking more than vkGetPhysicalDeviceQueueFamilyProperties()->[k].queueCount provided us?
+                    if (queueCount > this->GPUProps->amVK_1D_GPUs_QFAMs[k].queueCount) {
+                        REY_LOG_EX("[k = " << k << "] queueCount > this->GPUProps->amVK_1D_GPUs_QFAMs[k].queueCount");
+                    }
 
                 amVK_1D_QCIs.push_back(amVK_DeviceQueues::s_CI_Template);
             }

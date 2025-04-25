@@ -8,7 +8,7 @@ class amVK_Image {
         .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
         .pNext = nullptr,
         .flags = 0,
-        .image = this->vk_Image,
+        .image = nullptr,
         .viewType = VK_IMAGE_VIEW_TYPE_2D,
         .format = VK_FORMAT_UNDEFINED,
         .components = {},

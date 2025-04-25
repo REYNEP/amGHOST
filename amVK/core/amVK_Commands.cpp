@@ -1,7 +1,7 @@
 #include "amVK_CommandPool.hh"
 #include "amVK/utils/amVK_log.hh"
 
-void amVK_CommandPool::CreateCommandPool( amVK_Sync::CommandPoolCreateFlags flags) {
+void amVK_CommandPool::CreateCommandPool(amVK_Sync::CommandPoolCreateFlags flags) {
     CI.flags = flags;
     VkResult return_code = vkCreateCommandPool(this->D->vk_Device, &this->CI, nullptr, &this->vk_CommandPool);
     amVK_return_code_log( "vkCreateCommandPool()" );    // above variable "return_code" can't be named smth else
@@ -22,18 +22,21 @@ void amVK_CommandPool::DestroyCommandPool(void) {
                                                                                     
 
  */
-REY_Array<VkCommandBuffer> amVK_CommandPool::AllocateCommandBuffers(void) 
-{
-    this->AI.commandPool = this->vk_CommandPool;
-    this->vk_CommandBuffers.reserve(this->AI.commandBufferCount); 
+#include "amVK_CommandPoolMAN.hh"
+void amVK_CommandPoolMAN::AllocateCommandBuffers(VkCommandPool CMDPool, uint32_t N, REY_ArrayDYN<VkCommandBuffer>* BUFFs_PTR) {
+    this->s_AI.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    this->s_AI.commandPool = CMDPool;
+    this->s_AI.commandBufferCount = N;
 
-        VkResult return_code = vkAllocateCommandBuffers(this->D->vk_Device, &this->AI, this->vk_CommandBuffers.data);
+    REY_Array<VkCommandBuffer> TMP;
+        TMP.reserve(N);
+
+        VkResult return_code = vkAllocateCommandBuffers(this->D->vk_Device, &this->s_AI, TMP.data);
         amVK_return_code_log( "vkAllocateCommandBuffers()" );
 
-    return vk_CommandBuffers;
-}
-void  amVK_CommandPool::FreeCommandBuffers(void) {
-                      vkFreeCommandBuffers(this->D->vk_Device, vk_CommandPool, vk_CommandBuffers.n, vk_CommandBuffers.data);
+    REY_Array_LOOP(TMP, k) {
+        BUFFs_PTR->push_back(TMP[k]);
+    }
 }
 
 
@@ -48,16 +51,18 @@ void  amVK_CommandPool::FreeCommandBuffers(void) {
                                |______|                                                                         
  
  */
-VkCommandBuffer amVK_CommandPool::BeginCommandBuffer(void) {
-    VkResult return_code = vkBeginCommandBuffer(this->get_active_CMDBUF(), &g_CMDBUF_BI);
-    amVK_return_code_log( "vkBeginCommandBuffer()" );
+VkCommandBuffer amVK_CommandBufferPrimary::BeginCommandBuffer(amVK_Sync::CommandBufferBeginFlags flags) {
+    this->BI.flags = flags;
 
-    return this->get_active_CMDBUF();
+        VkResult return_code = vkBeginCommandBuffer(this->vk_CommandBuffer, &BI);
+        amVK_return_code_log( "vkBeginCommandBuffer()" );
+
+    return this->vk_CommandBuffer;
 }
     // Ending the render pass will add an implicit barrier, transitioning the frame buffer color attachment to
     // `VK_IMAGE_LAYOUT_PRESENT_SRC_KHR` for presenting it to the windowing system
-void amVK_CommandPool::EndCommandBuffer(void) {
-    VkResult return_code = vkEndCommandBuffer(this->get_active_CMDBUF());
+void amVK_CommandBufferPrimary::EndCommandBuffer(void) {
+    VkResult return_code = vkEndCommandBuffer(this->vk_CommandBuffer);
     amVK_return_code_log( "vkEndCommandBuffer()" );
 }
 
@@ -83,14 +88,14 @@ amVK_CommandPoolMAN::amVK_CommandPoolMAN(amVK_Device *D) {
     this->D = D;
     
     if            ( D->GPUProps->called_GetPhysicalDeviceQueueFamilyProperties == false ) {
-        REY_LOG_EX("D->GPU_Props->called_GetPhysicalDeviceQueueFamilyProperties == false")
+        REY_LOG_EX("D->GPUProps->called_GetPhysicalDeviceQueueFamilyProperties == false")
     }
 
-    REY_Array_RESERVE(amVK_1D_QFAMs_CMDPOOL, D->GPUProps->amVK_1D_GPUs_QFAMs.n, nullptr);
+    REY_Array_RESERVE(CATs.amVK_1D_QFAMs_CMDPOOL, D->GPUProps->amVK_1D_GPUs_QFAMs.n, nullptr);
 }
 
 /** \see amVK_GPUProps::amVK_QueueFamilyIndex + \see amVK_Device::amVK_1D_QCIs */
-amVK_CommandPool* amVK_CommandPoolMAN::InitializeCommandPool(uint32_t queueFamilyIndex)
+amVK_CommandPool* amVK_CommandPoolMAN::init_CMDPool_USER(uint32_t queueFamilyIndex)
 {
     if              (queueFamilyIndex >= D->GPUProps->get_QFamCount()) {
         REY_LOG_EX( "queueFamilyIndex >= D->GPUProps->get_QFamCount()")
@@ -99,6 +104,6 @@ amVK_CommandPool* amVK_CommandPoolMAN::InitializeCommandPool(uint32_t queueFamil
         REY_LOG_EX( "0 Queues Queried from QFam-" << queueFamilyIndex << "\n    Stil Initializing");
     }
 
-    amVK_1D_QFAMs_CMDPOOL[queueFamilyIndex] = new amVK_CommandPool(D, queueFamilyIndex);
-    return amVK_1D_QFAMs_CMDPOOL[queueFamilyIndex];
+    CATs.amVK_1D_QFAMs_CMDPOOL[queueFamilyIndex] = new amVK_CommandPool(D, queueFamilyIndex);
+    return CATs.amVK_1D_QFAMs_CMDPOOL[queueFamilyIndex];
 }

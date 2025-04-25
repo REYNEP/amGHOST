@@ -20,10 +20,10 @@ class amVK_SurfacePresenter {
     amVK_SwapChain  *SC = nullptr;
     amVK_RenderPass  *RP = nullptr;
     amVK_Device        *D = nullptr;
-    amVK_CommandPool  *CP_G = nullptr;
-    amVK_RenderPassFBs  *FBs = nullptr;
-    amVK_SwapChainIMGs   *IMGs = nullptr;
-    amVK_CommandPoolMAN    *CPM = nullptr;
+    VkCommandBuffer CMDBuf = nullptr;
+    amVK_RenderPassFBs *FBs = nullptr;
+    amVK_SwapChainIMGs *IMGs = nullptr;
+    amVK_CommandPoolMAN  *CPM = nullptr;
     
   public:
     void bind_Device       (amVK_Device* D)   {this->D = D;}
@@ -45,12 +45,10 @@ class amVK_SurfacePresenter {
     amVK_RenderPass*     create_RenderPass_interface(void);
     amVK_RenderPassFBs*  create_FrameBuffers_interface(void);
     amVK_CommandPoolMAN* create_CommandPoolMAN_interface(void);
-    void                    set_CommandPool_Presentation(amVK_CommandPool* CP) {this->CP_G = CP;}
+    void                          set_CommandBuffer(VkCommandBuffer vk_CommandBuffer) {this->CMDBuf = vk_CommandBuffer;}
     void                destroy_everything_serially(void); 
 
   public:
-    VkCommandBuffer active_CMDBUF(void)             { return   this->CP_G->get_active_CMDBUF(); }
-
     VkSemaphore RenderingFinished_SemaPhore = nullptr;
     void        RenderingFinished_SemaPhore_Create(void);
     void        RenderingFinished_SemaPhore_Destroy(void);

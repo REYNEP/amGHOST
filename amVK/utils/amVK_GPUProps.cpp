@@ -279,6 +279,10 @@ void amVK_GPUProps::REY_CategorizeQueueFamilies(void) {
             break;
         }
     }
+    // WIP:-
+    // sometimes, some queueFamilies might only support 1 single Queue 
+    // & @ the same time
+    //      have a QueueFlag set that no other queueFamily has
     REY_Array_LOOP(amVK_1D_GPUs_QFAMs, k) {
         if (amVK_1D_GPUs_QFAMs[k].queueFlags & VK_QUEUE_VIDEO_ENCODE_BIT_KHR) {
             this->QFamID.VideoEncode = k;
