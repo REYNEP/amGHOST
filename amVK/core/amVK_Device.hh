@@ -7,7 +7,7 @@
  */
 class amVK_Device {
   public:
-    amVK_Device(amVK_GPUProps *GPUProps) : Queues(GPUProps), GPUProps(GPUProps), vk_PhysicalDevice(GPUProps->vk_PhysicalDevice) {}
+    amVK_Device(amVK_GPUProps *GPUProps) : GPUProps(GPUProps), Queues(GPUProps), vk_PhysicalDevice(GPUProps->vk_PhysicalDevice) {}
    ~amVK_Device() {}
 
   public:

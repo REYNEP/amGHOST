@@ -7,7 +7,7 @@ class amVK_VertexBuffer {
     amVK_VertexBuffer(amVK_Device *D, REY_Array<amVK_Vertex> Vertices) { 
         this->D = D;
         this->Vertices = Vertices;
-        this->CI.size  = sizeof(amVK_Vertex) * Vertices.n;
+        this->CI.size  = sizeof(amVK_Vertex) * Vertices.MAL;
     }
    ~amVK_VertexBuffer(void) {}
 
@@ -63,6 +63,6 @@ class amVK_VertexBuffer {
         vkCmdBindVertexBuffers(CMDBUF, 0, 1, &vk_Buffer, offsets);
     }
     void  CMDDraw(VkCommandBuffer CMDBUF) {
-        vkCmdDraw(CMDBUF, Vertices.n, 1, 0, 0);
+        vkCmdDraw(CMDBUF, Vertices.MAL, 1, 0, 0);
     }
 };

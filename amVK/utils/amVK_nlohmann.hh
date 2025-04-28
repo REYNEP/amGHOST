@@ -10,7 +10,7 @@
 #include <vulkan/vulkan.h>
 #define   amVK_Enum2String_IMPLEMENTATION
 #include "amVK_Enum2String.hh"
-#include "REY_Utils.hh"
+#include "REY_Array.hh"
 
 nlohmann::ordered_json nlohmann_VkQueueFamilyProperties(VkQueueFamilyProperties *QFP);
 nlohmann::ordered_json nlohmann_VkSurfaceCapabilitiesKHR(VkSurfaceCapabilitiesKHR *SCAP);

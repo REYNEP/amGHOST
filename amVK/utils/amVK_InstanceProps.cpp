@@ -22,17 +22,16 @@ void amVK_InstanceProps::EnumeratePhysicalDevices(VkInstance vk_Instance)
             // This function is 'output-ing into' deviceCount
 
     REY_Array<VkPhysicalDevice> TMP;
-        TMP.n = deviceCount;
-        TMP.data = new VkPhysicalDevice[deviceCount];
+    TMP.reserve(deviceCount);
 
-        VkResult return_code = vkEnumeratePhysicalDevices(vk_Instance, &TMP.n, TMP.data);
+        VkResult return_code = vkEnumeratePhysicalDevices(vk_Instance, &TMP.MAL, TMP.data);
         amVK_return_code_log( "vkEnumeratePhysicalDevices()" );
     // ---------------------------- amVK_1D_GPUs -------------------------------
 
     amVK_InstanceProps::called_EnumeratePhysicalDevices = true;
 
-        amVK_1D_GPUs.n    = TMP.n;
-        amVK_1D_GPUs.data = static_cast<amVK_GPUProps*>(REY_malloc(sizeof(amVK_GPUProps) * TMP.n));
+        amVK_1D_GPUs.malloc(TMP.MAL);
+
     REY_Array_LOOP(TMP, k) {
         new (&amVK_1D_GPUs.data[k]) amVK_GPUProps(TMP[k], k);
     }
@@ -50,10 +49,10 @@ void amVK_InstanceProps::EnumerateInstanceExtensions(void)
         VkResult return_code = vkEnumerateInstanceExtensionProperties(nullptr, &extCount, nullptr);
         amVK_RC_silent_check( "vkEnumerateInstanceExtensionProperties()" );
 
-    amVK_1D_InstanceEXTs.n    = extCount;
+    amVK_1D_InstanceEXTs.MAL  = extCount;
     amVK_1D_InstanceEXTs.data = new VkExtensionProperties[extCount];
 
-                 return_code = vkEnumerateInstanceExtensionProperties(nullptr, &amVK_1D_InstanceEXTs.n, amVK_1D_InstanceEXTs.data);
+                 return_code = vkEnumerateInstanceExtensionProperties(nullptr, &amVK_1D_InstanceEXTs.MAL, amVK_1D_InstanceEXTs.data);
         amVK_return_code_log( "vkEnumerateInstanceExtensionProperties()" );
     // ------------------------ amVK_1D_InstanceEXTs ---------------------------
 
@@ -72,10 +71,10 @@ void amVK_InstanceProps::EnumerateInstanceLayerProperties(void)
         VkResult return_code = vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
         amVK_RC_silent_check( "vkEnumerateInstanceLayerProperties()" );
 
-    amVK_1D_InstanceLayers.n    = layerCount;
+    amVK_1D_InstanceLayers.MAL    = layerCount;
     amVK_1D_InstanceLayers.data = new VkLayerProperties[layerCount];
 
-                 return_code = vkEnumerateInstanceLayerProperties(&amVK_1D_InstanceLayers.n, amVK_1D_InstanceLayers.data);
+                 return_code = vkEnumerateInstanceLayerProperties(&amVK_1D_InstanceLayers.MAL, amVK_1D_InstanceLayers.data);
         amVK_return_code_log( "vkEnumerateInstanceLayerProperties()" );
     // ------------------------ amVK_1D_InstanceLayers ---------------------------
 

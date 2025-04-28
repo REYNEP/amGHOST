@@ -72,7 +72,7 @@ void amVK_RenderPassFBs::CreateFrameBuffers(void) {
         this->CI.height        = Scissor.extent.height;
         this->CI.renderPass    = this->RP->vk_RenderPass;
 
-    this->amVK_1D_RP_FBs.reserve(this->SC_IMGs->amVK_1D_SC_IMGs.n);
+    this->amVK_1D_RP_FBs.reserve(this->SC_IMGs->amVK_1D_SC_IMGs.MAL);
 
     REY_Array_LOOP(this->amVK_1D_RP_FBs, k) {
         this->CI.attachmentCount = 1;
@@ -116,15 +116,15 @@ void amVK_RenderPassFBs::RPBI_AcquireNextFrameBuffer(void) {
 }
 void  amVK_RenderPassFBs::CMDBeginRenderPass(VkCommandBuffer CMDBUF) {
                         vkCmdBeginRenderPass(CMDBUF, &RPBI, VK_SUBPASS_CONTENTS_INLINE);
-               REY_LOG("vkCmdBeginRenderPass()");
+        REY_LOG_status("vkCmdBeginRenderPass()");
 }
 void  amVK_RenderPassFBs::CMDEndRenderPass(VkCommandBuffer CMDBUF) {
                         vkCmdEndRenderPass(CMDBUF);
-               REY_LOG("vkCmdEndRenderPass()");
+        REY_LOG_status("vkCmdEndRenderPass()");
 }
 void amVK_RenderPassFBs::CMDSetViewport_n_Scissor(VkCommandBuffer CMDBUF) {
-             vkCmdSetViewport(CMDBUF, 0, 1, &Viewport);
-    REY_LOG("vkCmdSetViewport()");
-             vkCmdSetScissor (CMDBUF, 0, 1, &Scissor);
-    REY_LOG("vkCmdSetScissor()");
+                vkCmdSetViewport(CMDBUF, 0, 1, &Viewport);
+REY_LOG_status("vkCmdSetViewport()");
+                vkCmdSetScissor (CMDBUF, 0, 1, &Scissor);
+REY_LOG_status("vkCmdSetScissor()");
 }

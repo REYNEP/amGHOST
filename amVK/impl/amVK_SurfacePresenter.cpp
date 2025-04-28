@@ -124,7 +124,7 @@ void amVK_SurfacePresenter::submit_CMDBUF(VkQueue vk_Queue) {
             // I think, VkSemaphore is rather just an ID or smth
 
     VkResult return_code = vkQueueSubmit(vk_Queue, 1, &g_SI, VK_NULL_HANDLE);
-    amVK_return_code_log( "vkQueueSubmit()" );
+    amVK_return_code_log2("vkQueueSubmit()" );
 }
 
 

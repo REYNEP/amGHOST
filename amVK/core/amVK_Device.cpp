@@ -43,7 +43,7 @@ void amVK_Device::addTo_1D_GPU_EXTs_Enabled(const char* extName) {
     if (GPUProps->isExtensionAvailable(extName)) {
         char  *dont_lose = REY_strcpy(extName);
 
-        REY_ArrayDYN_PUSH_BACK(this->amVK_1D_GPU_EXTs_Enabled) = dont_lose;
+        this->amVK_1D_GPU_EXTs_Enabled.push_back(dont_lose);
 
         this->CI.enabledExtensionCount = this->amVK_1D_GPU_EXTs_Enabled.neXt;
         this->CI.ppEnabledExtensionNames = this->amVK_1D_GPU_EXTs_Enabled.data;
@@ -59,7 +59,7 @@ void amVK_Device::log_1D_GPU_EXTs_Enabled(VkResult ret) {
     }
     else {
         REY_LOG_status("         Enabled VULKAN Extensions' Name:- ");
-        for (uint32_t k = 0,     lim = amVK_1D_GPU_EXTs_Enabled.n;     k < lim; k++) {
+        for (uint32_t k = 0,     lim = amVK_1D_GPU_EXTs_Enabled.MAL;     k < lim; k++) {
             REY_LOG_status("              | " << amVK_1D_GPU_EXTs_Enabled[k]);
         }
     }
@@ -95,9 +95,9 @@ amVK_DeviceQueues::amVK_DeviceQueues(amVK_GPUProps *GPUProps) {
     this->Used_QFamID.Transfer      = GPUProps->QFamID.Transfer;
     this->Used_QFamID.SparseBinding = GPUProps->QFamID.SparseBinding;
 
-    REY_Array_RESERVE(amVK_1D_QFAMs_QCount_Internal, GPUProps->get_QFamCount(), 0);
-    REY_Array_RESERVE(amVK_1D_QFAMs_QCount_TOTAL,    GPUProps->get_QFamCount(), 0);
-    REY_Array_RESERVE(amVK_1D_QFAMs_QCount_USER,     GPUProps->get_QFamCount(), 0);
+    REY_Array_INITIALIZE(amVK_1D_QFAMs_QCount_Internal, GPUProps->get_QFamCount(), 0);
+    REY_Array_INITIALIZE(amVK_1D_QFAMs_QCount_TOTAL,    GPUProps->get_QFamCount(), 0);
+    REY_Array_INITIALIZE(amVK_1D_QFAMs_QCount_USER,     GPUProps->get_QFamCount(), 0);
 }
 void amVK_DeviceQueues::generate_1D_QCIs(void) {
     this->generate_1D_QFAMs_QCount();
@@ -147,8 +147,8 @@ void amVK_DeviceQueues::GetDeviceQueues(VkDevice vk_Device) {
     TheArrays.Transfer      .reserve(QCount.Transfer);
     TheArrays.SparseBinding .reserve(QCount.SparseBinding);
 
-    REY_Array<uint32_t>   amVK_1D_QFAMs_QCount_Gotten;
-        REY_Array_RESERVE(amVK_1D_QFAMs_QCount_Gotten, amVK_1D_QFAMs_QCount_USER.n, 0);
+    REY_Array<uint32_t> amVK_1D_QFAMs_QCount_Gotten;
+        REY_Array_INIT (amVK_1D_QFAMs_QCount_Gotten, amVK_1D_QFAMs_QCount_USER.MAL, 0);
 
     #define _GetDeviceQueue(vk_Device, QFAM_k, pQueue)   \
            vkGetDeviceQueue(vk_Device, QFAM_k, amVK_1D_QFAMs_QCount_Gotten[QFAM_k], pQueue);  \
@@ -161,7 +161,7 @@ void amVK_DeviceQueues::GetDeviceQueues(VkDevice vk_Device) {
     for (int i = 0;  i < QCount.Transfer; i++)       { _GetDeviceQueue(vk_Device, Used_QFamID.Transfer, &this->TheArrays.Transfer[i]);           }
     for (int i = 0;  i < QCount.SparseBinding; i++)  { _GetDeviceQueue(vk_Device, Used_QFamID.SparseBinding, &this->TheArrays.SparseBinding[i]); }
 
-    this->  TheArrays.amVK_2D_QFAMs_Queues.reserve(amVK_1D_QFAMs_QCount_USER.n);
+    this->  TheArrays.amVK_2D_QFAMs_Queues.reserve(amVK_1D_QFAMs_QCount_USER.MAL);
     REY_Array_LOOP   (amVK_1D_QFAMs_QCount_USER, k) {
         if           (amVK_1D_QFAMs_QCount_USER[k] > 0) {
             TheArrays.amVK_2D_QFAMs_Queues[k].reserve(amVK_1D_QFAMs_QCount_USER[k]);

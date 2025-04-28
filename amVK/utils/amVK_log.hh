@@ -33,7 +33,23 @@
         amVK_FAILED(x << " 😶‍🌫️");          \
     }
 
-#define REY_LOG_status(x) REY_LOG(x)
-#define REY_LOG_notfound(x) REY_LOG_EX("NotFound:- " << x);
+#if false
+    #ifndef REY_LOG_status
+        #define REY_LOG_status(x) REY_LOG(x)
+    #endif
+    #ifndef REY_LOG_notfound
+        #define REY_LOG_notfound(x) REY_LOG_EX("NotFound:- " << x);
+    #endif
+
+    #define amVK_return_code_log2(x) amVK_return_code_log(x)
+#else
+    #define amVK_return_code_log2(x)
+    #ifndef REY_LOG_status
+        #define REY_LOG_status(x)
+    #endif
+    #ifndef REY_LOG_notfound
+        #define REY_LOG_notfound(x)
+    #endif
+#endif
 
 const char *vulkan_result_msg(VkResult return_code);

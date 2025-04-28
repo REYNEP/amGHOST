@@ -2,6 +2,7 @@
 #include "amGHOST_Window.hh"
 #include "amGHOST_SystemWIN32.hh"
 #include "amGHOST_logWIN32.hh"
+#include "amGHOST_Event.hh"
 
 class amGHOST_WindowWIN32 : public amGHOST_Window {
   public:
@@ -47,15 +48,10 @@ class amGHOST_WindowWIN32 : public amGHOST_Window {
     ~amGHOST_WindowWIN32() {};
      amGHOST_WindowWIN32() {};
 
-    /** PureVirtual Funcs from amGHOST_System */
-    amGHOST_VkSurfaceKHR* init_VkSurface_interface(void);
+    virtual amGHOST_VkSurfaceKHR* init_VkSurface_interface(void);
 
-  public:
+  public:   /** PureVirtual Funcs from amGHOST_System */
     void destroy(void);
-    void resposnd_to_OS(void) {
-        amGHOST_SystemWIN32*    heart_win32 = (amGHOST_SystemWIN32 *) amGHOST_System::heart;
-                                heart_win32->dispatch_events();
-    }
     void show_window(void) {
         ::ShowWindow(this->m_hwnd, SW_SHOW);
         ::SetFocus(this->m_hwnd);
@@ -63,4 +59,13 @@ class amGHOST_WindowWIN32 : public amGHOST_Window {
     void hide_window(void) {
         ::ShowWindow(this->m_hwnd, SW_HIDE);
     }
+
+    void call_default_eventKonsument(amGHOST_Event lightweight_event);
+    void dispatch_events_with_OSModalLoops(void) {
+        amGHOST_SystemWIN32*    heart_win32 = (amGHOST_SystemWIN32 *) amGHOST_System::heart;
+                                heart_win32->dispatch_events_with_OSModalLoops();
+    }
+
+   public:  /** WindowWIN32 Internal Functions */
+    void internal_update_window_and_client_area_sizes(void);
 };

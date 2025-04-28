@@ -81,12 +81,12 @@ class amVK_DeviceQueues {
     REY_Array<VkQueue>*  SparseBindingQs(void)      { _CHK1_(); return &TheArrays.SparseBinding; }
     REY_Array<REY_Array<VkQueue>>* amVK_2D_UserQs() { _CHK1_(); return &TheArrays.amVK_2D_QFAMs_Queues; }
 
-    void                 Graphics_CHK2_(uint32_t k) { _CHK1_(); if (k >= TheArrays.Graphics.n)       {REY_LOG_EX("k >= TheArrays.Graphics.n");}       }
-    void              VideoEncode_CHK2_(uint32_t k) { _CHK1_(); if (k >= TheArrays.VideoEncode.n)    {REY_LOG_EX("k >= TheArrays.VideoEncode.n");}    }
-    void              VideoDecode_CHK2_(uint32_t k) { _CHK1_(); if (k >= TheArrays.VideoDecode.n)    {REY_LOG_EX("k >= TheArrays.VideoDecode.n");}    }
-    void                  Compute_CHK2_(uint32_t k) { _CHK1_(); if (k >= TheArrays.Compute.n)        {REY_LOG_EX("k >= TheArrays.Compute.n");}        }
-    void                 Transfer_CHK2_(uint32_t k) { _CHK1_(); if (k >= TheArrays.Transfer.n)       {REY_LOG_EX("k >= TheArrays.Transfer.n");}       }
-    void            SparseBinding_CHK2_(uint32_t k) { _CHK1_(); if (k >= TheArrays.SparseBinding.n)  {REY_LOG_EX("k >= TheArrays.SparseBinding.n");}  }
+    void                 Graphics_CHK2_(uint32_t k) { _CHK1_(); if (k >= TheArrays.Graphics.MAL)       {REY_LOG_EX("k >= TheArrays.Graphics.MAL");}       }
+    void              VideoEncode_CHK2_(uint32_t k) { _CHK1_(); if (k >= TheArrays.VideoEncode.MAL)    {REY_LOG_EX("k >= TheArrays.VideoEncode.MAL");}    }
+    void              VideoDecode_CHK2_(uint32_t k) { _CHK1_(); if (k >= TheArrays.VideoDecode.MAL)    {REY_LOG_EX("k >= TheArrays.VideoDecode.MAL");}    }
+    void                  Compute_CHK2_(uint32_t k) { _CHK1_(); if (k >= TheArrays.Compute.MAL)        {REY_LOG_EX("k >= TheArrays.Compute.MAL");}        }
+    void                 Transfer_CHK2_(uint32_t k) { _CHK1_(); if (k >= TheArrays.Transfer.MAL)       {REY_LOG_EX("k >= TheArrays.Transfer.MAL");}       }
+    void            SparseBinding_CHK2_(uint32_t k) { _CHK1_(); if (k >= TheArrays.SparseBinding.MAL)  {REY_LOG_EX("k >= TheArrays.SparseBinding.MAL");}  }
 
               VkQueue        GraphicsQ (uint32_t k) {      Graphics_CHK2_(k); return TheArrays.Graphics[k]; }
               VkQueue     VideoEncodeQ (uint32_t k) {   VideoEncode_CHK2_(k); return TheArrays.VideoEncode[k]; }

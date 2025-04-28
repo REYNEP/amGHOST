@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vulkan/vulkan.h>
-#include "REY_Utils.hh"
+#include "REY_Array.hh"
 #include "REY_Types.hh"
 #ifndef amVK_GPU_HH
     typedef uint32_t amVK_GPU_Index;

@@ -31,8 +31,8 @@ inline VkVertexInputAttributeDescription amVK_VertexInputAttributs_BAKED[2] = {
     }
 };
 
-#include "REY_Utils.hh"
-inline REY_Array<VkVertexInputAttributeDescription> amVK_VertexInputAttributs(amVK_VertexInputAttributs_BAKED, 2);
+#include "REY_Array.hh"
+inline REY_Array<VkVertexInputAttributeDescription> amVK_VertexInputAttributs(amVK_VertexInputAttributs_BAKED, 2, 2);
 
 namespace amVK_PSCI {
         // PSCI = PipelineStateCreateInfo

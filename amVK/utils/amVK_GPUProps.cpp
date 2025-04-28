@@ -7,9 +7,9 @@ void amVK_GPUProps::GetPhysicalDeviceQueueFamilyProperties(void) {
         uint32_t queueFamilyCount = 0;
             vkGetPhysicalDeviceQueueFamilyProperties(vk_PhysicalDevice, &queueFamilyCount, nullptr);
 
-        amVK_1D_GPUs_QFAMs.n    = queueFamilyCount;
-        amVK_1D_GPUs_QFAMs.data = new VkQueueFamilyProperties[queueFamilyCount];
-            vkGetPhysicalDeviceQueueFamilyProperties(vk_PhysicalDevice, &amVK_1D_GPUs_QFAMs.n, amVK_1D_GPUs_QFAMs.data);
+        amVK_1D_GPUs_QFAMs.reserve(queueFamilyCount);
+
+            vkGetPhysicalDeviceQueueFamilyProperties(vk_PhysicalDevice, &amVK_1D_GPUs_QFAMs.MAL, amVK_1D_GPUs_QFAMs.data);
     // ------------------------- amVK_1D_GPUs_QFAMs ----------------------------
 
     amVK_DONE("vkGetPhysicalDeviceQueueFamilyProperties()" << " 😄");
@@ -23,9 +23,9 @@ void amVK_GPUProps::EnumerateDeviceExtensionProperties(void) {
             VkResult return_code = vkEnumerateDeviceExtensionProperties(vk_PhysicalDevice, nullptr, &extPropertyCount, nullptr);
             amVK_RC_silent_check( "vkEnumerateDeviceExtensionProperties()" );
 
-        amVK_1D_GPUs_EXTs.n = extPropertyCount;
-        amVK_1D_GPUs_EXTs.data = new VkExtensionProperties[extPropertyCount];
-                     return_code = vkEnumerateDeviceExtensionProperties(vk_PhysicalDevice, nullptr, &amVK_1D_GPUs_EXTs.n, amVK_1D_GPUs_EXTs.data);
+        amVK_1D_GPUs_EXTs.reserve(extPropertyCount);
+
+                     return_code = vkEnumerateDeviceExtensionProperties(vk_PhysicalDevice, nullptr, &amVK_1D_GPUs_EXTs.MAL, amVK_1D_GPUs_EXTs.data);
             amVK_return_code_log( "vkEnumerateDeviceExtensionProperties()" );
     // ------------------------- amVK_1D_GPUs_EXTs -----------------------------
 
@@ -71,7 +71,7 @@ void amVK_GPUProps::REY_CategorizeMemoryHeaps(void) {
 
     // ------------------------- VRAM ----------------------------
         REY_Array<bool>       isVRAM;
-            REY_Array_RESERVE(isVRAM, this->MEMProps.memoryHeapCount, false);
+            REY_Array_INITIALIZE(isVRAM, this->MEMProps.memoryHeapCount, false);
 
         REY_Array_LOOP(isVRAM, k) {
             if (MEMProps.memoryHeaps[k].flags & VK_MEMORY_HEAP_DEVICE_LOCAL_BIT) {
@@ -122,7 +122,7 @@ void amVK_GPUProps::REY_CategorizeMemoryHeaps(void) {
 
     // ------------------------- RAM_SharedWith_GPU ----------------------------
         REY_Array<bool>       isRAM;  // We are gonna use the short form. But VULKAN Wouldn't have reported it, if it wasn't RAM_SharedWith_GPU
-            REY_Array_RESERVE(isRAM, this->MEMProps.memoryHeapCount, false);
+            REY_Array_INITIALIZE(isRAM, this->MEMProps.memoryHeapCount, false);
 
         REY_Array_LOOP(isRAM, k) {
             if (!(MEMProps.memoryHeaps[k].flags & VK_MEMORY_HEAP_DEVICE_LOCAL_BIT)) {
@@ -151,7 +151,7 @@ void amVK_GPUProps::REY_CategorizeMemoryHeaps(void) {
 
     // ------------------------- VRAM_SharedWith_CPU ----------------------------
         REY_Array<bool>       isCPUCoherent_but_NotCached;
-            REY_Array_RESERVE(isCPUCoherent_but_NotCached, this->MEMProps.memoryHeapCount, false);
+            REY_Array_INITIALIZE(isCPUCoherent_but_NotCached, this->MEMProps.memoryHeapCount, false);
 
         for(int k = 0; k < MEMProps.memoryTypeCount; k++) {
             if     (  MEMTYPE_FLAGs(k) & VK_MEMORY_PROPERTY_HOST_COHERENT_BIT) {
@@ -181,7 +181,7 @@ void amVK_GPUProps::REY_CategorizeMemoryHeaps(void) {
 
     // ------------------------- CPU_GPU_Synced ----------------------------
         REY_Array<bool> isSynced;
-            REY_Array_RESERVE(isSynced, this->MEMProps.memoryHeapCount, false);
+            REY_Array_INITIALIZE(isSynced, this->MEMProps.memoryHeapCount, false);
 
         for(int k = 0; k < MEMProps.memoryTypeCount; k++) {
             if (MEMTYPE_FLAGs(k) & VK_MEMORY_PROPERTY_HOST_COHERENT_BIT) {

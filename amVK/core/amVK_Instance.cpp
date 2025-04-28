@@ -55,7 +55,7 @@ void amVK_Instance::addTo_1D_Instance_EXTs_Enabled(const char* extName) {
     if (amVK_InstanceProps::isInstanceEXTAvailable(extName)) {
         char  *dont_lose = REY_strcpy(extName);
 
-        REY_ArrayDYN_PUSH_BACK(amVK_1D_Instance_EXTs_Enabled) = dont_lose;
+        amVK_1D_Instance_EXTs_Enabled.push_back(dont_lose);
 
         amVK_Instance::CI.enabledExtensionCount   = amVK_1D_Instance_EXTs_Enabled.neXt;
         amVK_Instance::CI.ppEnabledExtensionNames = amVK_1D_Instance_EXTs_Enabled.data;
@@ -83,7 +83,7 @@ void amVK_Instance::addTo_1D_Instance_Layers_Enabled(const char* layerName) {
     if (amVK_InstanceProps::isInstanceLayerAvailable(layerName)) {
         char  *dont_lose = REY_strcpy(layerName);
 
-        REY_ArrayDYN_PUSH_BACK(amVK_1D_Instance_Layers_Enabled) = dont_lose;
+        amVK_1D_Instance_Layers_Enabled.push_back(dont_lose);
 
         amVK_Instance::CI.enabledLayerCount   = amVK_1D_Instance_Layers_Enabled.neXt;
         amVK_Instance::CI.ppEnabledLayerNames = amVK_1D_Instance_Layers_Enabled.data;

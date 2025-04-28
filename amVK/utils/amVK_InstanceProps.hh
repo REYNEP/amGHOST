@@ -11,9 +11,9 @@ class amVK_InstanceProps {
     static inline          REY_Array<amVK_GPUProps>                                 amVK_1D_GPUs;
     static inline          REY_Array<VkExtensionProperties>                         amVK_1D_InstanceEXTs;
     static inline          REY_Array<VkLayerProperties>                             amVK_1D_InstanceLayers;
-    #define amVK_LOOP_GPUs(_var_)                   for (uint32_t _var_ = 0,  lim = amVK_1D_GPUs.n;             _var_ < lim;  _var_++)
-    #define amVK_LOOP_IEXTs(_var_)                  for (uint32_t _var_ = 0,  lim = amVK_1D_InstanceEXTs.n;     _var_ < lim;  _var_++)
-    #define amVK_LOOP_ILayers(_var_)                for (uint32_t _var_ = 0,  lim = amVK_1D_InstanceLayers.n;   _var_ < lim;  _var_++)
+    #define amVK_LOOP_GPUs(_var_)                   for (uint32_t _var_ = 0,  lim = amVK_1D_GPUs.MAL;             _var_ < lim;  _var_++)
+    #define amVK_LOOP_IEXTs(_var_)                  for (uint32_t _var_ = 0,  lim = amVK_1D_InstanceEXTs.MAL;     _var_ < lim;  _var_++)
+    #define amVK_LOOP_ILayers(_var_)                for (uint32_t _var_ = 0,  lim = amVK_1D_InstanceLayers.MAL;   _var_ < lim;  _var_++)
 
   public:
     static inline bool called_EnumeratePhysicalDevices                      = false;

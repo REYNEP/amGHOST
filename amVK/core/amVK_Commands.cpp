@@ -55,7 +55,7 @@ VkCommandBuffer amVK_CommandBufferPrimary::BeginCommandBuffer(amVK_Sync::Command
     this->BI.flags = flags;
 
         VkResult return_code = vkBeginCommandBuffer(this->vk_CommandBuffer, &BI);
-        amVK_return_code_log( "vkBeginCommandBuffer()" );
+        amVK_return_code_log2("vkBeginCommandBuffer()" );
 
     return this->vk_CommandBuffer;
 }
@@ -63,7 +63,7 @@ VkCommandBuffer amVK_CommandBufferPrimary::BeginCommandBuffer(amVK_Sync::Command
     // `VK_IMAGE_LAYOUT_PRESENT_SRC_KHR` for presenting it to the windowing system
 void amVK_CommandBufferPrimary::EndCommandBuffer(void) {
     VkResult return_code = vkEndCommandBuffer(this->vk_CommandBuffer);
-    amVK_return_code_log( "vkEndCommandBuffer()" );
+    amVK_return_code_log2("vkEndCommandBuffer()" );
 }
 
 
@@ -91,7 +91,7 @@ amVK_CommandPoolMAN::amVK_CommandPoolMAN(amVK_Device *D) {
         REY_LOG_EX("D->GPUProps->called_GetPhysicalDeviceQueueFamilyProperties == false")
     }
 
-    REY_Array_RESERVE(CATs.amVK_1D_QFAMs_CMDPOOL, D->GPUProps->amVK_1D_GPUs_QFAMs.n, nullptr);
+    REY_Array_INITIALIZE(CATs.amVK_1D_QFAMs_CMDPOOL, D->GPUProps->amVK_1D_GPUs_QFAMs.MAL, nullptr);
 }
 
 /** \see amVK_GPUProps::amVK_QueueFamilyIndex + \see amVK_Device::amVK_1D_QCIs */

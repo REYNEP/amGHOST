@@ -32,7 +32,7 @@ class amVK_SwapChain {
 
         .preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
         .compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
-        .presentMode = VK_PRESENT_MODE_FIFO_KHR,
+        .presentMode = VK_PRESENT_MODE_IMMEDIATE_KHR,
         .clipped = VK_TRUE,
 
         .oldSwapchain     = nullptr,
@@ -58,6 +58,7 @@ class amVK_SwapChain {
     amVK_Device  *D;
     VkSwapchainKHR vk_SwapChainKHR = nullptr;
 
-    void CreateSwapChain(void);
-    void DestroySwapChain(void);
+    void   CreateSwapChain(void);
+    void reCreateSwapChain(void);       // calls ---> sync_SurfCaps();
+    void  DestroySwapChain(void);
 };

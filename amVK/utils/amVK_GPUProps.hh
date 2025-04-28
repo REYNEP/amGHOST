@@ -1,6 +1,6 @@
 #pragma once
 #include <vulkan/vulkan.h>
-#include "REY_Utils.hh"
+#include "REY_Array.hh"
 #include "REY_Types.hh"
 
 typedef uint32_t amVK_GPU_Index;
@@ -20,7 +20,7 @@ class amVK_GPUProps {
               VkPhysicalDeviceMemoryProperties         MEMProps;
     REY_Array<VkQueueFamilyProperties>                amVK_1D_GPUs_QFAMs;
     REY_Array<VkExtensionProperties>                  amVK_1D_GPUs_EXTs;
-    uint32_t              get_QFamCount(void) {return amVK_1D_GPUs_QFAMs.n;}
+    uint32_t              get_QFamCount(void) {return amVK_1D_GPUs_QFAMs.MAL;}
 
   public:
     struct amVK_MemoryHeap {

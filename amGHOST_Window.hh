@@ -3,18 +3,32 @@
 // Must   not include         "amGHOST_System.hh" -> otherwise ♾️-loop of includes😶‍🌫️
 // But we can include that in `amGHOST_Window.cpp`
 
-#include "amGHOST_EventTypes.hh"
+#include "amGHOST_EventKonsument.hh"
 
 class amGHOST_VkSurfaceKHR;
 
+/** Curently only supports only 1 EventConsumer/EventKonsument function 💁‍♀️ */
 class amGHOST_Window {
   public:
-    uint32_t              m_posX              = 0;
-    uint32_t              m_posY              = 0;
-    uint32_t              m_sizeX             = 0;
-    uint32_t              m_sizeY             = 0;
-    const wchar_t*        m_title             = L"amGHOST_WINDOW:- TITLE WASNT SET";
-    amGHOST_VkSurfaceKHR* m_amGHOST_VkSurface = nullptr;                                    // amGHOST_Window::destroy() destroys ===> m_VkSurface
+    uint32_t                m_posX              = 0;
+    uint32_t                m_posY              = 0;
+    uint32_t                m_sizeX             = 0;
+    uint32_t                m_sizeY             = 0;
+    uint32_t                m_oldSizeX          = 0;
+    uint32_t                m_oldSizeY          = 0;
+    uint32_t                m_clientSizeX       = 0;                                        // Without the TitleBar / Borders on windows
+    uint32_t                m_clientSizeY       = 0;                                        // Without the TitleBar / Borders on windows
+    const wchar_t*          m_title             = L"amGHOST_WINDOW:- TITLE WASNT SET";
+    amGHOST_VkSurfaceKHR*   m_amGHOST_VkSurface = nullptr;                                  // amGHOST_Window::destroy() destroys ===> m_VkSurface
+    bool                    m_callDefaultEK     = true;
+    amGHOST_EK*             m_eventKonsument    = nullptr;
+    inline  void      replace_eventKonsument(amGHOST_EK* ek, bool callDefault) {m_eventKonsument = ek; m_callDefaultEK = callDefault;}
+    inline  void hand_over_to_eventKonsument(amGHOST_Event  lightweight_event) {m_eventKonsument->processEvent(lightweight_event);}
+    virtual void call_default_eventKonsument(amGHOST_Event  lightweight_event) = 0;
+    inline  void              _konsume_event(amGHOST_Event  lightweight_event)  {            // Internally called by amGHOST
+        if (m_callDefaultEK) { call_default_eventKonsument (lightweight_event); }
+        if (m_eventKonsument){ hand_over_to_eventKonsument (lightweight_event); }
+    }
 
     amGHOST_Window() {};
    ~amGHOST_Window() {};
@@ -37,8 +51,7 @@ class amGHOST_Window {
     virtual void destroy(void) = 0;
     virtual void show_window(void) = 0;
     virtual void hide_window(void) = 0;
-    /** Basically by Dispatching and Processing InputEvents 💁‍♀️ */
-    virtual void resposnd_to_OS(void) = 0;
+    virtual void dispatch_events_with_OSModalLoops(void) = 0;
 
   public:
     /**

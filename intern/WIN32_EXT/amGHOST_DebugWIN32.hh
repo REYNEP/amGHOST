@@ -19,7 +19,9 @@ static std::map<int, const char*> REY_wmTranslation = {
     {799, "WM_DWMNCRENDERINGCHANGED" },
     {257, "WM_KEYUP"},
     {49387, "[49387] Gotta Hunt Down the App that's sending this event 🤔"},
-    {49364, "[49364] Gotta Hunt Down the App that's sending this event 🤔"}
+    {49364, "[49364] Gotta Hunt Down the App that's sending this event 🤔"},
+    {96, "[96] win32 Internal ::DispatchMessage() event 🤔"},
+    {802, "[802] win32 Internal ::DispatchMessage() event 🤔"}
 };
 
 const char* REY_get_REY_text(UINT msg) {
@@ -35,6 +37,7 @@ const char* REY_get_REY_text(UINT msg) {
     }
 }
 
+
 const char* REY_get_Win32GUI_text(UINT msg) {
     auto it = wmTranslation.find(msg); // Use find to avoid modifying the map
     if (it != wmTranslation.end()) {
@@ -47,7 +50,7 @@ const char* REY_get_Win32GUI_text(UINT msg) {
 
 
 #include "REY_Logger.hh"
-#include "REY_Utils.hh"
+#include "REY_Array.hh"
 #include <cstring>
 void REY_LOG_WIN32_message_name(UINT msg) {
     const char* Win32GUI_text = REY_get_Win32GUI_text(msg);

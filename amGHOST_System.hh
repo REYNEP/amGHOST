@@ -1,6 +1,7 @@
 #pragma once
 #include "amGHOST_Window.hh"
 #include "REY_Logger.hh"
+#include "REY_Array.hh"
 
 /**
  * SINGLETON Class
@@ -28,9 +29,15 @@ class amGHOST_System {
     virtual ~amGHOST_System() = default;                        /** Fixes:  -Wnon-virtual-dtor   [using G++/GCC] */
                                                                 /** making it virtual means, even if you  `delete amGHOST_System *system`  it will call e.g. `~amGHOST_SystemWIN32()` */
 
+
   public:
-    virtual amGHOST_Window* new_window_interface(void) = 0;     /** However, To Initialize/Create \see amGHOST_Window.hh */
-    virtual void dispatch_events(void) = 0;
+    static inline REY_ArrayDYN<amGHOST_Window*> REY_1D_Windows = REY_ArrayDYN<amGHOST_Window*>(1);
+        // There'll be static OS-Specific functions like ---> static amGHOST_WindowWIN32* get_amGHOST_WindowWIN32(HWND hwnd);
+
+  public:
+    virtual amGHOST_Window* new_window_interface(void) = 0;     /** TO-CREATE:- amGHOST_Window::create() */
+    virtual void dispatch_events_with_OSModalLoops(void) = 0;   /** win32: won't return before MouseButton Released when Resizing Window */
+    virtual void dispatch_events_without_OSModalLoops(void) = 0;/** win32: NOT IMPLEMENTED 😰 */
 
   public:
     /**

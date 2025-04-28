@@ -33,6 +33,14 @@ void amVK_SwapChain::konf_Compositing(
 }
 
 void amVK_SwapChain::CreateSwapChain(void) {
+    this->sync_SurfCaps();
+    VkResult return_code = vkCreateSwapchainKHR(this->D->vk_Device, &CI, nullptr, &(this->vk_SwapChainKHR));
+    amVK_return_code_log( "vkCreateSwapchainKHR()" );     // above variable "return_code" can't be named smth else
+}
+
+void amVK_SwapChain::reCreateSwapChain(void) {
+    this->sync_SurfCaps();
+    this->CI.oldSwapchain = this->vk_SwapChainKHR;
     VkResult return_code = vkCreateSwapchainKHR(this->D->vk_Device, &CI, nullptr, &(this->vk_SwapChainKHR));
     amVK_return_code_log( "vkCreateSwapchainKHR()" );     // above variable "return_code" can't be named smth else
 }
@@ -83,10 +91,9 @@ void amVK_SwapChainIMGs::GetSwapChainImagesKHR(void)
         vkGetSwapchainImagesKHR(this->vk_Device, this->SC->vk_SwapChainKHR, &imagesCount, nullptr);
             // This function is 'output-ing into' deviceCount
 
-    this->amVK_1D_SC_IMGs.n    = imagesCount;
-    this->amVK_1D_SC_IMGs.data = new VkImage[imagesCount];
+    this->amVK_1D_SC_IMGs.reserve(imagesCount);
 
-        VkResult return_code = vkGetSwapchainImagesKHR(this->vk_Device, this->SC->vk_SwapChainKHR, &imagesCount, this->amVK_1D_SC_IMGs.data);
+        VkResult return_code = vkGetSwapchainImagesKHR(this->vk_Device, this->SC->vk_SwapChainKHR, &amVK_1D_SC_IMGs.MAL, this->amVK_1D_SC_IMGs.data);
         amVK_return_code_log( "vkGetSwapchainImagesKHR()" );
     // ---------------------------- images1D -------------------------------
 
@@ -100,8 +107,7 @@ void amVK_SwapChainIMGs::CreateSwapChainImageViews(void) {
 
     this->ViewCI.format = this->SC->CI.imageFormat;
 
-    this->amVK_1D_SC_IMGViews.n    = amVK_1D_SC_IMGs.n;
-    this->amVK_1D_SC_IMGViews.data = new VkImageView[amVK_1D_SC_IMGs.n];
+    this->amVK_1D_SC_IMGViews.reserve(amVK_1D_SC_IMGs.MAL);
 
     REY_Array_LOOP(this->amVK_1D_SC_IMGs, i) {
         this->ViewCI.image = amVK_1D_SC_IMGs[i];
@@ -166,7 +172,7 @@ uint32_t amVK_SwapChainIMGs::AcquireNextImage(void) {
             REY_LOG_EX(" [ VK_SUBOPTIMAL_KHR ] ----> WIP:- Figure out what to do");
         }
         else {
-            amVK_return_code_log( "vkAcquireNextImageKHR()" ); // above variable "return_code" can't be named smth else
+            amVK_return_code_log2("vkAcquireNextImageKHR()" ); // above variable "return_code" can't be named smth else
         }
 
     return this->NextImageIndex_Acquired;
