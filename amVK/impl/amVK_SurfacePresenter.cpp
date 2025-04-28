@@ -161,6 +161,6 @@ void amVK_SurfacePresenter::Present(VkQueue vk_Queue) {
             REY_LOG_EX(" [ VK_SUBOPTIMAL_KHR ] ----> WIP:- Figure out what to do");
         }
         else {
-            amVK_return_code_log( "vkQueuePresentKHR()" ); // above variable "return_code" can't be named smth else
+            amVK_return_code_log2( "vkQueuePresentKHR()" ); // above variable "return_code" can't be named smth else
         }
 }

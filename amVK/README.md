@@ -122,6 +122,7 @@ made with affine.pro
 #include "amVK_Surface.hh"
 
 #include "amVK_SurfacePresenter.hh"
+#include "amGHOST_SwapChainResizer.hh"
 
 #include "amVK_SwapChain.hh"
 #include "amVK_ColorSpace.hh"
@@ -135,6 +136,7 @@ made with affine.pro
 #include "amVK_PipelineGRAPHICS.hh"
 
 #include "amGHOST_Event.hh"
+#include "amTHREAD.hh"
 
 int main(int argumentCount, char* argumentVector[]) {
     REY::cout << "\n";
@@ -216,10 +218,14 @@ int main(int argumentCount, char* argumentVector[]) {
         amVK_RenderPassFBs *RP_FBs = PR->create_FrameBuffers_interface();
             RP_FBs->CreateFrameBuffers();
 
+        amGHOST_SwapChainResizer*   SC_Resizer = new amGHOST_SwapChainResizer(RP_FBs, W);
+
         amVK_CommandPoolMAN  *CPMAN = PR->create_CommandPoolMAN_interface();
                               CPMAN->init_CMDPool_Graphics();
-                              CPMAN->CreateCommandPool_Graphics(amVK_Sync::CommandPoolCreateFlags::RecordBuffer_Once);
+                              CPMAN->CreateCommandPool_Graphics(amVK_Sync::CommandPoolCreateFlags::RecordBuffer_MoreThanOnce);
                               CPMAN->AllocateCommandBuffers1_Graphics(1);
+
+        amVK_CommandBufferPrimary *CB = new amVK_CommandBufferPrimary(CPMAN->BUFFs1.Graphics[0]);
 
         // ------------------------- Pipeline & VkTriangle ----------------------------
             amVK_Vertex vertices[3] = {
@@ -227,7 +233,7 @@ int main(int argumentCount, char* argumentVector[]) {
                 { { -0.25f, -0.25f, 0.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } },   // v1 (green)
                 { {  0.25f, -0.25f, 0.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } },   // v2 (blue)
             };
-            amVK_VertexBuffer VB(D, REY_Array<amVK_Vertex>(vertices, 3));
+            amVK_VertexBuffer VB(D, REY_Array<amVK_Vertex>(vertices, 3, 3));
                 VB.CreateBuffer();
 
             GPUProps->GetPhysicalDeviceFeatures();
@@ -245,29 +251,48 @@ int main(int argumentCount, char* argumentVector[]) {
                 PLG->CreateGraphicsPipeline();
         // ------------------------- Pipeline & VkTriangle ----------------------------
         
-        // ------------------------- CommandBufferRecording ----------------------------
-            amVK_CommandBufferPrimary *CB = new amVK_CommandBufferPrimary(CPMAN->BUFFs1.Graphics[0]);
-                    CB->BeginCommandBuffer(amVK_Sync::CommandBufferUsageFlags::Submit_MoreThanOnce | VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT);
-                RP_FBs->RPBI_AcquireNextFrameBuffer();
-                RP_FBs->CMDBeginRenderPass(CB->vk_CommandBuffer);
-                RP_FBs->CMDSetViewport_n_Scissor(CB->vk_CommandBuffer);
-                PLG->CMDBindPipeline(CB->vk_CommandBuffer);
-                    VB.CMDBindVertexBuffers(CB->vk_CommandBuffer);
-                    VB.CMDDraw(CB->vk_CommandBuffer);
-                RP_FBs->CMDEndRenderPass(CB->vk_CommandBuffer);
-                    CB->EndCommandBuffer();
-        // ------------------------- CommandBufferRecording ----------------------------
-
         // ------------------------- Render Loop ----------------------------
-            while(true) {
-                PR->set_CommandBuffer(CB->vk_CommandBuffer);
-                PR->submit_CMDBUF(D->Queues.GraphicsQ(0));
-                PR->Present(D->Queues.GraphicsQ(0));
+            amTHREAD phoenix;
+            phoenix.run([&]() {
+                REY_LOG("Thread started.");
 
-                vkQueueWaitIdle(D->Queues.GraphicsQ(0));
-                REY_NoobTimer::wait(100);   // 10fps app
-                W->resposnd_to_OS();
-                RP_FBs->RPBI_AcquireNextFrameBuffer();
+                while(true) {
+                    // ------------------------- CommandBufferRecording ----------------------------
+                            CB->BeginCommandBuffer(amVK_Sync::CommandBufferUsageFlags::Submit_Once);
+                        while (SC_Resizer->isResizing) {
+                            REY_NoobTimer::wait(1); // wait 100ms
+                        }
+                        SC_Resizer->canResizeNow = false;
+                        RP_FBs->RPBI_AcquireNextFrameBuffer();
+                        RP_FBs->CMDBeginRenderPass(CB->vk_CommandBuffer);
+                        RP_FBs->CMDSetViewport_n_Scissor(CB->vk_CommandBuffer);
+                        PLG->CMDBindPipeline(CB->vk_CommandBuffer);
+                            VB.CMDBindVertexBuffers(CB->vk_CommandBuffer);
+                            VB.CMDDraw(CB->vk_CommandBuffer);
+                        RP_FBs->CMDEndRenderPass(CB->vk_CommandBuffer);
+                            CB->EndCommandBuffer();
+                    // ------------------------- CommandBufferRecording ----------------------------
+
+                    PR->set_CommandBuffer(CB->vk_CommandBuffer);
+                    PR->submit_CMDBUF(D->Queues.GraphicsQ(0));
+                    PR->Present(D->Queues.GraphicsQ(0));
+
+                    SC_Resizer->canResizeNow = true;
+
+                    REY_LOG("HI From another thread");
+
+                    vkQueueWaitIdle(D->Queues.GraphicsQ(0));
+                    REY_NoobTimer::wait(10); // wait 100ms
+                }
+
+                REY_LOG("Thread finished.");
+            });
+
+            // SOMEWHAT WORKS.... but lots of bug right now aaaaaaaaa
+
+            while(true) {
+                W->dispatch_events_with_OSModalLoops(); // dispatch events
+                REY_NoobTimer::wait(1);               // wait 100ms
             }
         // ------------------------- Render Loop ----------------------------
     // --------------------------- amVK -----------------------------

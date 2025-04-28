@@ -51,7 +51,7 @@ class amGHOST_Window {
     virtual void destroy(void) = 0;
     virtual void show_window(void) = 0;
     virtual void hide_window(void) = 0;
-    virtual void dispatch_events_with_OSModalLoops(void) = 0;
+    virtual void dispatch_events_with_OSModalLoops(void) = 0;   // Must call this on the mainThread
 
   public:
     /**

@@ -2,6 +2,7 @@
 
 #include "amVK_RenderPassFBs.hh"
 #include "amGHOST_Window.hh"
+#include "REY_Logger.hh"
 
 class amGHOST_SwapChainResizer {
   public:
@@ -14,13 +15,20 @@ class amGHOST_SwapChainResizer {
     }
    ~amGHOST_SwapChainResizer(void) {}
 
-    amVK_SwapChain*     SC      = nullptr;
-    amVK_SwapChainIMGs* SC_IMGs = nullptr;
-    amVK_RenderPassFBs* RP_FBs  = nullptr;
-    amGHOST_Window*     amGW    = nullptr;
+    amVK_SwapChain*     SC          = nullptr;
+    amVK_SwapChainIMGs* SC_IMGs     = nullptr;
+    amVK_RenderPassFBs* RP_FBs      = nullptr;
+    amGHOST_Window*     amGW        = nullptr;
+    bool                isResizing  = false;
+    bool               canResizeNow = true;
 
   public:
     void reSize(void) {
+        while(canResizeNow == false) {
+            REY_NoobTimer::wait(1); // wait 100ms
+        }
+
+        isResizing = true;
          RP_FBs->DestroyFrameBuffers();
         SC_IMGs->DestroySwapChainImageViews();
 
@@ -29,6 +37,7 @@ class amGHOST_SwapChainResizer {
         SC_IMGs->GetSwapChainImagesKHR();
         SC_IMGs->CreateSwapChainImageViews();
          RP_FBs->CreateFrameBuffers();
+        isResizing = false;
     }
 
     class EKClass : amGHOST_EK {

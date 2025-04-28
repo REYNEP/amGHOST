@@ -31,10 +31,11 @@ class amGHOST_SystemWIN32 : public amGHOST_System {
     void    _reg_wc();
     void  _unreg_wc();
     const wchar_t* _wndClassName = L"amGHOST_WndClass1";    /** which we link by passing in s_wndClassName to \fn CreateWindowA */
-    HMODULE _hInstance    = ::GetModuleHandleW(nullptr);    /** \param nullptr returns initial main EXE file's Handle */
+    HMODULE  _hInstance   = ::GetModuleHandleW(nullptr);    /** \param nullptr returns initial main EXE file's Handle */
+    DWORD _mainThread     = ::GetCurrentThreadId();
         // must not be static, otherwise GetModuleHandleW() doesn't work
 
   public:
-    static amGHOST_WindowWIN32* get_amGHOST_WindowWIN32(HWND hwnd);
+    static amGHOST_WindowWIN32* get_amGHOST_WindowWIN32(HWND hwnd);                     // amGHOST_System::REY_1D_Windows
     static LRESULT WINAPI WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);   // 😉
 };

@@ -13,12 +13,23 @@ class amGHOST_WindowWIN32 : public amGHOST_Window {
   public:
     void create(const wchar_t* title, int posX, int posY, int sizeX, int sizeY, bool instantShow = true) {
         REY_LOG("amGHOST_WindowWIN32::create");
+        
+        amGHOST_SystemWIN32 *heart_win32 = (amGHOST_SystemWIN32 *) amGHOST_System::heart;
+        if (::GetCurrentThreadId() != heart_win32->_mainThread) {
+            REY_LOG_EX("You are creating an window on a different thread than the mainThread. \n"
+                    << "Currently this is not supported & may lead to expected errors/complications 😰 \n"
+                    << "We will still let you through to create a window \n"
+                    << "\n"
+                    << "    Each thread in a Windows application has its own message queue \n"
+                    << "    and the window's messages will be dispatched to the message queue of the thread that created it.");
+                // TODO: Log WarningID & Point to online Wiki/Docs
+        }
+
         this->m_posX = posX;
         this->m_posY = posY;
         this->m_sizeX = sizeX;
         this->m_sizeY = sizeY;
 
-        amGHOST_SystemWIN32 *heart_win32 = (amGHOST_SystemWIN32 *) amGHOST_System::heart;
         HWND hwnd = ::CreateWindowExW(
             0L,
             heart_win32->_wndClassName,   /** Name of the WNDCLASS [see protected vars of amGHOST_SystemWIN32] */
@@ -61,10 +72,10 @@ class amGHOST_WindowWIN32 : public amGHOST_Window {
     }
 
     void call_default_eventKonsument(amGHOST_Event lightweight_event);
-    void dispatch_events_with_OSModalLoops(void) {
+    void dispatch_events_with_OSModalLoops(void) {      
         amGHOST_SystemWIN32*    heart_win32 = (amGHOST_SystemWIN32 *) amGHOST_System::heart;
                                 heart_win32->dispatch_events_with_OSModalLoops();
-    }
+    }       /** Must call this on the mainThread */
 
    public:  /** WindowWIN32 Internal Functions */
     void internal_update_window_and_client_area_sizes(void);

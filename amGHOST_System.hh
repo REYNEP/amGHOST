@@ -36,6 +36,8 @@ class amGHOST_System {
 
   public:
     virtual amGHOST_Window* new_window_interface(void) = 0;     /** TO-CREATE:- amGHOST_Window::create() */
+
+        // Must call this on the mainThread
     virtual void dispatch_events_with_OSModalLoops(void) = 0;   /** win32: won't return before MouseButton Released when Resizing Window */
     virtual void dispatch_events_without_OSModalLoops(void) = 0;/** win32: NOT IMPLEMENTED 😰 */
 

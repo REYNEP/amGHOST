@@ -54,6 +54,7 @@ project("amGHOST_PROJECT" VERSION 0.1)
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/intern/
         ${CMAKE_CURRENT_SOURCE_DIR}/amGE/
+        ${CMAKE_CURRENT_SOURCE_DIR}/amTHREAD/
         
         ${CMAKE_CURRENT_SOURCE_DIR}/amVK/
         ${CMAKE_CURRENT_SOURCE_DIR}/amVK/common
