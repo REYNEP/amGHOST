@@ -25,10 +25,11 @@ class amGHOST_SwapChainResizer {
   public:
     void reSize(void) {
         while(canResizeNow == false) {
-            REY_NoobTimer::wait(1); // wait 100ms
+            REY_NoobTimer::wait(5);     // wait 5ms ==> 200fps
+            REY_LOG("Waiting because:- canResizeNow == false")
         }
 
-        isResizing = true;
+        isResizing = true;              // For Other Threads
          RP_FBs->DestroyFrameBuffers();
         SC_IMGs->DestroySwapChainImageViews();
 
@@ -37,7 +38,7 @@ class amGHOST_SwapChainResizer {
         SC_IMGs->GetSwapChainImagesKHR();
         SC_IMGs->CreateSwapChainImageViews();
          RP_FBs->CreateFrameBuffers();
-        isResizing = false;
+        isResizing = false;             // For Other Threads
     }
 
     class EKClass : amGHOST_EK {
@@ -49,7 +50,7 @@ class amGHOST_SwapChainResizer {
 
         int processEvent(amGHOST_Event lightweight_event) {
             amGHOST_SwapChainResizer* Resizer = reinterpret_cast<amGHOST_SwapChainResizer*>(m_userData);
-            if (lightweight_event.m_Type == amGE::Type::WindowResize) {
+            if (lightweight_event.m_Type == amE::Type::WindowResize) {
                 Resizer->reSize();
             }
             return 0;

@@ -1,5 +1,6 @@
 #include "amVK_Surface.hh"
 #include "amVK/utils/amVK_log.hh"
+#include "amVK_Instance.hh"
 /**
  * POSSIBLE-BUG:- I am not sure, but we might not be able to call this function as per any random PhysicalDevice. We Are Probably not supposed to
  *  TODO:- Ask people/ChatGPT about this
@@ -9,7 +10,7 @@
  */
 void amVK_Surface::GetPhysicalDeviceSurfaceInfo(void) {
     if (!amVK_InstanceProps::called_EnumeratePhysicalDevices) {
-         amVK_InstancePropsEXT::    EnumeratePhysicalDevices();
+         amVK_Instance::EnumeratePhysicalDevices();
     }
 
     amVK_2D_GPUs_ImageFMTs.reserve(amVK_InstanceProps::amVK_1D_GPUs.MAL);
@@ -52,7 +53,7 @@ void amVK_Surface::GetPhysicalDeviceSurfaceInfo(void) {
  */
 void amVK_Surface::GetPhysicalDeviceSurfaceCapabilitiesKHR(void) {
     if (!amVK_InstanceProps::called_EnumeratePhysicalDevices) {
-         amVK_InstancePropsEXT::    EnumeratePhysicalDevices();
+         amVK_Instance::EnumeratePhysicalDevices();
     }
 
     amVK_1D_GPUs_SurfCAP  .reserve(amVK_InstanceProps::amVK_1D_GPUs.MAL);

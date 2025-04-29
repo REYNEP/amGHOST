@@ -10,26 +10,26 @@ class amVK_DeviceQueues {
     amVK_GPUProps *GPUProps = nullptr;
 
   public:
-    struct amVK_QueueCount {                    /**                  "That's gonna be Queried to vkCreateDevice()"                 */
+    struct amVK_QueueCount {                        /**                  "That's gonna be Queried to vkCreateDevice()"                 */
         uint32_t       Graphics = 0;
         uint32_t    VideoEncode = 0;
-        uint32_t    VideoDecode = 0;
+        uint32_t    VideoDecode = 0;                /**                          amVK_1D_QFAMs_QCount_Internal                         */
         uint32_t        Compute = 0;
         uint32_t       Transfer = 0;
         uint32_t  SparseBinding = 0;
-    } QCount;                                   /**    Also, for QueueFamilies \see amVK_GPUProps::QFamID [amVK_QueueFamilyIndex]  */
+    } QCount;                                       /**    Also, for QueueFamilies \see amVK_GPUProps::QFamID [amVK_QueueFamilyIndex]  */
 
-    struct amVK_QueueFamilyIndex {              /**                 CONSTRUCTOR  --->   D->GPU_Props->QFamID.Graphics              */
+    struct amVK_QueueFamilyIndex {                  /**                 CONSTRUCTOR  --->   D->GPU_Props->QFamID.Graphics              */
         uint32_t       Graphics = UINT32_MAX;
         uint32_t    VideoEncode = UINT32_MAX;
         uint32_t    VideoDecode = UINT32_MAX;
         uint32_t        Compute = UINT32_MAX;
         uint32_t       Transfer = UINT32_MAX;
         uint32_t  SparseBinding = UINT32_MAX;
-    } Used_QFamID;                              /** So that you can set it to smth other than amVK_GPUProps::QFramID::Transfer 💁‍♀️ */
+    } Used_QFamID;                                  /** So that you can set it to smth other than amVK_GPUProps::QFramID::Transfer 💁‍♀️ */
 
-    void generate_1D_QFAMs_QCount(void) {       /**             generate_1D_QCI() calls ---> generate_1D_QFAMs_QCount()            */
-                                                /**                     Array has been reserved in CONSTRUCTOR                     */
+    void generate_1D_QFAMs_QCount_Internal(void) {  /**        generate_1D_QCI() calls ---> generate_1D_QFAMs_QCount_Internal()        */
+                                                    /**                     Array has been reserved in CONSTRUCTOR                     */
         amVK_1D_QFAMs_QCount_Internal[this->Used_QFamID.Graphics]      += this->QCount.Graphics;
         amVK_1D_QFAMs_QCount_Internal[this->Used_QFamID.VideoEncode]   += this->QCount.VideoEncode;
         amVK_1D_QFAMs_QCount_Internal[this->Used_QFamID.VideoDecode]   += this->QCount.VideoDecode;
@@ -49,14 +49,14 @@ class amVK_DeviceQueues {
     };
 
         // VULKAN:- The queueFamilyIndex member of each element of pQueueCreateInfos must be unique within pQueueCreateInfos
-        //       So, Don't modify           amVK_1D_QCIs     yourself 💁‍♀️
+        //       So, Don't modify           amVK_1D_QCIs     yourself 💁‍♀️             rather add to --> amVK_1D_QFAMs_QCount_USER 
     REY_ArrayDYN<VkDeviceQueueCreateInfo>   amVK_1D_QCIs;                               // != GPUProps::amVK_1D_GPUs_QFAMs.n    [usually]
               REY_Array<uint32_t>           amVK_1D_QFAMs_QCount_Internal;              // == GPUProps::amVK_1D_GPUs_QFAMs.n    [UseAfter:- generate_1D_QCI()]
               REY_Array<uint32_t>           amVK_1D_QFAMs_QCount_TOTAL;                 // == GPUProps::amVK_1D_GPUs_QFAMs.n    [UseAfter:- generate_1D_QCI()]
               REY_Array<uint32_t>           amVK_1D_QFAMs_QCount_USER;                  // == GPUProps::amVK_1D_GPUs_QFAMs.n    [UseAfter:- CONSTRUCTOR]
-    void                                generate_1D_QCIs(void);                         // generate_1D_QCI() calls ---> generate_1D_QFAMs_QCount()
+    void                                generate_1D_QCIs(void);                         // generate_1D_QCI() calls ---> generate_1D_QFAMs_QCount_Internal()
     bool                         called_generate_1D_QCIs = false;
-    void                                    sync_1D_QCIs(VkDeviceCreateInfo* DeviceCI); // Use this, instead of manually using amVK_1D_QCI
+    void                                    sync_1D_QCIs(VkDeviceCreateInfo* DeviceCI); // Use this, instead of manually setting amVK_1D_QCIs into amVK_Device::CI
 
   public:
     bool                            called_GetDeviceQueues = false;

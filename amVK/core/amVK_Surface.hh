@@ -1,5 +1,5 @@
 #pragma once
-#include "amVK_InstancePropsEXT.hh"
+#include "amVK_InstancePropsEXPORT.hh"
 
 /**
  * VULKAN-EXT:- `VK_KHR_surface`

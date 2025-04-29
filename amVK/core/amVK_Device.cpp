@@ -1,6 +1,6 @@
 #include "amVK_Device.hh"
 #include "amVK/utils/amVK_log.hh"
-#include "amVK_InstancePropsEXT.hh"
+#include "amVK_InstancePropsEXPORT.hh"
 
 void amVK_Device::CreateDevice(uint32_t GraphicsQueueCount) {
     this->Queues.QCount.Graphics = GraphicsQueueCount;
@@ -100,7 +100,27 @@ amVK_DeviceQueues::amVK_DeviceQueues(amVK_GPUProps *GPUProps) {
     REY_Array_INITIALIZE(amVK_1D_QFAMs_QCount_USER,     GPUProps->get_QFamCount(), 0);
 }
 void amVK_DeviceQueues::generate_1D_QCIs(void) {
-    this->generate_1D_QFAMs_QCount();
+    /** 
+     * There are Two separate variables that keep track of QueueCounts per QueueFamily
+     *      amVK_1D_QFAMs_QCount_Internal   --->   linked to     amVK_DeviceQueues::amVK_QueueFamilyIndex
+     *      amVK_1D_QFAMs_QCount_USER
+     * 
+     * & then we have
+     *      amVK_1D_QFAMs_QCount_TOTAL
+     *          ---> Our target in this function is to generate/calculate this variable
+     * 
+     *      amVK_1D_QFAMs_QCount_USER
+     *          ---> User of amGHOST can set this whatever they wish to. 
+     *              (But it's on them for now to check if they are asking more than the VkDeviceQueueFamily allows 💁‍♀️. 
+     *                  However, we do print stack_traced log for now.)
+     * 
+     *      amVK_1D_QFAMs_QCount_Internal
+     *          --->   linked to     amVK_DeviceQueues::amVK_QueueFamilyIndex    QCount
+     *          --->   linked to     amVK_DeviceQueues::amVK_QueueCount     Used_QFamID
+     *          --->   amVK_Device.Queues.QCount is modified during amVK_Device::CreateDevice()
+     */
+
+    this->generate_1D_QFAMs_QCount_Internal();
 
     amVK_DeviceQueues::s_QueuePrority = 1.0f;
     amVK_DeviceQueues::s_CI_Template = {

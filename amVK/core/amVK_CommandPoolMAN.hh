@@ -18,7 +18,7 @@ class amVK_CommandPoolMAN {
 
   public:
     struct amVK_CommandPoolCATs {
-           amVK_CommandPool*       Graphics = nullptr;
+           amVK_CommandPool*       Graphics = nullptr;          // TODO: What if, graphics & compute ends up using same queueFamily?
            amVK_CommandPool*    VideoEncode = nullptr;
            amVK_CommandPool*    VideoDecode = nullptr;
            amVK_CommandPool*        Compute = nullptr; 
@@ -29,10 +29,10 @@ class amVK_CommandPoolMAN {
 
 
   public:
-            #define _CHK1_(_X_)             if (CATs._X_) {            REY_LOG_EX("CATs." << #_X_ << " already exists! Can't initialize again 😫");                  }
-            #define _CMN1_(_X_) \
-                _CHK1_(_X_)     \
-                CATs._X_ = new amVK_CommandPool(D, D->Queues.Used_QFamID._X_);
+        #define _CHK1_(_X_)             if (CATs._X_) { REY_LOG_EX("CATs." << #_X_ << " already exists! Can't initialize again 😫"); }
+        #define _CMN1_(_X_) \
+            _CHK1_(_X_)     \
+            CATs._X_ = new amVK_CommandPool(D, D->Queues.Used_QFamID._X_);
 
     void init_CMDPool_Graphics(void)                { _CMN1_(Graphics);      }
     void init_CMDPool_VideoEncode(void)             { _CMN1_(VideoEncode);   }
@@ -45,10 +45,10 @@ class amVK_CommandPoolMAN {
 
 
   public:
-            #define _CHK2_(_X_) if (CATs._X_->vk_CommandPool) { REY_LOG_EX("CATs." << #_X_ << "->vk_CommandPool already exists! Can't Create again 😫");}
-            #define _CMN2_(_X_) \
-                _CHK2_(_X_)     \
-                CATs._X_->CreateCommandPool(flags)
+        #define _CHK2_(_X_) if (CATs._X_->vk_CommandPool) { REY_LOG_EX("CATs." << #_X_ << "->vk_CommandPool already exists! Can't Create again 😫");}
+        #define _CMN2_(_X_) \
+            _CHK2_(_X_)     \
+            CATs._X_->CreateCommandPool(flags)
 
     #define _PARAM2_ amVK_Sync::CommandPoolCreateFlags flags
     void CreateCommandPool_Graphics     (_PARAM2_)  { _CMN2_(Graphics);      }
@@ -101,7 +101,7 @@ class amVK_CommandPoolMAN {
                 _CMN12_();          \
                 _CMN22_(_X_)        \
 
-    void AllocateCommandBuffers(VkCommandPool CMDPool, uint32_t N, REY_ArrayDYN<VkCommandBuffer>* BUFFs_PTR);
+    void AllocateCommandBuffers(VkCommandPool CMDPool, uint32_t N, REY_ArrayDYN<VkCommandBuffer>* BUFFs_PTR);       // Made for internal usage
 
     void AllocateCommandBuffers1_Graphics     (uint32_t k) { _CMN100_(Graphics);      }
     void AllocateCommandBuffers1_VideoEncode  (uint32_t k) { _CMN100_(VideoEncode);   }

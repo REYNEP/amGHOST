@@ -41,7 +41,7 @@ class amVK_SwapChainIMGs {
     amVK_SwapChainIMGs(amVK_SwapChain *SC) {
         this->SC = SC; 
         this->vk_Device = SC->D->vk_Device;
-        amVK_InstancePropsEXT::push_back_amVK_SurfaceLinks(this);
+        amVK_InstancePropsEXPORT::push_back_amVK_SurfaceLinks(this);
     }
    ~amVK_SwapChainIMGs() {}
 

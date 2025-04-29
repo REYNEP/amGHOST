@@ -27,7 +27,7 @@ made with affine.pro
     - 📝 [amVK_DeviceOCL.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_DeviceOCL.hh)
     - 📝 [amVK_Instance.cpp](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_Instance.cpp)
     - 📝 [amVK_Instance.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_Instance.hh)
-    - 📝 [amVK_InstancePropsEXT.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_InstancePropsEXT.hh)
+    - 📝 [amVK_InstancePropsEXPORT.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_InstancePropsEXPORT.hh)
     - 📝 [amVK_Pipeline.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_Pipeline.hh)
     - 📝 [amVK_RenderPass.cpp](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_RenderPass.cpp)
     - 📝 [amVK_RenderPass.hh](https://github.com/REYNEP/amGHOST/blob/main/amVK/core/amVK_RenderPass.hh)
@@ -112,31 +112,17 @@ made with affine.pro
 ## Example
 ```cpp
 #include "amGHOST_System.hh"
-
-#include "amVK_InstancePropsEXT.hh"
 #include "amVK_Instance.hh"
 #include "amVK_Device.hh"
-#include "amVK_DeviceQueues.hh"
 
 #include "amGHOST_VkSurfaceKHR.hh"
 #include "amVK_Surface.hh"
-
-#include "amVK_SurfacePresenter.hh"
-#include "amGHOST_SwapChainResizer.hh"
 
 #include "amVK_SwapChain.hh"
 #include "amVK_ColorSpace.hh"
 #include "amVK_RenderPass.hh"
 #include "amVK_RenderPass_Descriptors.hh"
 #include "amVK_CommandPoolMAN.hh"
-
-#include "mesh/amVK_Vertex.hh"
-#include "mesh/amVK_VertexBuffer.hh"
-
-#include "amVK_PipelineGRAPHICS.hh"
-
-#include "amGHOST_Event.hh"
-#include "amTHREAD.hh"
 
 int main(int argumentCount, char* argumentVector[]) {
     REY::cout << "\n";
@@ -152,8 +138,8 @@ int main(int argumentCount, char* argumentVector[]) {
     REY_LOG("");
     // --------------------------- amVK -----------------------------
             REY_LOG("");
-        amVK_InstanceProps::EnumerateInstanceExtensions();
-        amVK_InstanceProps::EnumerateInstanceLayerProperties();
+        amVK_Instance::EnumerateInstanceExtensions();
+        amVK_Instance::EnumerateInstanceLayerProperties();
         amVK_Instance::addTo_1D_Instance_Layers_Enabled("VK_LAYER_KHRONOS_validation");
         amVK_Instance::addTo_1D_Instance_EXTs_Enabled("VK_KHR_surface");
         amVK_Instance::addTo_1D_Instance_EXTs_Enabled(amGHOST_System::get_vulkan_os_surface_ext_name());
@@ -163,8 +149,8 @@ int main(int argumentCount, char* argumentVector[]) {
         VkSurfaceKHR  VK_S = amGHOST_VkSurfaceKHR::create_surface(W, amVK_Instance::vk_Instance);
 
             REY_LOG("");
-        amVK_InstancePropsEXT::EnumeratePhysicalDevices();
-        amVK_GPUProps  *GPUProps = amVK_InstancePropsEXT::GetARandom_GPU();
+        amVK_Instance::EnumeratePhysicalDevices();
+        amVK_GPUProps  *GPUProps = amVK_InstanceProps::GetARandom_GPU();
                         GPUProps->GetPhysicalDeviceQueueFamilyProperties();
                         GPUProps->EnumerateDeviceExtensionProperties();
                         GPUProps->REY_CategorizeQueueFamilies();
@@ -178,13 +164,15 @@ int main(int argumentCount, char* argumentVector[]) {
         amVK_Surface   *S  = new amVK_Surface(VK_S);
             S->GetPhysicalDeviceSurfaceInfo();
             S->GetPhysicalDeviceSurfaceCapabilitiesKHR();
-        amVK_SurfacePresenter  *PR = new amVK_SurfacePresenter();
-                                PR->bind_Surface(S);
-                                PR->bind_Device(D);
-                                PR->create_SwapChain_interface();       // This amVK_SwapChain is Bound to this amVK_Surface
-            
+
+
+
+
+
+
+        // --------------------------- SwapChain, RenderPass, FrameBuffers -----------------------------
             REY_LOG("")
-        amVK_SwapChain *SC =    PR->SC;
+        amVK_SwapChain *SC = new amVK_SwapChain(this->S, this->D);;
             SC->konf_ImageSharingMode(VK_SHARING_MODE_EXCLUSIVE);
             SC->konf_Images(
                 amVK_IF::RGBA_8bpc_UNORM,   // VK_FORMAT_R8G8B8A8_UNORM
@@ -201,11 +189,13 @@ int main(int argumentCount, char* argumentVector[]) {
             SC->CI.oldSwapchain     = nullptr;
             SC->CreateSwapChain();
 
-        amVK_SwapChainIMGs *SC_IMGs = PR->create_SwapChainImages_interface();
+        amVK_SwapChainIMGs *SC_IMGs = new amVK_SwapChainIMGs(this->SC);
             SC_IMGs->   GetSwapChainImagesKHR();
             SC_IMGs->CreateSwapChainImageViews();
 
-        amVK_RenderPass *RP = PR->create_RenderPass_interface();
+
+
+        amVK_RenderPass *RP = new amVK_RenderPass(this->D);
             amVK_RPADes::ColorPresentation.format = SC->CI.imageFormat;
 
             RP->AttachmentInfos.push_back(amVK_RPADes::ColorPresentation);
@@ -217,8 +207,12 @@ int main(int argumentCount, char* argumentVector[]) {
 
         amVK_RenderPassFBs *RP_FBs = PR->create_FrameBuffers_interface();
             RP_FBs->CreateFrameBuffers();
+        // --------------------------- SwapChain, RenderPass, FrameBuffers -----------------------------
 
-        amGHOST_SwapChainResizer*   SC_Resizer = new amGHOST_SwapChainResizer(RP_FBs, W);
+
+
+
+
 
         amVK_CommandPoolMAN  *CPMAN = PR->create_CommandPoolMAN_interface();
                               CPMAN->init_CMDPool_Graphics();
@@ -226,75 +220,6 @@ int main(int argumentCount, char* argumentVector[]) {
                               CPMAN->AllocateCommandBuffers1_Graphics(1);
 
         amVK_CommandBufferPrimary *CB = new amVK_CommandBufferPrimary(CPMAN->BUFFs1.Graphics[0]);
-
-        // ------------------------- Pipeline & VkTriangle ----------------------------
-            amVK_Vertex vertices[3] = {
-                { {  0.00f,  0.25f, 0.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } },   // v0 (red)
-                { { -0.25f, -0.25f, 0.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } },   // v1 (green)
-                { {  0.25f, -0.25f, 0.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } },   // v2 (blue)
-            };
-            amVK_VertexBuffer VB(D, REY_Array<amVK_Vertex>(vertices, 3, 3));
-                VB.CreateBuffer();
-
-            GPUProps->GetPhysicalDeviceFeatures();
-            GPUProps->GetPhysicalDeviceMemoryProperties();
-            GPUProps->REY_CategorizeMemoryHeaps();
-
-                VB.GetBufferMemoryRequirements();
-                VB.AllocateMemory();
-                VB.MapMemory();
-                VB.CopyIntoMemory();
-                VB.UnMapMemory();
-                VB.BindBufferMemory();
-
-            amVK_PipelineGRAPHICS* PLG = new amVK_PipelineGRAPHICS(RP_FBs);
-                PLG->CreateGraphicsPipeline();
-        // ------------------------- Pipeline & VkTriangle ----------------------------
-        
-        // ------------------------- Render Loop ----------------------------
-            amTHREAD phoenix;
-            phoenix.run([&]() {
-                REY_LOG("Thread started.");
-
-                while(true) {
-                    // ------------------------- CommandBufferRecording ----------------------------
-                            CB->BeginCommandBuffer(amVK_Sync::CommandBufferUsageFlags::Submit_Once);
-                        while (SC_Resizer->isResizing) {
-                            REY_NoobTimer::wait(1); // wait 100ms
-                        }
-                        SC_Resizer->canResizeNow = false;
-                        RP_FBs->RPBI_AcquireNextFrameBuffer();
-                        RP_FBs->CMDBeginRenderPass(CB->vk_CommandBuffer);
-                        RP_FBs->CMDSetViewport_n_Scissor(CB->vk_CommandBuffer);
-                        PLG->CMDBindPipeline(CB->vk_CommandBuffer);
-                            VB.CMDBindVertexBuffers(CB->vk_CommandBuffer);
-                            VB.CMDDraw(CB->vk_CommandBuffer);
-                        RP_FBs->CMDEndRenderPass(CB->vk_CommandBuffer);
-                            CB->EndCommandBuffer();
-                    // ------------------------- CommandBufferRecording ----------------------------
-
-                    PR->set_CommandBuffer(CB->vk_CommandBuffer);
-                    PR->submit_CMDBUF(D->Queues.GraphicsQ(0));
-                    PR->Present(D->Queues.GraphicsQ(0));
-
-                    SC_Resizer->canResizeNow = true;
-
-                    REY_LOG("HI From another thread");
-
-                    vkQueueWaitIdle(D->Queues.GraphicsQ(0));
-                    REY_NoobTimer::wait(10); // wait 100ms
-                }
-
-                REY_LOG("Thread finished.");
-            });
-
-            // SOMEWHAT WORKS.... but lots of bug right now aaaaaaaaa
-
-            while(true) {
-                W->dispatch_events_with_OSModalLoops(); // dispatch events
-                REY_NoobTimer::wait(1);               // wait 100ms
-            }
-        // ------------------------- Render Loop ----------------------------
     // --------------------------- amVK -----------------------------
     REY_LOG("");
     REY_LOG("");
@@ -302,8 +227,8 @@ int main(int argumentCount, char* argumentVector[]) {
 
     // ------------------------- CleanUp & ExportJSON ----------------------------
         REY::cin.get();     // wait for terminal input
-            amVK_InstancePropsEXT::Export_nilohmannJSON_EXT();
-                PR->destroy_everything_serially();
+            amVK_InstancePropsEXPORT::Export_nilohmannJSON_EXT();
+                destroy_everything_serially();         // Last Chapter, copy code from there
                 W->m_amGHOST_VkSurface->destroy();
                 amVK_Instance::DestroyInstance();
             W->destroy();

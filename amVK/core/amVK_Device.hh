@@ -21,6 +21,9 @@ class amVK_Device {
         Queues.generate_1D_QCIs(); 
         Queues.    sync_1D_QCIs(&this->CI); 
     }
+               void add_1D_QFAMs_QCount_USER(uint32_t queueFamilyIndex, uint32_t positive_int) { 
+        Queues    .amVK_1D_QFAMs_QCount_USER[         queueFamilyIndex       ] = positive_int;
+    }
     
     REY_ArrayDYN<char*>     amVK_1D_GPU_EXTs_Enabled;
     void                   addTo_1D_GPU_EXTs_Enabled(const char* extName);  // If Available

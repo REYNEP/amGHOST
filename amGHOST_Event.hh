@@ -3,9 +3,9 @@
 
 class amGHOST_Event {
   public:
-    amGHOST_Event(amGE::Type T, amGE::Category C) : m_Type(T), m_Category(C) {}
+    amGHOST_Event(amE::Type T, amE::Category C) : m_Type(T), m_Category(C) {}
    ~amGHOST_Event(void) {}
 
-    amGE::Type     m_Type;
-    amGE::Category m_Category;
+    amE::Type     m_Type;
+    amE::Category m_Category;
 };

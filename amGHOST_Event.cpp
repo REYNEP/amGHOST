@@ -9,16 +9,16 @@
 
 
  */
-#include "amGE.hh"
-static inline bool operator>(amGE::Type lhs, int rhs) {
+#include "amE.hh"
+static inline bool operator>(amE::Type lhs, int rhs) {
     return static_cast<int>(lhs) > rhs;
 }
 
-static inline bool operator<(amGE::Type lhs, int rhs) {
+static inline bool operator<(amE::Type lhs, int rhs) {
     return static_cast<int>(lhs) < rhs;
 }
 
-inline amGE::Category amGE::GetEventCategory(amGE::Type event) {
+inline amE::Category amE::GetEventCategory(amE::Type event) {
     if (event > 100 && event < 200) {
         return Category::Window;
     }

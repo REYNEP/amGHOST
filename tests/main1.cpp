@@ -1,6 +1,6 @@
 #include "amGHOST_System.hh"
 
-#include "amVK_InstancePropsEXT.hh"
+#include "amVK_InstancePropsEXPORT.hh"
 #include "amVK_Instance.hh"
 #include "amVK_Device.hh"
 #include "amVK_DeviceQueues.hh"
@@ -50,8 +50,8 @@ int main(int argumentCount, char* argumentVector[]) {
 
 
             REY_LOG("");
-        amVK_InstancePropsEXT::EnumeratePhysicalDevices();
-        amVK_GPUProps  *GPUProps = amVK_InstancePropsEXT::GetARandom_GPU();
+        amVK_InstancePropsEXPORT::EnumeratePhysicalDevices();
+        amVK_GPUProps  *GPUProps = amVK_InstancePropsEXPORT::GetARandom_GPU();
                         GPUProps->GetPhysicalDeviceQueueFamilyProperties();
                         GPUProps->EnumerateDeviceExtensionProperties();
                         GPUProps->REY_CategorizeQueueFamilies();
@@ -167,7 +167,7 @@ int main(int argumentCount, char* argumentVector[]) {
 
 
     REY::cin.get();     // wait for terminal input
-        amVK_InstancePropsEXT::Export_nilohmannJSON_EXT();
+        amVK_InstancePropsEXPORT::Export_nilohmannJSON_EXT();
         PR->destroy_everything_serially();
         W->m_amGHOST_VkSurface->destroy();
         amVK_Instance::DestroyInstance();

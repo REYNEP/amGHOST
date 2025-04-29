@@ -44,7 +44,7 @@ void amVK_Instance::CreateInstance(void)
 }
 
 #include "REY_STDWrap.hh"
-#include "amVK_InstancePropsEXT.hh"
+#include "amVK_InstancePropsEXPORT.hh"
 #include "amVK/utils/amVK_log.hh"
 void amVK_Instance::addTo_1D_Instance_EXTs_Enabled(const char* extName) {
     // VK_KHR_surface
@@ -145,19 +145,13 @@ Yb,  88      `8b                                       d8'    a  Y8Yb,_  "8b,   
 
 
  */
-#include "amVK_InstancePropsEXT.hh"
-
-#include "amVK_Instance.hh"
-void amVK_InstancePropsEXT::EnumeratePhysicalDevices(void) {
-    amVK_InstanceProps::EnumeratePhysicalDevices(amVK_Instance::vk_Instance); 
-}
-
+#include "amVK_InstancePropsEXPORT.hh"
 #include "amVK_SwapChainIMGs.hh"
 /**
  * CALLS:- `GetPhysicalDeviceSurfaceInfo()`
  *  PREV:- `EnumeratePhysicalDevices()`
  */
-void amVK_InstancePropsEXT::push_back_amVK_SurfaceLinks(amVK_SwapChainIMGs* SC_IMGs) {
+void amVK_InstancePropsEXPORT::push_back_amVK_SurfaceLinks(amVK_SwapChainIMGs* SC_IMGs) {
     amVK_1D_SurfaceLinks.push_back(
         amVK_SurfaceLinks({
             SC_IMGs->SC->S,
@@ -266,7 +260,7 @@ nlohmann::ordered_json nlohmannEXT_amVK_SurfaceLinks(amVK_SurfaceLinks SurfLinks
  * ordered_json -> kinda like std::unordered_map
  *              -> i.e. doesn't automatically sort alphabetically
  */
-void amVK_InstancePropsEXT::Export_nilohmannJSON_EXT(void) {
+void amVK_InstancePropsEXPORT::Export_nilohmannJSON_EXT(void) {
     nlohmann::ordered_json root;
 
         nlohmann::ordered_json vkEnumerateInstanceExtensionProperties   = nlohmann::ordered_json::object();

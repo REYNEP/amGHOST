@@ -99,7 +99,7 @@ void amGHOST_WindowWIN32::internal_update_window_and_client_area_sizes(void) {
                                                                        |______|______|                
 */
 void amGHOST_WindowWIN32::call_default_eventKonsument(amGHOST_Event lightweight_event) {
-    if (lightweight_event.m_Type == amGE::Type::WindowResize) {
+    if (lightweight_event.m_Type == amE::Type::WindowResize) {
         this->internal_update_window_and_client_area_sizes();
     }
 }

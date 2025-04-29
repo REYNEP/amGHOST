@@ -1,0 +1,564 @@
+
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+/* When you rewrite this file, before any kind of styling make sure if the PAGE Margin-top & margin bottom is okay 💁‍♀️ */
+
+@font-face {
+    font-family: "Bahnschrift REY";
+    src: local("Bahnschrift"), url("https://github.com/flying-whales/flying-whales/raw/20e98b4dd0388a3fafd09acb8b07e5bd3dc701b9/Assets/Fonts/bahnschrift.ttf") format(ttf);
+}
+
+@font-face {
+    font-family: "AudioLink Mono Bold REY";
+    src: local('AudioLink Mono Bold'), url("https://audiolink.dev/gallery/AudioLinkMono-Regular.ttf") format(ttf);
+}
+
+@font-face {
+    font-family: "Emoji REY";
+    src: url("https://github.com/KingDragoness/Shopkeepers/raw/952118221585de23b747560b89ee17061e34c0f4/Project%20Shopkeepers%20root/Assets/Resources/Fonts/seguiemj.ttf");
+}
+
+@font-face {
+    font-family: "REY_FiraSansCondensedLightItalic";
+    // LOCAL = System Font name
+    //   URL = Fallback Online URL
+    // However, i am not seeing URL working with my markdown preview enhanced addon, but this way, local font is getting loaded.... & I can use an ITALIC font as default 💁‍♀️
+    src: local('Fira Sans Condensed Light Italic'), url("https://github.com/bBoxType/FiraSans/raw/refs/heads/master/Fira_Sans_4_3/Fonts/Fira_Sans_TTF_4301/Condensed/Italic/FiraSansCondensed-LightItalic.ttf");
+}
+
+.markdown-preview {
+  // modify your style here
+  // eg: background-color: blue;
+    padding: 2em calc(40% - 457px + 2em) !important;
+
+    /**
+    h1 {
+        page-break-before: always;
+    }
+    */
+    font-size: 24px;
+    line-height: 1.15;       // Default line-height
+    font-family: 'CMU Serif', 'Bahnschrift', 'Emoji REY', monospace;
+        // prince needs 'Bahnschrift Light Condensed'
+        // Switch between Neuton / Bahnschrift as you wish 💁‍♀️
+    font-stretch: condensed;
+    font-weight: 400;
+
+    h1, h2, h3, h4, h5, h6, strong {
+        // font-family: 'Bahnschrift';
+        font-family: 'Quartist' !important;
+    }
+
+    h6 {
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+    .REY_BR_LIST_LVL3 {
+        margin: 0;
+        margin-bottom: 0.5em;
+    }
+    .REY_BR_LIST2 {
+        margin: 0;
+        margin-bottom: 0.75em;
+    }
+
+    // OUTERMOST list element containers
+    ul > li, ol > li {
+        margin-bottom: 15px;
+        font-style: italic;
+        font-weight: bold;
+
+        ol > li, ul > li {
+            font-style: normal;
+            font-weight: normal;
+            margin-top: 0.25em;
+            margin-bottom: 0px;
+            font-family: 'REY_FiraSansCondensedLightItalic', 'Emoji REY', monospace;
+            font-weight: 300;
+            font-size: 90%;
+            line-height: 1.15;
+
+            ol > li, ul > li {
+                ol > li, ul > li { 
+                    line-height: 1.1;
+                }
+            }
+
+            h5 {
+                margin-top: 0px;
+            }
+            pre {
+                margin-bottom: 4px;
+            }
+        }
+    }
+    .REY_SECTION_TYPE1 {
+        ul > li, ol > li {
+            margin-bottom: 0px;
+            
+            strong {
+                font-family: 'Quartist';
+            }
+
+            font-weight: 100;
+
+            ol > li, ul > li {
+                margin-bottom: 0px;
+                font-family: 'REY_FiraSansCondensedLightItalic', 'Emoji REY', monospace;
+            }
+        }
+    }
+    .REY_SECTION_TYPE2 {
+        line-height: 28px;
+        ul > li, ol > li {
+            margin-bottom: -8px;
+            
+            strong {
+                font-family: 'Quartist';
+            }
+
+            font-weight: 100;
+
+            ol > li, ul > li {
+                margin-bottom: 0px;
+                font-family: 'REY_FiraSansCondensedLightItalic', 'Emoji REY', monospace;
+            }
+        }
+
+        ul, li {
+            margin-bottom: 32px;
+        }
+    }
+
+    a {
+        // Since we are adding color stuff here, must add different variation in pdf too
+        font-style: italic;
+        //text-decoration: none;
+        //color: rgb(255, 193, 78);
+    }
+    a:hover {
+        //text-decoration: underline;
+        //color: rgb(255, 193, 78);
+    }
+
+    h1, h2, h3 {
+        text-align: center;
+    }
+    h2 {
+        margin-bottom: 0.2em;
+        padding-bottom: 0.2em;
+    }
+    h4 {
+        margin-top: 1em;
+        margin-bottom: 0.15em;
+    } 
+    h5 {
+        margin-top: 0.5em;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+
+
+
+    blockquote {
+        padding-top: 1em;
+        padding-bottom: 1em;
+        font-size: 90%;
+    }
+    code {
+        font-family: 'AudioLink Mono Bold REY', 'Lotion', 'Emoji REY', monospace;
+        font-size: 90%;
+        font-style: normal;
+    }
+    pre {
+        line-height: 20px;
+        margin-bottom: 5px;
+    }
+    pre > code {
+        font-size: 16px;
+        // &.prince has different
+    }
+    .REY_SMALLER_CODE {
+        font-size: 0.7em;
+    }
+    .REY_SMALLER_CODE > pre > code {
+        font-size: 0.95em;
+        line-height: 100%;
+    }
+
+
+
+
+
+    pre {
+        page-break-inside: auto;
+        /* REYNEP MOD */
+    }
+
+    img {
+        -prince-image-resolution: 150dpi;        /* set an explicit DPI */
+    }
+    img.makeSmall_NoFlex {
+        -prince-image-resolution: 160dpi;        /* set an explicit DPI */
+    }
+    img.makeSmall {
+        -prince-image-resolution: 160dpi;        /* set an explicit DPI */
+        float: left; 
+        margin-right: 15px;
+    }
+    img.makeSmaller {
+        -prince-image-resolution: 180dpi;        /* set an explicit DPI */
+        float: left; 
+        margin-right: 20px;
+    }
+    img.makeSmallest {
+        -prince-image-resolution: 200dpi;        /* set an explicit DPI */
+        float: left; 
+        margin-right: 20px;
+    }
+
+    /** However, background-clip is not supported by princexml */
+    .REY_DocTitle {
+        text-align: center;
+        font-size: 30px;
+        background: linear-gradient(145deg, #ff7f00, #8e44ad); /* Orange to Purple Gradient */
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 2px;
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .REY_IMG_CONTAINER {
+        font-size: 85%;
+        line-height: 125%;
+    }
+
+    .REY_TITLE_SUB1 {
+        margin-top: -1.25em;
+        font-size: 110%;
+        line-height: 100%;
+        font-family: 'Neuton ExtraLight'; 
+        font-style: italic;
+    }
+
+    .REY_TITLE_SUB2 {
+        margin-top: 0em;
+        font-size: 110%;
+        line-height: 100%;
+        font-family: 'Neuton ExtraLight'; 
+        font-style: italic;
+    }
+
+    .REY_PAGEBREAK {
+        margin-bottom: 300px;
+        page-break-before: always;
+            // We do this page-break-before, cz, we wanna fix some MARGIN-ERROR that appears after princexml convert
+            // That fix in inside @.price part
+    }
+
+    .REY_TITLE              {margin-top: -36px;}
+    .REY_TITLEV2            {
+        margin-top: -36px;
+
+        h1, h2 {
+            margin-bottom: -20px;
+        }
+    }
+    .REY_PAGE_START         {margin-top: -60px;}
+    .REY_NOSHOW_MD          {display: none;}
+    .REY_NOSHOW_PDF         {display: block;}
+
+    .REY_BR2_NEGATIVE       {margin-top: -50px;}
+    .REY_BR3_NEGATIVE       {margin-top: -40px;}
+    .REY_BR3_NEGATIVE_WEIRD {margin-top: -40px;}
+    .REY_BR4_NEGATIVE       {margin-top: -30px;}
+    .REY_BR5_NEGATIVE       {margin-top: -10px;}
+
+    .REY_BR1_POSITIVE_PDF {
+        margin-top: 0;
+        // Use ---> <div class="REY_NOSHOW_PDF">    </br></br></br></br></br></br>   </div><div class="REY_BR1_FIX_PDF"></div>
+    }
+    
+        // custom prince pdf export style
+        &.prince {
+            .REY_PAGEBREAK {
+                margin-bottom: 0px;
+                margin-top: -28px;
+            }
+
+            .REY_TITLEV2            {
+                margin-top: -60px;
+
+                h1, h2 {
+                    margin-bottom: -18px;
+                }
+            }
+
+            .REY_TITLE_SUB2          {margin-top: -10px;}
+
+            .REY_BR1_POSITIVE_PDF    {margin-top:  50px;}
+            .REY_BR2_NEGATIVE        {margin-top: -30px;}
+            .REY_BR3_NEGATIVE        {margin-top: -20px;}
+            .REY_BR3_NEGATIVE_WEIRD  {margin-top: -50px;}
+            .REY_BR4_NEGATIVE        {margin-top: -15px;}
+            .REY_BR5_NEGATIVE        {margin-top: -10px;}
+
+            .REY_PAGE_STARTS_WITH_H2 {margin-top: -50px;}
+            .REY_PAGE_STARTS_WITH_H1 {margin-top: -65px;}
+
+            .REY_NOSHOW_MD  {display: block !important;}
+            .REY_NOSHOW_PDF {display: none  !important;}
+
+            h1, h2 {
+                text-align: center;
+            }
+            h3 {
+                margin-top: -2.5px;
+            }
+            h6 {
+                margin-top: 16px;
+                margin-bottom: 16px;
+            }
+
+            .REY_BLOCK_GAP          {margin-top:  50px;}
+            .REY_PDF_MORE_HEIGHT    {margin-top: -70pt;}
+            .REY_PDF_MORE_HEIGHT2   {margin-top: -30pt;}
+            .REY_HR > hr            {display: none !important;}
+            .REY_HR                 {margin-top:  50px;}
+                // Try not to use this one, this is not standard styling anyway
+
+            .REY_SMALLER_CODE > pre > code {
+                font-size: 1em;
+                line-height: 100%;
+            }
+
+            a {
+                // Since we are adding color stuff here, must add different variation in pdf too
+                font-style: italic;
+                text-decoration: none;
+                color: #08c;
+            }
+            a:hover {
+                text-decoration: underline;
+                color: rgb(0, 163, 245);
+            }
+
+            color: black !important;
+
+            // font-family: 'Bahnschrift Light Condensed';
+            font-size: 15px;
+            font-weight: 100;
+
+            // OUTERMOST list element containers
+            ul > li, ol > li {
+                margin-bottom: 5px;
+            }
+
+            .REY_SECTION_TYPE1 {
+                ul > li, ol > li {
+                    margin-bottom: -3px;
+                }
+            }
+            .REY_SECTION_TYPE2 {
+                line-height: 18px;
+                ul > li, ol > li {
+                    margin-bottom: -5px;
+                }
+
+                ul, li {
+                    margin-bottom: 10px;
+                }
+            }
+
+            ul > li, ol > li {
+                ol > li, ul > li {
+                    margin-bottom: 0px;
+                    font-family: 'Fira Sans Condensed Light Italic', 'Emoji REY', monospace;
+                    font-size: 92.5%;
+                }
+            }
+            
+            pre {
+                max-width: 100%; /* Prevent overflow */
+            }
+
+            img {
+                max-width: 104%;
+                width:- 104%;
+                margin-left: -2%;
+                display: flex;
+            }
+        
+            pre {
+                line-height: 110%;
+                margin-bottom: 0px;
+            }
+            pre > code {
+                font-size: 11px;
+                white-space: pre-wrap; /* Enable word wrap */
+                word-wrap: break-word; /* Break words that exceed the width */
+                word-break: normal;
+                overflow-wrap: break-word; /* Prevent overflow */
+            }
+        }
+}
+
+
+
+
+
+
+
+/**
+MarkDown File Top part:-
+---
+id: "amVK_Docs"
+class: "DocumentClass1"
+---
+*/
+#amVK_Docs {
+    &.prince {
+        ul, ol {
+            // margin-left: 0.1em;
+        }
+    }
+}
+.DocumentClass1 {
+    &.prince {
+        ul, ol {
+            // margin-left: 0.1em;
+        }
+    }
+}
+.REY_Class1 {
+    font-size: 22px;
+    font-family: 'Neuton';
+    font-weight: 200;
+    line-height: 28px;
+
+    em {font-weight: 400;}
+
+    // OUTERMOST list element containers
+    ul > li, ol > li {
+        margin-bottom: 0px;
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    h1, h2 {
+        margin-bottom: 0px;
+    }
+    h1 {
+        margin-top: 20px;
+    }
+    h2 {
+        margin-top: 20px;
+    }
+
+    &.prince {
+        font-size: 15px !important;
+        font-family: 'Neuton', 'CMU Serif', 'Quivira', 'Bahnschrift Light Condensed' !important;
+        font-weight: 200 !important;
+        line-height: 17px;
+    }
+}
+.REY_Class2 {
+    &.prince {
+        font-size: 15px !important;
+        font-family: 'Neuton', 'CMU Serif', 'Quivira', 'Bahnschrift Light Condensed' !important;
+        font-weight: 200 !important;
+        line-height: 17px;
+    }
+}
+.REY_Class3 {
+    &.prince {
+        font-size: 15px !important;
+        font-family: 'Quartist', 'Neuton', 'CMU Serif', 'Quivira', 'Bahnschrift Light Condensed' !important;
+        font-weight: 100 !important;
+        line-height: 17px;
+        color: black !important;
+
+        strong {
+            font-family: 'Neuton Bold' !important;
+        }
+    }
+}
+.REY_Class4 {
+    &.prince {
+        font-size: 14px !important;
+        font-family: 'CMU Serif', 'Quivira', 'Bahnschrift Light Condensed' !important;
+        font-weight: 100 !important;
+        line-height: 16px;
+        color: black !important;
+
+        strong {
+            font-size: 13px !important;
+            font-family: 'AudioLink Mono' !important;
+            font-weight: 700 !important;
+
+            background-color: #f0f0f0;
+            border-radius: 3px;
+            padding: .075em .3em;
+        }
+    }
+}
+
+/**
+@page { 
+    size: A4;
+
+    margin-top: 1cm;
+    margin-bottom: 1cm;
+    margin-outside: 1.5cm;
+    margin-inside: 1.5cm;
+
+    prince-image-resolution: 300dpi;
+
+    @bottom-center {
+        content: counter(page);
+        margin: 0;
+        margin-top: -1.3cm;
+        padding: 0;
+    }
+}
+*/
+
+@page { 
+    size: A4;
+
+    margin-top: 0.5cm;
+    margin-bottom: 0cm;
+    margin-outside: 1cm;
+    margin-inside: 1cm;
+
+    prince-image-resolution: 300dpi;
+
+    @bottom-center {
+        content: counter(page);
+        margin: 0;
+        margin-top: -1.3cm;
+        padding: 0;
+    }
+}
+
+
+
+
+
+/**
+    https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css?id=local-style
+*/
+
+/** I think this part means like.... Specific to only when CREATING THE PDF. But not like specific to PRINCE-XML */
+@media print {
+    color: black !important;
+}
+
+/** I think this part means like.... Specific to only when CREATING THE PDF. But yes like specific to PRINCE-XML */
+&.prince {
+    color: black !important;
+}

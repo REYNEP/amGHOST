@@ -16,6 +16,7 @@ void amVK_GPUProps::GetPhysicalDeviceQueueFamilyProperties(void) {
     this->called_GetPhysicalDeviceQueueFamilyProperties = true;
 }
 
+// PhysialDevice (not VkDevice)
 void amVK_GPUProps::EnumerateDeviceExtensionProperties(void) {
     // ------------------------- amVK_1D_GPUs_EXTs -----------------------------
         uint32_t extPropertyCount = 0;

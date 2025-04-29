@@ -52,7 +52,12 @@ const char* REY_get_Win32GUI_text(UINT msg) {
 #include "REY_Logger.hh"
 #include "REY_Array.hh"
 #include <cstring>
-void REY_LOG_WIN32_message_name(UINT msg) {
+#include <iomanip>
+#include <iostream>
+
+#define REY_LOG_win32_inputEvent REY_LOG_win32_message
+
+void REY_LOG_win32_message(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     const char* Win32GUI_text = REY_get_Win32GUI_text(msg);
     const char*      spy_text = spy_get_message_name(msg);
     const char*      REY_text = REY_get_REY_text(msg);
@@ -73,6 +78,50 @@ void REY_LOG_WIN32_message_name(UINT msg) {
         }
     }
     else {
-        REY_LOG("[Win32GUI]:- " << Win32GUI_text);
+        const int TEXT_FIELD_WIDTH = 20;  // Adjust based on your longest expected text
+
+        std::cout << "[Win32GUI]:- " << std::left << std::setw(TEXT_FIELD_WIDTH)
+                    << Win32GUI_text
+                    << std::hex << " [hwnd: "  << std::showbase << reinterpret_cast<uintptr_t>(hwnd) << "]"
+                    << std::hex << " [wParam: "  << std::left << std::setw(10) << wParam << "]"
+                    << std::dec << " [lParam: "  << std::left << std::setw(14) << lParam << "]" << "\n";
     }
+}
+
+void REY_GET_win32_message2(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+    const int TEXT_FIELD_WIDTH = 20;  // Adjust based on your longest expected text
+
+    std::cout << "[Win32GUI]:- " << std::left << std::setw(TEXT_FIELD_WIDTH)
+                << REY_get_Win32GUI_text(msg)
+                << std::hex << " [hwnd: "  << std::showbase << reinterpret_cast<uintptr_t>(hwnd) << "]"
+                << std::hex << " [wParam: "  << std::left << std::setw(10) << wParam << "]"
+                << std::dec << " [lParam: "  << std::left << std::setw(14) << lParam << "]";
+}
+
+
+
+
+#include <windows.h>
+#include <stdio.h>
+
+void PrintWindowStyles(HWND hwnd) {
+    // Get standard and extended styles
+    LONG styles = GetWindowLongPtr(hwnd, GWL_STYLE);
+    LONG ex_styles = GetWindowLongPtr(hwnd, GWL_EXSTYLE);
+
+    printf("Standard Styles (GWL_STYLE):\n");
+    printf("WS_BORDER: %d\n", (styles & WS_BORDER) ? 1 : 0);
+    printf("WS_CAPTION: %d\n", (styles & WS_CAPTION) ? 1 : 0);
+    printf("WS_CHILD: %d\n", (styles & WS_CHILD) ? 1 : 0);
+    printf("WS_MAXIMIZEBOX: %d\n", (styles & WS_MAXIMIZEBOX) ? 1 : 0);
+    printf("WS_MINIMIZEBOX: %d\n", (styles & WS_MINIMIZEBOX) ? 1 : 0);
+    printf("WS_OVERLAPPED: %d\n", (styles & WS_OVERLAPPED) ? 1 : 0);
+    printf("WS_SYSMENU: %d\n", (styles & WS_SYSMENU) ? 1 : 0);
+    printf("WS_VISIBLE: %d\n", (styles & WS_VISIBLE) ? 1 : 0);
+
+    printf("\nExtended Styles (GWL_EXSTYLE):\n");
+    printf("WS_EX_ACCEPTFILES: %d\n", (ex_styles & WS_EX_ACCEPTFILES) ? 1 : 0);
+    printf("WS_EX_CLIENTEDGE: %d\n", (ex_styles & WS_EX_CLIENTEDGE) ? 1 : 0);
+    printf("WS_EX_TOPMOST: %d\n", (ex_styles & WS_EX_TOPMOST) ? 1 : 0);
+    printf("WS_EX_TRANSPARENT: %d\n", (ex_styles & WS_EX_TRANSPARENT) ? 1 : 0);
 }

@@ -69,7 +69,7 @@ class amVK_GPUProps {
     bool called_GetPhysicalDeviceFeatures               = false;
     bool called_GetPhysicalDeviceMemoryProperties       = false;
     bool called_EnumerateDeviceExtensionProperties      = false;
-    void        EnumerateDeviceExtensionProperties(void);
+    void        EnumerateDeviceExtensionProperties(void);           // PhysialDevice (not VkDevice)
     void        GetPhysicalDeviceQueueFamilyProperties(void);
     void        GetPhysicalDeviceFeatures(void);
     void        GetPhysicalDeviceMemoryProperties(void);

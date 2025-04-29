@@ -26,10 +26,11 @@ class amVK_SurfacePresenter {
     amVK_CommandPoolMAN  *CPM = nullptr;
     
   public:
-    void bind_Device       (amVK_Device* D)   {this->D = D;}
-    void bind_Surface      (amVK_Surface* S)  {this->S = S;}
-    amVK_SurfacePresenter  (void)             {}
-   ~amVK_SurfacePresenter  (void)             {}
+    void bind_Device       (amVK_Device* D)     {this->D = D;}
+    void bind_Surface      (amVK_Surface* S)    {this->S = S;}
+    void bind_SwapChain    (amVK_SwapChain *SC) {this->SC = SC;}
+    amVK_SurfacePresenter  (void)               {}
+   ~amVK_SurfacePresenter  (void)               {}
 
     void               isBound_Device (void)  { if (D == nullptr) {REY_LOG_EX("use bind_Device();  first");} }
     void               isBound_Surface(void)  { if (S == nullptr) {REY_LOG_EX("use bind_Surface(); first");} }

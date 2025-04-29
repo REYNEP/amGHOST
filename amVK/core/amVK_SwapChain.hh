@@ -1,7 +1,7 @@
 #pragma once
 #include "amVK/common/amVK.hh"
 #include "amVK/common/amVK_ColorSpace.hh"
-#include "amVK_InstancePropsEXT.hh"
+#include "amVK_InstancePropsEXPORT.hh"
 #include "amVK_Surface.hh"
 #include "amVK_Device.hh"
 

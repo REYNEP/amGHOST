@@ -1,4 +1,4 @@
 #pragma once
-#include "amGE.hh"
+#include "amE.hh"
     // amG  = amGHOST
-    // amGE = amGHOST_Event
+    // amE = amGHOST_Event

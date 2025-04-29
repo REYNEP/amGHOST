@@ -1,6 +1,6 @@
 #pragma once
 #include <vulkan/vulkan.h>
-#include "amVK_InstancePropsEXT.hh"
+#include "amVK_InstancePropsEXPORT.hh"
 
 /**
  * SINGLETON Class Wrapper around VkInstance
@@ -29,5 +29,15 @@ class amVK_Instance {
     /**  USE:- `amVK_InstanceProps::EnumerateInstanceExtensions()` */
     static void                     EnumerateInstanceExtensions(void) {
                 amVK_InstanceProps::EnumerateInstanceExtensions();
+    }
+
+    /**  USE:- `amVK_InstanceProps::EnumeratePhysicalDevices()` */
+    static void                     EnumeratePhysicalDevices(void) {
+                amVK_InstanceProps::EnumeratePhysicalDevices(amVK_Instance::vk_Instance);
+    }
+
+    /**  USE:- `amVK_InstanceProps::EnumerateInstanceLayerProperties()` */
+    static void                     EnumerateInstanceLayerProperties(void) {
+                amVK_InstanceProps::EnumerateInstanceLayerProperties();
     }
 };
