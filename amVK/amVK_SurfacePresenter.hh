@@ -53,6 +53,6 @@ class amVK_SurfacePresenter {
     VkSemaphore RenderingFinished_SemaPhore = nullptr;
     void        RenderingFinished_SemaPhore_Create(void);
     void        RenderingFinished_SemaPhore_Destroy(void);
-    void            submit_CMDBUF(VkQueue vk_Queue);
-    void                  Present(VkQueue vk_Queue);
+    void            submit_CMDBUF(VkQueue vk_Queue, VkSemaphore AcquireNextImageSema);
+    void                  Present(VkQueue vk_Queue, VkSwapchainKHR vk_SwapChain, uint32_t nextImage_index);
 };

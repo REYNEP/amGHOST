@@ -1,6 +1,6 @@
 ---
 export_on_save:
-  prince: true
+  prince: false
 ---
 <div class="REY_TITLE" align=center>
 
@@ -8,8 +8,8 @@ export_on_save:
 
 <div class="REY_IMG_CONTAINER" align=center style="text-align: center !important; font-align: center !important;">
 
-![img1](./images/Vulkanised-2023-Tutorial-PART1_Page12_REY.png)
-Take a look into this awesome [slide](./Vulkanised-2023-Tutorial/Vulkanised-2023-Tutorial-PART1.pdf) from slide-26 onwards
+![img1](./images/CH2.Vulkanised-2023-Tutorial-PART1_Page12_REY.png)
+Take a look into this awesome [slide](./../V3.EverythingEverywhereAllAtOnce/P1_Vulkanised-2023-Tutorial/Vulkanised-2023-Tutorial-PART1.pdf) from slide-26 onwards
 ...to understand what each of these steps above _"feel like"/mean/"how to imagine them"_.
 *slide = [Vulkanised 2023 Tutorial Part 1](https://www.khronos.org/assets/uploads/developers/presentations/Vulkanised-2023-Tutorial-PART1.pdf)
 
@@ -99,7 +99,7 @@ Take a look into this awesome [slide](./Vulkanised-2023-Tutorial/Vulkanised-2023
     - `pDevice` ↩️📦 `&m_Device`
         - ↩️📦: "Returned by vkFunc()"
 
-> ![image4](./images/image4.png)
+> ![image4](./images/CH2.image4.png)
 
 - ##### `📽️ So far, The result`:- 
     - [4.guide.chapter2.2.midway.hh](./examples/4.guide.chapter2.2.midway.hh)

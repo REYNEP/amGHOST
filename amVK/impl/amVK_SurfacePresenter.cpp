@@ -85,7 +85,7 @@ static VkSemaphoreCreateInfo g_SP_CI = {
     .flags = 0
 };
 void  amVK_SurfacePresenter::RenderingFinished_SemaPhore_Create(void) {
-    VkResult return_code = vkCreateSemaphore(this->SC->D->vk_Device, &g_SP_CI, nullptr, &this->RenderingFinished_SemaPhore);
+    VkResult return_code = vkCreateSemaphore(this->D->vk_Device, &g_SP_CI, nullptr, &this->RenderingFinished_SemaPhore);
     amVK_return_code_log( "vkCreateSemaphore()" );     // above variable "return_code" can't be named smth else
 }
 void amVK_SurfacePresenter::RenderingFinished_SemaPhore_Destroy(void) {
@@ -105,12 +105,12 @@ static VkSubmitInfo g_SI = {
     .signalSemaphoreCount   = 0,
     .pSignalSemaphores      = nullptr
 };
-void amVK_SurfacePresenter::submit_CMDBUF(VkQueue vk_Queue) {
+void amVK_SurfacePresenter::submit_CMDBUF(VkQueue vk_Queue, VkSemaphore AcquireNextImageSema) {
     if (RenderingFinished_SemaPhore == nullptr) {
         RenderingFinished_SemaPhore_Create();
     }
 
-    VkSemaphore ImageAvailableSemaphore = this->IMGs->AcquireNextImage_SemaPhore;
+    VkSemaphore ImageAvailableSemaphore = AcquireNextImageSema;
     VkSemaphore RenderingFinishedSemaphore = this->RenderingFinished_SemaPhore;
     VkCommandBuffer ActiveCommandBuffer = this->CMDBuf;
 
@@ -140,19 +140,16 @@ static VkPresentInfoKHR g_PI = {
     .pImageIndices = nullptr,
     .pResults = nullptr
 };
-void amVK_SurfacePresenter::Present(VkQueue vk_Queue) {
+void amVK_SurfacePresenter::Present(VkQueue vk_Queue, VkSwapchainKHR vk_SwapChain, uint32_t nextImage_index) {
     VkSemaphore RenderingFinishedSemaphore = this->RenderingFinished_SemaPhore;
 
         g_PI.waitSemaphoreCount = 1;
         g_PI.pWaitSemaphores = &RenderingFinishedSemaphore;
         g_PI.swapchainCount = 1;
-        g_PI.pSwapchains = &this->SC->vk_SwapChainKHR;
-        g_PI.pImageIndices = &this->IMGs->NextImageIndex_Acquired;
+        g_PI.pSwapchains = &vk_SwapChain;
+        g_PI.pImageIndices = &nextImage_index;
 
-        VkResult return_code = vkQueuePresentKHR(
-            vk_Queue,
-            &g_PI
-        );
+        VkResult return_code = vkQueuePresentKHR(vk_Queue, &g_PI);
         
         if (return_code == VK_ERROR_OUT_OF_DATE_KHR) {
             REY_LOG_EX(" [ VK_ERROR_OUT_OF_DATE_KHR ] ----> WIP:- WindowResize()");

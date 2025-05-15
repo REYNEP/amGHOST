@@ -1,0 +1,38 @@
+== Viewing The 🧊 `amVK_Guide`
+. Way-1:- `Obsidian`
+    .. Unzip the `.obsidian.7z` right here
+        ... it had lots of plugins & stuff (those are obviously not my code, so i zipped them 😊)
+    .. Use any of the .canvas files 🤭
+
+
+{empty} +
+
+
+. Way-2:- `vscode markdown-preview`
+    .. `shd101wyy.markdown-preview-enhanced`
+    .. link:bkup/style-bkup.less[bkup/style-bkup.less] \-> `C:/Users/REY/.crossnote/style.less`
+    .. `+vscode -> F1+` \-> `markdown preview enhanced:- open preview`
+
+
+{empty} +
+
+
+. Way-3:- `PDF` (via markdown-preview + prince)
+    .. https://www.princexml.com/
+    .. see my `18.mar11_newWindowsGuide.md` guide for setting that up 🤭
+
+
+{empty} +
+
+
+. Way-4:- The HTML files that i am shipping in this directory + THEGUIDE_v3.html @ reynep.github.io
+    ** https://reynep.github.io/amVK_Guide/THEGUIDE_V0.1alpha
+
+
+{empty} +
+
+
+. Way-5:-  AsciiDoc (WIP/Testing)
+
+. Extras:-
+    .. The fonts i was using, are isnide `style-fonts-bkup-extras/fonts.7z`

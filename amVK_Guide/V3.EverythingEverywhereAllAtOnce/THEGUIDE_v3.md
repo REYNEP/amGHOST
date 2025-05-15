@@ -1,0 +1,51 @@
+---
+export_on_save:
+  prince: false
+---
+
+<!-- The Exported HTML is copied to reynep.github.io   ||   That's why we have this file here   ||  This file doesn't help generate .pdf correctly because, images can't be load. ./../P1/CH0.md get's copy pasted here, instead of like output appending -->
+
+@import "./../P1/CH0.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P1/CH1.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P1/CH2.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P1/CH3.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P1/CH4.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P1/CH5.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P1/CH6.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P1/CH7.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P1/CH8.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P1/CH9.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P1/CH10.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+
+
+@import "./../P2/CH11.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P2/CH12.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P2/CH13.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P2/CH14.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P2/CH15.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P2/CH16.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P2/CH17.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P2/CH18.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P2/CH19.md"
+@import "style-fonts-bkup-extras/pagebreak.md"
+@import "./../P2/CH20.md"
+@import "style-fonts-bkup-extras/pagebreak.md"

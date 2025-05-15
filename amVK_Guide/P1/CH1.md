@@ -1,20 +1,20 @@
 ---
 export_on_save:
-  prince: true
+  prince: false
 ---
 
 <div class="REY_TITLE     REY_PAGE_STARTS_WITH_H1" align=center>
-<img src="./4.guide.CH1.TITLE.svg" width="800px">
-<div class="REY_BR2_NEGATIVE"></div>
+<img src="./CH1.TITLE.svg" width="800px">
+<div class="REY_BR1_NEGATIVE"></div>
 
-## Chapter 1: `VkInstance`
+# Chapter 1: `VkInstance`
 
 <div class="REY_BR5_NEGATIVE"></div>
-<img src="./images/Khronos-Press-Update-SIGGRAPH-Jul19-2019-page36-1.png" width=88%>
+<img src="./images/CH1.Khronos-Press-Update-SIGGRAPH-Jul19-2019-page36-1.png" width=85%>
 </div>
-<div class="REY_BR3_NEGATIVE_WEIRD"></div>
+<div class="REY_BR4_NEGATIVE_WEIRD"></div>
 
-## 0. `amVK` wrap 🌯
+### 0. `amVK` wrap 🌯
 ```cpp
     #include "amVK_Instance.hh"
         // TwT
@@ -23,11 +23,13 @@ export_on_save:
         // You can modify these as you wish 😊
     amVK_Instance::CreateInstance();    // initializes amVK_HEART
 ```
+</br>
+<div class="REY_BR5_NEGATIVE"></div>
 
-<div class="REY_BR4_NEGATIVE"></div>
+### 1. Notes on `Notes`
+<div class="REY_BR5_NEGATIVE"></div>
 
-## 1. Notes on `Notes`
-![img2](./images/image2.png)
+![img2](./images/CH1.image2.png)
 
 <div class="REY_NOSHOW_MD">
         <div class="REY_PAGEBREAK"></div>
@@ -41,7 +43,7 @@ export_on_save:
     </br>
     </br>
     </br>
-        <div align=center><img src="./images/image5.png" width=70%></div>
+        <div align=center><img src="./images/CH1.image5.png" width=70%></div>
         <div class="REY_PAGEBREAK"></div>
     </br>
     </br>

@@ -1,10 +1,10 @@
 ---
 export_on_save:
-  prince: true
+  prince: false
 ---
 <div align=center>
 
-![svg1](./4.guide.CH0.TITLE.svg)
+![svg1](./CH0.TITLE.svg)
 ## Chapter 0: Prerequisites 📹
 
 </div>
@@ -18,8 +18,8 @@ export_on_save:
  
 2. Alternatively:- https://paminerva.github.io/docs/LearnVulkan/01.A-Hello-Window
     - Read the `1 - Introduction` part from here only 😊 [untill `1.2. Why Vulkan?` end]
-    - 😉 [00-Introduction-and-prerequisites.pdf](./P.A.Minerva_LearnVulkan_PDF/00-Introduction-and-prerequisites.pdf)
-    - 😜 [01.A-Hello-Window.pdf](./P.A.Minerva_LearnVulkan_PDF/01.A-Hello-Window.pdf)
+    - 😉 [P1_P.A.Minerva_LearnVulkan_PDF/00-Introduction-and-prerequisites.pdf](./../V3.EverythingEverywhereAllAtOnce/P1_P.A.Minerva_LearnVulkan_PDF/00-Introduction-and-prerequisites.pdf)
+    - 😜 [P1_P.A.Minerva_LearnVulkan_PDF/01.A-Hello-Window.pdf](./../V3.EverythingEverywhereAllAtOnce/P1_P.A.Minerva_LearnVulkan_PDF/01.A-Hello-Window.pdf)
 
 3. Alternatively:- you can give this page a try too:- 
     - https://vkdoc.net/chapters/fundamentals
