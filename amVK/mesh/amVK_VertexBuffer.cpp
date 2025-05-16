@@ -11,6 +11,8 @@ void amVK_VertexBuffer::GetBufferMemoryRequirements(void) {
     called_GetBufferMemoryRequirements = true;
 }
 
+
+
 void amVK_VertexBuffer::AllocateMemory(void) {
     if(called_GetBufferMemoryRequirements == false) {
         this->GetBufferMemoryRequirements();
@@ -24,6 +26,8 @@ void amVK_VertexBuffer::AllocateMemory(void) {
     VkResult return_code = vkAllocateMemory(this->D->vk_Device, &AI, nullptr, &this->vk_DeviceMemory);
     amVK_return_code_log( "vkAllocateMemory()" );
 }
+
+
 
 void      amVK_VertexBuffer::MapMemory(void) {
     VkResult return_code = vkMapMemory(D->vk_Device, vk_DeviceMemory, 0, vk_MemoryReq.size, 0, &vk_MappedMemoryData);

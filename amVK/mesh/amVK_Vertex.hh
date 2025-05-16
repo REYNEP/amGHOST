@@ -11,7 +11,7 @@ struct amVK_Vertex {
 inline VkVertexInputBindingDescription amVK_VertexInputBinding = {
     .binding = 0,
     .stride = sizeof(amVK_Vertex),
-    .inputRate = amVK_PO::VertexInputRate::INSTANCE_INDEX
+    .inputRate = amVK_PO::VertexInputRate::VERTEX_INDEX
 };
 
 // <vulkan/vulkan.h> --> "vk_platform.h" --> `stddef.h` --> offsetof()
@@ -40,9 +40,9 @@ namespace amVK_PSCI {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO,
         .pNext = nullptr,
         .flags = 0,
-        .vertexBindingDescriptionCount = 0, // 1,
-        .pVertexBindingDescriptions = nullptr, // &amVK_VertexInputBinding,
-        .vertexAttributeDescriptionCount = 0, // 2,
-        .pVertexAttributeDescriptions = nullptr// amVK_VertexInputAttributs_BAKED
+        .vertexBindingDescriptionCount = 1,         // 1,
+        .pVertexBindingDescriptions = &amVK_VertexInputBinding,      // &amVK_VertexInputBinding,
+        .vertexAttributeDescriptionCount = 2,       // 2,
+        .pVertexAttributeDescriptions = amVK_VertexInputAttributs_BAKED     // amVK_VertexInputAttributs_BAKED
     };
 };

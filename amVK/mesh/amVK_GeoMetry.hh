@@ -20,9 +20,9 @@ namespace amVK_PSCI {
         .flags = 0,
         .depthClampEnable = false,
         .rasterizerDiscardEnable = false,
-        .polygonMode = VK_POLYGON_MODE_FILL,
-        .cullMode    = VK_CULL_MODE_BACK_BIT,
-        .frontFace   = VK_FRONT_FACE_CLOCKWISE,
+        .polygonMode = VK_POLYGON_MODE_FILL,            // You can Enable WIREFRAME Rendering from here
+        .cullMode    = VK_CULL_MODE_NONE,               // Otherwise FACE Won't be visible from both direction in 3D. /see Blender backFace culling
+        .frontFace   = VK_FRONT_FACE_COUNTER_CLOCKWISE, // used for stencil operations when Culling is none
         .depthBiasEnable = false,
         .depthBiasConstantFactor = 0.0f,
         .depthBiasClamp = 0.0f,
